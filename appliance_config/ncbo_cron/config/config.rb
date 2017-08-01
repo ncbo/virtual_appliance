@@ -68,7 +68,7 @@ begin
     config.mgrep_host              = "localhost"
     config.mgrep_port              = 55555
     config.mgrep_alt_host          = "localhost"
-    config.mgrep_alt_port          = 55556
+    config.mgrep_alt_port          = 55555
     config.annotator_redis_host    = "localhost"
     config.annotator_redis_port    = 6379
 end

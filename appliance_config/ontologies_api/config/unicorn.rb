@@ -5,14 +5,15 @@ working_directory "#{app_path}/current/"
 worker_processes 8
 timeout 180 
 preload_app true
-user "bioportal", "bioportal"
+user 'bioportal', 'bioportal'
 
-stderr_path "log/unicorn.stderr.log"
-stdout_path "log/unicorn.stdout.log"
-pid "/var/run/unicorn/unicorn.pid"
+#uncomment to enable logging for troubleshooting:
+#stderr_path 'log/unicorn.stderr.log'
+#stdout_path 'log/unicorn.stdout.log'
+pid 'tmp/pids/unicorn.pid'
 
 # Listen on both fast-failing unix data socket (for nginx) & a backloggable TCP connection
-listen "#{app_path}/shared/tmp/sockets/unicorn.sock", :backlog => 1024
+listen app_path + '/shared/tmp/sockets/unicorn.sock', :backlog => 1024
 #listen 8087, :backlog => 256
 
 # Make sure unicorn is using current gems after rolling restarts

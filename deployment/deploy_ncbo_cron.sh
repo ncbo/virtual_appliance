@@ -3,11 +3,16 @@
 
 source $(dirname "$0")/versions
 
+if [[ $NCBO_CRON_RELEASE =~ ^v[0-9.]+ ]] ; then  $NCBO_CRON_RELEASE=tags/$NCBO_CRON_RELEASE ; fi
+
 COMPONENT=ncbo_cron
 VIRTUAL_APPLIANCE_REPO=~/virtual_appliance
 export NCBO_BRANCH=$NCBO_CRON_RELEASE
 LOCAL_CONFIG_PATH=$VIRTUAL_APPLIANCE_REPO/appliance_config
 
+
+echo "deploying ncbo_cron from $NCBO_BRANCH branch"
+sudo /sbin/service ncbo_cron stop
 if [ -d /srv/ncbo/ncbo_cron ]; then
   pushd /srv/ncbo/ncbo_cron
   git pull
@@ -15,7 +20,9 @@ else
   git clone https://github.com/ncbo/ncbo_cron /srv/ncbo/ncbo_cron
   pushd /srv/ncbo/ncbo_cron
 fi
+git pull
 git checkout tags/$NCBO_BRANCH
 bundle install --deployment
 rsync -avr $LOCAL_CONFIG_PATH/$COMPONENT/* /srv/ncbo/ncbo_cron
 popd
+sudo /sbin/service ncbo_cron start
