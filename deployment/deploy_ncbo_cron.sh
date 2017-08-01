@@ -20,8 +20,8 @@ else
   git clone https://github.com/ncbo/ncbo_cron /srv/ncbo/ncbo_cron
   pushd /srv/ncbo/ncbo_cron
 fi
-git pull
-git checkout tags/$NCBO_BRANCH
+git fetch 
+git checkout $NCBO_CRON_RELEASE
 bundle install --deployment
 rsync -avr $LOCAL_CONFIG_PATH/$COMPONENT/* /srv/ncbo/ncbo_cron
 popd

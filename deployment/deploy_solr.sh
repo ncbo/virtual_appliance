@@ -1,7 +1,7 @@
 #Script for updating solr configuration for NCBO BioPortal
 #
 
-source $(dirname "$0")/params
+source $(dirname "$0")/versions
 
 COMPONENT=ontologies_linked_data
 NCBO_BRANCH=$ONTOLOGIES_LINKED_DATA_RELEASE

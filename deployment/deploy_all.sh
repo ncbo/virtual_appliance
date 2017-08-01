@@ -8,4 +8,4 @@
 ./deploy_ui.sh
 ./deploy_ncbo_cron.sh
 
-sudo bprestart
+sudo /usr/local/bin/bprestart
