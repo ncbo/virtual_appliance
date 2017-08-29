@@ -1,17 +1,15 @@
 #!/bin/bash
 # This file contains a list of variables as sourced in the deployment wrapper scripts
-# <component>_RELEASE corresponds to the version of a component such as UI or API installed in the virtual appliance
+# <component>_RELEASE corresponds to the version of a component such as UI or API
+# installed in the virtual appliance
 # RELEASE numbers have to be compatible with this verision of the appliance stack
 #
 
 # Versions of virtual appliance components
 API_RELEASE=v5.4.1
-#UI_RELEASE=v5.1.1
-UI_RELEASE=staging
-#NCBO_CRON_RELEASE=v5.3.1
+UI_RELEASE=v5.1.2
 NCBO_CRON_RELEASE=v5.4.1
 ONTOLOGIES_LINKED_DATA_RELEASE=$API_RELEASE
-
 
 # general settings
 VIRTUAL_APPLIANCE_REPO=~/virtual_appliance

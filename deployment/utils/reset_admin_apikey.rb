@@ -4,8 +4,8 @@
 NCBO_CRON_PATH='/srv/ncbo/ncbo_cron'
 USERNAME = 'admin'
 
-# we are relying on ncbo_cron project for changing apikey becase its easier than
-# the API which requires deleting/re-creating user.
+# we are relying on ncbo_cron project for changing apikey becase its easier then
+# working with the API since it requires deleting/re-creating user.
 
 Dir.chdir NCBO_CRON_PATH
 puts Dir.pwd
