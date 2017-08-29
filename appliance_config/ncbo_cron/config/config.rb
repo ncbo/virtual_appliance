@@ -21,8 +21,8 @@ begin
     config.rest_url_prefix    = "http://#{$LOCAL_IP}:8080/"
     config.replace_url_prefix = false
     config.ui_host            = "http://#{$LOCAL_IP}"
-    config.search_server_url  = "http://localhost:8082/solr/term_search_core1"
-    config.property_search_server_url = "http://localhost:8082/solr/prop_search_core1"
+    config.search_server_url  = "http://localhost:8983/solr/term_search_core1"
+    config.property_search_server_url = "http://localhost:8983/solr/prop_search_core1"
     config.repository_folder  = "/srv/ncbo/repository"
     config.enable_security    = false
 
@@ -101,8 +101,8 @@ begin
     config.redis_host           = Annotator.settings.annotator_redis_host
     config.redis_port           = Annotator.settings.annotator_redis_port
     config.enable_ontology_analytics = false
-    config.search_index_all_url = "http://localhost:8082/solr/term_search_core2"
-    config.property_search_server_index_all_url = "http://localhost:8082/solr/prop_search_core2"
+    config.search_index_all_url = "http://localhost:8983/solr/term_search_core2"
+    config.property_search_server_index_all_url = "http://localhost:8983/solr/prop_search_core2"
     config.ontology_report_path = "/srv/ncbo/reports/ontologies_report.json"
   end
 rescue NameError
