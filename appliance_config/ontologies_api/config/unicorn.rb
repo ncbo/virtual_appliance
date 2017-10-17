@@ -5,7 +5,7 @@ working_directory "#{app_path}/current/"
 worker_processes 8
 timeout 180 
 preload_app true
-user 'bioportal', 'bioportal'
+user 'ontoportal', 'ontoportal'
 
 #uncomment to enable logging for troubleshooting:
 #stderr_path 'log/unicorn.stderr.log'

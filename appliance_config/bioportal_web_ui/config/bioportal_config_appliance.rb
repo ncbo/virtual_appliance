@@ -21,7 +21,7 @@ $ORG = "NCBO"
 $ORG_URL = "http://www.bioontology.org"
 
 # Site name (required)
-$SITE = "BioPortal Appliance"
+$SITE = "OntoPortal Appliance"
 
 # The URL for the BioPortal Rails UI (this application)
 $UI_URL = "http://#{$UI_HOSTNAME}"
@@ -58,8 +58,8 @@ $MAX_POSSIBLE_DISPLAY = 10000
 # Max size allowed for uploaded files
 $MAX_UPLOAD_SIZE = 1073741824
 
-# Release version (appears top-right on the home page)
-$RELEASE_VERSION = "NCBO Appliance 2.5"
+# Release version (appears in the footer)
+$RELEASE_VERSION = "OntoPortal Appliance 2.5 RC3"
 
 # Pairing a name with an array of ontology virtual ids will allow you to filter ontologies based on a subdomain.
 # If your main UI is hosted at example.org and you add custom.example.org pointing to the same Rails installation
@@ -68,8 +68,8 @@ $RELEASE_VERSION = "NCBO Appliance 2.5"
 $ENABLE_SLICES = false
 $ONTOLOGY_SLICES = {}
 
-# Enables a help page maintained elsewhere that is read and displayed. Content is stored in a div with id 'bodyContent'.
-$WIKI_HELP_PAGE = ""
+# Help page, launched from Support -> Help menu item in top navigation bar.
+$WIKI_HELP_PAGE = "https://www.bioontology.org/wiki/index.php/BioPortal_Help"
 
 # Google Analytics ID (optional)
 $ANALYTICS_ID = ""
