@@ -1,6 +1,11 @@
 # coding: utf-8
-
-#local IP address lookup.  This doesn't make connection to external hosts
+#
+# bioportal_web_ui config file for default OntoPortal appliance.  
+# It can be futher customized in the global.rb file 
+if File.exist?('site_config.rb')
+  require_relative 'site_config.rb'
+end
+# local IP address lookup.  This doesn't make connection to external hosts
 require 'socket'
 def local_ip
   orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true  # turn off reverse DNS resolution temporarily
@@ -13,15 +18,18 @@ ensure
   Socket.do_not_reverse_lookup = orig
 end
 
-$REST_HOSTNAME = local_ip
-$UI_HOSTNAME = local_ip
+# Appliance needs to know its own address to display proper URLs
+# Ideally it should be set to FQDN but we fall back to using IP address if FQDN is not manually set. 
+$REST_HOSTNAME ||= local_ip
+$REST_PORT ||= '8080'
+$UI_HOSTNAME ||= local_ip
 
 # Organization info
-$ORG = "NCBO"
-$ORG_URL = "http://www.bioontology.org"
+$ORG ||= "NCBO"
+$ORG_URL ||= "http://www.bioontology.org"
 
 # Site name (required)
-$SITE = "OntoPortal Appliance"
+$SITE ||= "OntoPortal Appliance"
 
 # The URL for the BioPortal Rails UI (this application)
 $UI_URL = "http://#{$UI_HOSTNAME}"
@@ -43,10 +51,10 @@ $ANNOTATOR_DISABLED = false
 $RESOURCE_INDEX_DISABLED = true
 
 # Unique string representing the UI's id for use with the BioPortal Core
-$API_KEY = "1de0a270-29c5-4dda-b043-7c3580628cd5"
+$API_KEY ||= "1de0a270-29c5-4dda-b043-7c3580628cd5"
 
 # REST core service address
-$REST_URL = "http://#{$REST_HOSTNAME}:8080"
+$REST_URL ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}"
 
 
 # Max number of children to return when rendering a tree view
@@ -72,7 +80,7 @@ $ONTOLOGY_SLICES = {}
 $WIKI_HELP_PAGE = "https://www.bioontology.org/wiki/index.php/BioPortal_Help"
 
 # Google Analytics ID (optional)
-$ANALYTICS_ID = ""
+$ANALYTICS_ID ||= ""
 
 # A user id for user 'anonymous' for use when a user is required for an action on the REST service but you don't want to require a user to login
 $ANONYMOUS_USER = 0
@@ -95,21 +103,21 @@ ActionMailer::Base.smtp_settings = {
 
 # Announcements mailman mailing list REQUEST address, EX: list-request@lists.example.org
 # NOTE: You must use the REQUEST address for the mailing list. ONLY WORKS WITH MAILMAN LISTS.
-$ANNOUNCE_LIST = "appliance-users-request@example.org"
+$ANNOUNCE_LIST ||= "appliance-users-request@example.org"
 
 # Email addresses used for sending notifications (errors, feedback, support)
-$SUPPORT_EMAIL = "support@example.org"
-$ADMIN_EMAIL = "admin@example.org"
-$ERROR_EMAIL = "errors@example.org"
+$SUPPORT_EMAIL ||= "support@example.org"
+$ADMIN_EMAIL ||= "admin@example.org"
+$ERROR_EMAIL ||= "errors@example.org"
 
 # reCAPTCHA
 # In order to use reCAPTCHA on the user account creation page:
 #    1. Obtain a key from reCAPTCHA: http://recaptcha.net
 #    2. Include the corresponding keys below (between the single quotes)
 #    3. Set the USE_RECAPTCHA option to 'true'
-ENV['USE_RECAPTCHA'] = 'false'
-ENV['RECAPTCHA_PUBLIC_KEY']  = ''
-ENV['RECAPTCHA_PRIVATE_KEY'] = ''
+ENV['USE_RECAPTCHA'] ||= 'false'
+ENV['RECAPTCHA_PUBLIC_KEY']  ||= ''
+ENV['RECAPTCHA_PRIVATE_KEY'] ||= ''
 
 # Custom BioPortal logging
 require 'log'

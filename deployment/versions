@@ -6,6 +6,7 @@
 #
 
 # Versions of virtual appliance components
+APPLIANCE_VERSION=2.5-RC3
 API_RELEASE=v5.4.1
 UI_RELEASE=v5.2.0
 NCBO_CRON_RELEASE=v5.4.1

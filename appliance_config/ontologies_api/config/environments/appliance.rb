@@ -1,4 +1,5 @@
 #local IP address lookup. This hack doesn't make connection to external hosts
+
 require 'socket'
   def local_ip
     orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true  # turn off reverse DNS resolution temporarily
@@ -11,16 +12,20 @@ require 'socket'
     Socket.do_not_reverse_lookup = orig
   end
 
+if File.exist?('site_config.rb')
+  require_relative 'site_config.rb'
+end
 
-$REST_HOSTNAME = local_ip
-$UI_HOSTNAME = local_ip
+$REST_HOSTNAME ||= local_ip
+$REST_PORT ||= '8080'
+$UI_HOSTNAME ||= local_ip
 
 
 begin
   LinkedData.config do |config|
     config.goo_host           = "localhost"
     config.goo_port           = 8081
-    config.rest_url_prefix    = "http://#{$REST_HOSTNAME}:8080/"
+    config.rest_url_prefix    = "http://#{$REST_HOSTNAME}:#{$REST_PORT}/"
     config.ui_host            = "http://#{$UI_HOSTNAME}"
     config.search_server_url  = "http://localhost:8983/solr/term_search_core1"
     config.property_search_server_url = "http://localhost:8983/solr/prop_search_core1"
