@@ -2,7 +2,7 @@
 #
 # bioportal_web_ui config file for default OntoPortal appliance.  
 # It can be futher customized in the global.rb file 
-if File.exist?('site_config.rb')
+if File.exist?('config/site_config.rb')
   require_relative 'site_config.rb'
 end
 # local IP address lookup.  This doesn't make connection to external hosts
