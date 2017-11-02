@@ -12,7 +12,7 @@ require 'socket'
     Socket.do_not_reverse_lookup = orig
   end
 
-if File.exist?('site_config.rb')
+if File.exist?('config/environments/site_config.rb')
   require_relative 'site_config.rb'
 end
 
