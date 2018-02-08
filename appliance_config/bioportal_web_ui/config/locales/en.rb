@@ -1,10 +1,21 @@
 # coding: utf-8
 
 {
-  :en => {
+  en: {
+    date: {
+      formats: {
+        year_month_day_concise: '%Y-%m-%d'
+      } 
+    },
+
     home: {
-      welcome: 'Welcome to ' + $SITE,
-      tagline: ""
+      index: {
+        find_ontology_placeholder: 'Start entering ontology name, e.g. Cancer, then choose from list',
+        query_placeholder: 'Enter a class, e.g. Melanoma',
+        tagline: '',
+        title: 'Welcome to the ' + $ORG_SITE,
+        welcome: 'Welcome to ' + $SITE,
+      }
     },
 
     annotator: {
@@ -16,7 +27,10 @@
     },
 
     search: {
-      intro: 'Search for a class in multiple ontologies'
+      index: {
+        intro: 'Search for a class in multiple ontologies',
+        search_keywords_placeholder: 'Enter a class, e.g. Melanoma'
+      }
     },
 
     projects: {

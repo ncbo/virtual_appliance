@@ -20,8 +20,6 @@ TARGETED_PORTAL_USER = "admin"
 ONTOLOGIES_TO_IMPORT = ["STY"]
 
 
-
-require 'json'
 require 'net/http'
 require_relative 'apikey.rb'
 #require_relative '../../virtual_appliance/site_config.rb'

@@ -19,7 +19,8 @@ CONFIG_FILE = '/srv/ncbo/virtual_appliance/appliance_config/site_config.rb'
 #reset_apikey('appliance')
 api_key = get_apikey('appliance')
 
-# update config files:
+# update config files
+# overwrite appliance apikey
 text = File.read(CONFIG_FILE)
 new_content = text.gsub(/^\$API_KEY =.*$/, "\$API_KEY = \"#{api_key}\"")
 File.open(CONFIG_FILE, 'w') { |file| file.puts new_content }
@@ -28,4 +29,4 @@ FileUtils.cp "#{CONFIG_FILE}", '/srv/rails/bioportal_web_ui/current/config'
 FileUtils.chown 'ontoportal', 'ontoportal' ", '/srv/rails/bioportal_web_ui/current/config'
 
 #restart ontoportal stack
-system "/etc/init.d/httpd restart"
+system "/usr/local/bin/bprestart"

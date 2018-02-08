@@ -20,19 +20,38 @@ require 'securerandom'
 require "#{NCBO_CRON_PATH}/lib/ncbo_cron"
 require "#{NCBO_CRON_PATH}/config/config.rb";
 
-def reset_apikey(username)
+def adminify(username)
   user = LinkedData::Models::User.find(username).first
   user.bring_remaining
   user.valid?
-  user.apikey =  SecureRandom.uuid
+  # Get an instance of the administrator role
+  role = LinkedData::Models::Users::Role.find("ADMINISTRATOR").first
+  role.bring_remaining
+
+  # Sanity check that you have a valid role
+  role.valid?
+  # Add the administrative role to the user's list of roles
+  user_roles = user.role
+  user_roles = user_roles.dup
+  user_roles << role
+  user.role = user_roles
+
+  # Sanity check to make sure role was added properly
+  user.valid?
+
+  puts user.role 
+  # Don't forget to save...
   user.save
-  puts "apikey has been reset for #{username} user"
+
 end
 
-def get_apikey(username)
-  user = LinkedData::Models::User.find(username).first
-  user.bring_remaining
-  user.valid?
-  return user.apikey
-end
 
+input_array = ARGV
+username = input_array[0]
+if input_array.length == 0
+  puts "require username"
+  exit 1
+end
+puts username
+
+adminify(username)

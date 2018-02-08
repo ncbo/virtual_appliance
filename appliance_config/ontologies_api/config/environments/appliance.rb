@@ -19,13 +19,13 @@ end
 $REST_HOSTNAME ||= local_ip
 $REST_PORT ||= '8080'
 $UI_HOSTNAME ||= local_ip
-
+$REST_URL_PREFIX ||="http://#{$REST_HOSTNAME}:#{$REST_PORT}/"
 
 begin
   LinkedData.config do |config|
     config.goo_host           = "localhost"
     config.goo_port           = 8081
-    config.rest_url_prefix    = "http://#{$REST_HOSTNAME}:#{$REST_PORT}/"
+    config.rest_url_prefix    = "#{$REST_URL_PREFIX}"
     config.ui_host            = "http://#{$UI_HOSTNAME}"
     config.search_server_url  = "http://localhost:8983/solr/term_search_core1"
     config.property_search_server_url = "http://localhost:8983/solr/prop_search_core1"

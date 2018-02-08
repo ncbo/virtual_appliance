@@ -23,6 +23,7 @@ end
 $REST_HOSTNAME ||= local_ip
 $REST_PORT ||= '8080'
 $UI_HOSTNAME ||= local_ip
+$REST_URL_PREFIX ||= "#{$REST_HOSTNAME}:#{$REST_PORT}"
 
 # Organization info
 $ORG ||= "NCBO"
@@ -35,7 +36,7 @@ $SITE ||= "OntoPortal Appliance"
 $UI_URL = "http://#{$UI_HOSTNAME}"
 
 # URL where BioMixer GWT app is located
-$BIOMIXER_URL = "http://#{$UI_HOSTNAME}/BioMixer"
+$BIOMIXER_URL = "//#{$UI_HOSTNAME}/BioMixer"
 
 # If you are running a PURL server to provide URLs for ontologies in your BioPortal instance, enable this option
 $PURL_ENABLED = false
@@ -67,7 +68,10 @@ $MAX_POSSIBLE_DISPLAY = 10000
 $MAX_UPLOAD_SIZE = 1073741824
 
 # Release version (appears in the footer)
-$RELEASE_VERSION = "OntoPortal Appliance 2.5 RC3"
+$RELEASE_VERSION = "OntoPortal Appliance 2.5"
+
+# URL for release notes (see top-right menu item Support -> Release Notes)
+$RELEASE_NOTES = "https://www.bioontology.org/wiki/index.php/BioPortal_Virtual_Appliance_Release_Notes"
 
 # Pairing a name with an array of ontology virtual ids will allow you to filter ontologies based on a subdomain.
 # If your main UI is hosted at example.org and you add custom.example.org pointing to the same Rails installation
@@ -88,6 +92,7 @@ $ANONYMOUS_USER = 0
 # Cube metrics reporting
 $ENABLE_CUBE = false
 
+$NOT_DOWNLOADABLE = {}
 # Enable client request caching
 $CLIENT_REQUEST_CACHING = true
 
