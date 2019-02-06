@@ -7,5 +7,6 @@
 ./deploy_api.sh
 ./deploy_ui.sh
 ./deploy_ncbo_cron.sh
+./deploy_biomixer.sh
 
-sudo /usr/local/bin/bprestart
+sudo /usr/local/bin/oprestart

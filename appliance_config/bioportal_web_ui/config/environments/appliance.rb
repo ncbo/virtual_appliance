@@ -79,7 +79,7 @@ BioportalWebUi::Application.configure do
 
   # memcache setup
   # https://github.com/mperham/dalli#usage-with-rails-3x-and-4x
-  config.cache_store = :dalli_store, nil, { :namespace => 'bioportal_web_ui', :expires_in => 1.day, :value_max_bytes => 5*1024*1024 }
+  config.cache_store = :dalli_store, nil, { :namespace => 'opui', :expires_in => 1.day, :value_max_bytes => 5*1024*1024 }
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
@@ -89,9 +89,4 @@ BioportalWebUi::Application.configure do
   config.action_view.sanitized_allowed_attributes = ['id', 'class', 'style', 'data-cls', 'data-ont']
 
   NEW_RELIC_AGENT_ENABLED=false
-  # TODO: Fix this?
-  # enable json logging format.  Useful for logstash
-  # require 'rackstash'
-  # config.rackstash.enabled = true
-  # config.rackstash.tags = ['ruby', 'rails2']
 end

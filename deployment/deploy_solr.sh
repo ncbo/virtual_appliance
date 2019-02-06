@@ -16,4 +16,4 @@ popd
 
 rsync -avr $SORL_CONF/* /srv/solr/data/config
 
-sudo service solr restart
+sudo systemctl restart solr

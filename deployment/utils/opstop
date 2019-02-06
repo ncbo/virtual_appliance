@@ -1,0 +1,21 @@
+#!/bin/bash
+# Script to restart OntoPortal stack
+
+services='
+ncbo_cron.service
+httpd.service
+nginx.service
+unicorn.service
+memcached.service
+redis-server-goo.service
+redis-server-http.service
+redis-server-presistant.service
+mgrep.service
+solr.service
+4s-httpd-ontologies_api
+4s-boss
+'
+
+for service in $services; do
+  /bin/systemctl stop $service
+done

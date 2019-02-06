@@ -4,17 +4,26 @@
   en: {
     date: {
       formats: {
-        year_month_day_concise: '%Y-%m-%d'
+        year_month_day_concise: '%Y-%m-%d', # 2017-03-01
+        month_day_year: '%b %-d, %Y', # Mar 1, 2017
+        monthfull_day_year: '%B %-d, %Y' # March 1, 2017
       } 
+    },
+
+    layouts: {
+      footer: {
+        copyright_html: 'Copyright &copy; 2005‑2018, The Board of Trustees of Leland Stanford Junior University. All rights reserved.',
+        grant_html: 'The <strong>National Center for Biomedical Ontology</strong> was founded as one of the National Centers for Biomedical Computing, supported by the NHGRI, the NHLBI, and the NIH Common Fund under grant U54-HG004028.'
+      }
     },
 
     home: {
       index: {
-        find_ontology_placeholder: 'Start entering ontology name, e.g. Cancer, then choose from list',
+        find_ontology_placeholder: 'Start typing ontology name, then choose from list',
         query_placeholder: 'Enter a class, e.g. Melanoma',
         tagline: '',
         title: 'Welcome to the ' + $ORG_SITE,
-        welcome: 'Welcome to ' + $SITE,
+        welcome: 'Welcome to ' + $SITE + ' '
       }
     },
 
@@ -29,7 +38,11 @@
     search: {
       index: {
         intro: 'Search for a class in multiple ontologies',
-        search_keywords_placeholder: 'Enter a class, e.g. Melanoma'
+        search_keywords_placeholder: 'Enter a class, e.g. Melanoma',
+        categories_placeholder: 'Start typing to select categories or leave blank to use all',
+        property_definition: 'Named association between two entities. Examples are "definition" (a relation between a class and some text) and "part-of" (a relation between two classes).',
+        obsolete_definition: 'A class that the authors of the ontology have flagged as being obsolete and which they recommend that people not use.' +
+          ' These classes are often left in ontologies (rather than removing them entirely) so that existing systems that depend on them will continue to function.'
       }
     },
 

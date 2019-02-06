@@ -1,0 +1,6 @@
+#!/bin/bash
+# Script to restart OntoPortal stack
+
+opstop
+opstart
+

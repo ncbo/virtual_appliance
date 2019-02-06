@@ -27,7 +27,7 @@ $REST_URL_PREFIX ||= "#{$REST_HOSTNAME}:#{$REST_PORT}"
 
 # Organization info
 $ORG ||= "NCBO"
-$ORG_URL ||= "http://www.bioontology.org"
+$ORG_URL ||= "http://appliance.ontoportal.org"
 
 # Site name (required)
 $SITE ||= "OntoPortal Appliance"
@@ -37,7 +37,7 @@ $UI_URL = "http://#{$UI_HOSTNAME}"
 
 # URL where BioMixer GWT app is located
 $BIOMIXER_URL = "//#{$UI_HOSTNAME}/BioMixer"
-
+$PROXY_URL = "//#{$UI_HOSTNAME}:8082/AnnotatorPlus"
 # If you are running a PURL server to provide URLs for ontologies in your BioPortal instance, enable this option
 $PURL_ENABLED = false
 
@@ -57,7 +57,6 @@ $API_KEY ||= "1de0a270-29c5-4dda-b043-7c3580628cd5"
 # REST core service address
 $REST_URL ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}"
 
-
 # Max number of children to return when rendering a tree view
 $MAX_CHILDREN = 2500
 
@@ -68,10 +67,10 @@ $MAX_POSSIBLE_DISPLAY = 10000
 $MAX_UPLOAD_SIZE = 1073741824
 
 # Release version (appears in the footer)
-$RELEASE_VERSION = "OntoPortal Appliance 2.5"
+$RELEASE_VERSION = "OntoPortal Appliance 3.0.rc1"
 
 # URL for release notes (see top-right menu item Support -> Release Notes)
-$RELEASE_NOTES = "https://www.bioontology.org/wiki/index.php/BioPortal_Virtual_Appliance_Release_Notes"
+$RELEASE_NOTES = "https://www.bioontology.org/wiki/BioPortal_Virtual_Appliance_Release_Notes"
 
 # Pairing a name with an array of ontology virtual ids will allow you to filter ontologies based on a subdomain.
 # If your main UI is hosted at example.org and you add custom.example.org pointing to the same Rails installation
@@ -81,7 +80,7 @@ $ENABLE_SLICES = false
 $ONTOLOGY_SLICES = {}
 
 # Help page, launched from Support -> Help menu item in top navigation bar.
-$WIKI_HELP_PAGE = "https://www.bioontology.org/wiki/index.php/BioPortal_Help"
+$WIKI_HELP_PAGE = "https://www.bioontology.org/wiki/BioPortal_Help"
 
 # Google Analytics ID (optional)
 $ANALYTICS_ID ||= ""

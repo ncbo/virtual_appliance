@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# manipulates apikey for a user
+# manipulates useraccount
 
 NCBO_CRON_PATH='/srv/ncbo/ncbo_cron'
 
@@ -56,13 +56,32 @@ def resetpassword(username)
  # user.save
 end
 
-input_array = ARGV
-username = input_array[0]
-if input_array.length == 0
-  puts "require username"
-  exit 1
+def createuser(username, email, password = nil)
+  if password == nil
+     password = SecureRandom.base64
+  end
+  user = LinkedData::Models::User.new
+  user.username = username
+  user.email = email
+  user.password = password
+  role = LinkedData::Models::Users::Role.find("LIBRARIAN").first.bring_remaining
+  user.role = [role]
+  user.valid?
+  user.save
 end
-puts username
+def reset_apikey(username)
+  user = LinkedData::Models::User.find(username).first
+  user.bring_remaining
+  user.valid?
+  user.apikey =  SecureRandom.uuid
+  user.save
+  puts "apikey has been reset for #{username} user"
+end
 
-#resetpassword(username)
-#adminify(username)
+def get_apikey(username)
+  user = LinkedData::Models::User.find(username).first
+  user.bring_remaining
+  user.valid?
+  return user.apikey
+end
+

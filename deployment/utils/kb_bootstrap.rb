@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
-# manipulates apikey for a user
+#bootstraps ontoportal tripple store KB.
+#
 
 NCBO_CRON_PATH='/srv/ncbo/ncbo_cron'
 
@@ -15,18 +16,15 @@ Signal.trap("INT") { exit! }
 # Setup the bundled gems in our environment
 require 'bundler/setup'
 require 'securerandom'
-
+require_relative 'useradmin.rb'
 # Get cron configuration.
 require "#{NCBO_CRON_PATH}/lib/ncbo_cron"
 require "#{NCBO_CRON_PATH}/config/config.rb";
 
-require_relative 'useradmin.rb'
 
-input_array = ARGV
-username = input_array[0]
-if input_array.length == 0
-  puts "usage: #1 username"
-  exit 1
-end
 
-adminify(username)
+
+createuser('admin22', 'admin@nodomain.org', 'OPchangemeNOW')
+adminify('admin22')
+createuser('ontoportal_ui1', 'ontoportal_ui@nodomain.org')
+

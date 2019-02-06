@@ -16,8 +16,8 @@ require_relative 'apikey.rb'
 CONFIG_FILE = '/srv/ncbo/virtual_appliance/appliance_config/site_config.rb'
 
 reset_apikey('admin')
-reset_apikey('appliance')
-api_key = get_apikey('appliance')
+reset_apikey('ontoportal_ui')
+api_key = get_apikey('ontoportal_ui')
 
 # update config files
 # overwrite appliance apikey
@@ -29,4 +29,4 @@ FileUtils.cp "#{CONFIG_FILE}", '/srv/rails/bioportal_web_ui/current/config'
 FileUtils.chown 'ontoportal', 'ontoportal', '/srv/rails/bioportal_web_ui/current/config'
 
 # restart ontoportal stack
-system "/usr/local/bin/bprestart"
+system "/usr/local/bin/oprestart"
