@@ -14,7 +14,7 @@
 
 # Unique string representing the UI's id for use with the BioPortal Core
 # This api key is automatically generated on first boot and updated here
-$API_KEY = "d053e0a2-9f7d-40f3-a06a-fb0c792263a1"
+$API_KEY = "edcb1011-6837-4b3f-b99c-53fec038b807"
 
 # REST core service address
 #$REST_URL = "http://#{$REST_HOSTNAME}:#{$REST_PORT}"

@@ -2,8 +2,10 @@
 # Script to restart OntoPortal stack
 
 services='
-4s-boss
-4s-httpd-ontologies_api
+4s-boss.service
+4s-backend.service
+4s-httpd.service
+tomcat.service
 redis-server-goo.service
 redis-server-http.service
 redis-server-presistant.service

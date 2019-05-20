@@ -6,7 +6,7 @@ source $(dirname "$0")/versions
 if [[ $NCBO_CRON_RELEASE =~ ^v[0-9.]+ ]] ; then  $NCBO_CRON_RELEASE=tags/$NCBO_CRON_RELEASE ; fi
 
 COMPONENT=ncbo_cron
-VIRTUAL_APPLIANCE_REPO=/srv/virtual_appliance
+VIRTUAL_APPLIANCE_REPO=/srv/ncbo/virtual_appliance
 export NCBO_BRANCH=$NCBO_CRON_RELEASE
 LOCAL_CONFIG_PATH=$VIRTUAL_APPLIANCE_REPO/appliance_config
 

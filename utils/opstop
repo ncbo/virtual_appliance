@@ -12,8 +12,10 @@ redis-server-http.service
 redis-server-presistant.service
 mgrep.service
 solr.service
-4s-httpd-ontologies_api
-4s-boss
+tomcat.service
+4s-httpd.service
+4s-backend.service
+4s-boss.service
 '
 
 for service in $services; do

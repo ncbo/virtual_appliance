@@ -7,11 +7,10 @@
 
 # URL of the API and APIKEY of the BioPortal we want to import data FROM
 SOURCE_API = "http://data.bioontology.org"
-SOURCE_APIKEY = ""
+SOURCE_APIKEY = ENV['SOURCE_APIKEY'] ||  "8b5b7825-538d-40e0-9e9e-5ab9274a9aeb"
 
 # URL of the API and APIKEY of the BioPortal we want to import data TO
 TARGET_API = "http://localhost:8080"
-#TARGET_APIKEY = ""
 
 # The username of the user that will have the administration rights on the ontology on the target portal
 TARGETED_PORTAL_USER = "admin"
@@ -102,7 +101,9 @@ def upload_submission(sub_info)
   return response
 end
 
-
+if SOURCE_APIKEY == ""
+  puts "SOURCE_API has to be set"
+end
 # Go through all ontologies acronym and get their latest_submission informations
 ONTOLOGIES_TO_IMPORT.each do |ont|
   sub_info = JSON.parse(Net::HTTP.get(URI.parse("#{SOURCE_API}/ontologies/#{ont}/latest_submission?apikey=#{SOURCE_APIKEY}&display=all")))

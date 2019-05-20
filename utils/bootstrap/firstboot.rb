@@ -11,7 +11,7 @@ unless File.file?('/root/firstboot')
   abort ('doesnt look like this is the first time boot; aborting!')
 end
 
-require_relative 'apikey.rb' 
+require_relative '../apikey.rb' 
 
 CONFIG_FILE = '/srv/ncbo/virtual_appliance/appliance_config/site_config.rb'
 
@@ -27,6 +27,6 @@ File.open(CONFIG_FILE, 'w') { |file| file.puts new_content }
 
 FileUtils.cp "#{CONFIG_FILE}", '/srv/rails/bioportal_web_ui/current/config'
 FileUtils.chown 'ontoportal', 'ontoportal', '/srv/rails/bioportal_web_ui/current/config'
-
+puts ("initial ontoportal config is complete")
 # restart ontoportal stack
 system "/usr/local/bin/oprestart"
