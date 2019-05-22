@@ -8,7 +8,7 @@ if "$1" != 'cleanit'
 fi
 
 #cleaning log files
-TOMCAT=/usr/share/tomcat6
+TOMCAT=/usr/share/tomcat
 MYSQL=/var/lib/mysql
 RUBYBNDL=2.5.0
 
@@ -18,7 +18,6 @@ yum clean all
 cd /var/log
 >/var/log/messages
 find . -type f -delete
-
 /bin/rm -Rf /tmp/*
 /bin/rm /root/.mysql_history
 /bin/rm $MYSQL/*.pid
@@ -49,12 +48,10 @@ extra(){
 yum remove puppet* 
 rpm -e ruby-augeas
 rpm -e facter
-yum remove puppet* 
 #rpm -e augeas-libs
 /bin/rm -Rf /var/lib/puppet/
-/bin/rm -Rf /etc/puppet
+/bin/rm -Rf /etc/puppetlabs
 /bin/rm /home/ontoportal/.ruby-uuid
-#/bin/rm -Rf /var/lib/ncbobp/.gem
 /bin/rm -Rf /home/ontoportal/.pki
 /bin/rm -Rf /home/ontoportal/.passenger
 /bin/rm /etc/yum.repos.d/bmir.repo 
@@ -76,7 +73,7 @@ rm /srv/redis/dump.rdb
 #rm -Rf /home/ontoportal/virtual_appliance/appliance_config
 #rm -Rf /home/ontoportal/virtual_appliance/deployment/bioportal_web_ui
 #rm -Rf /home/ontoportal/virtual_appliance/deployment/ontologies_api
-#remove SSH host keys (or does sys-unconfig takes care of it)
+#remove SSH host keys (or perhaps sys-unconfig takes care of it)
 yum clean all
 }
 
@@ -94,7 +91,7 @@ history -c
 
 swap(){
 swapoff -a
-dd if=/dev/zero of=/dev/mapper/vg_sys-lv_swap
+dd if=/dev/zero of=/dev/mapper/vg_sys-lv_swap bs=102400
 mkswap dev/mapper/vg_sys-lv_swap 
 }
 
@@ -104,14 +101,15 @@ dd if=/dev/zero of=/tmp/delme bs=102400 || rm -rf /tmp/delme
 unconfig(){
 redis-cli del ontoportal.instance.id
 touch /root/firstboot
+echo '@reboot root /srv/ncbo/virtual_appliance/utils/bootstrap/firstboot.rb && /bin/rm /root/firstboot && /bin/rm /etc/cron.d/firstboot' >> /etc/cron.d/firstboot
 sys-unconfig
 }
 
 if [ "$1" = "nukeit" ]; then
-  #standard
-  #extra
-  #swap
-  #hist
-  #shrink
-  #unconfig
+  standard
+  extra
+  swap
+  hist
+  shrink
+  unconfig
 fi

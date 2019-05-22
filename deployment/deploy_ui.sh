@@ -12,12 +12,13 @@ export NCBO_BRANCH=$UI_RELEASE
 
 # copy site config which contains customised settings for the appliance 
 if  [ -f  '../appliance_config/site_config.rb' ]; then
+ echo 'copying local site overides file'
  cp ../appliance_config/site_config.rb ../appliance_config/${COMPONENT}/config
- echo 'copying site overides file'
 fi
 
 pushd $COMPONENT
 
 # run capistrano deployment task
-cap appliance deploy
+bundle install --with development --deployment --binstubs
+bundle exec cap appliance deploy
 popd

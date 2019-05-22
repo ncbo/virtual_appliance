@@ -1,0 +1,3 @@
+appliance_config/bioportal_web_ui/config/secrets.yml
+deployment/bioportal_web_ui
+deployment/ontologies_api

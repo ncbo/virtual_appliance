@@ -14,5 +14,5 @@ if  [ -f  '../appliance_config/site_config.rb' ]; then
 fi
 
 pushd $COMPONENT
-cap appliance deploy
+bundle exec cap appliance deploy
 popd
