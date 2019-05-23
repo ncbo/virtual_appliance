@@ -8,8 +8,8 @@ COMPONENT=ontologies_api
 export NCBO_BRANCH=$API_RELEASE
 # copy site config which contains customised settings for the appliance
 
-if  [ -f  '../appliance_config/site_config.rb' ]; then
- cp ../appliance_config/site_config.rb ../appliance_config/${COMPONENT}/config/environments
+if  [ -f  '${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb' ]; then
+ cp ${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb ${VIRTUAL_APPLIANCE_REPO}/appliance_config/${COMPONENT}/config/environments
  echo 'copying site overides file'
 fi
 

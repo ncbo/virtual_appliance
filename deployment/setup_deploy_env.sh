@@ -29,6 +29,17 @@ git pull
 git checkout "$UI_RELEASE"
 #install gems required for deployment, i.e capistrano, rake, etc. 
 bundle install --deployment --binstubs
+<<<<<<< HEAD
+if [ ! -f ../appliance_config/bioportal_web_ui/config/secrets.yml ]; then
+  SECRET=$(bundle exec rake secret)
+  echo $SECRET
+  cat <<EOF > ../appliance_config/bioportal_web_ui/config/secrets.yml 
+appliance:
+  secret_key_base: $SECRET
+EOF
+fi
+=======
+>>>>>>> 1ef2bc895dd8328e01078c62e57c27dbbc50bf6d
 popd
 if [ ! -f ../appliance_config/bioportal_web_ui/config/secrets.yml ]; then
   SECRET=$(bundle exec rake secret)
