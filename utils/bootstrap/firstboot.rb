@@ -11,6 +11,9 @@ unless File.file?('/root/firstboot')
   abort ('doesnt look like this is the first time boot; aborting!')
 end
 
+Dir.chdir "/srv/ncbo/virtual_appliance/deployment/bioportal_web_ui"
+secret_key_base = `bundle exec rake secret`
+
 require_relative '../apikey.rb' 
 
 CONFIG_FILE = '/srv/ncbo/virtual_appliance/appliance_config/site_config.rb'
@@ -29,7 +32,6 @@ File.open(CONFIG_FILE, 'w') { |file| file.puts new_content }
 FileUtils.cp "#{CONFIG_FILE}", '/srv/rails/bioportal_web_ui/current/config'
 
 # reset secret_key_base
-secret_key_base = system('/srv/ncbo/virtual_appliance/deployment/bioportal_web_ui/bin/rake secret')
 secrets_yml = File.read(SECRETS_FILE)
 new_content = secrets_yml.gsub(/^  secret_key_base: =.*$/, "  secret_key_base: = \"#{secret_key_base}\"")
 File.open(SECRETS_FILE, 'w') { |file| file.puts new_content }
