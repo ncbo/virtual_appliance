@@ -29,26 +29,14 @@ git pull
 git checkout "$UI_RELEASE"
 #install gems required for deployment, i.e capistrano, rake, etc. 
 bundle install --deployment --binstubs
-<<<<<<< HEAD
-if [ ! -f ../appliance_config/bioportal_web_ui/config/secrets.yml ]; then
+if [ ! -f ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/secrets.yml ]; then
   SECRET=$(bundle exec rake secret)
-  echo $SECRET
-  cat <<EOF > ../appliance_config/bioportal_web_ui/config/secrets.yml 
+  cat <<EOF > ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/secrets.yml 
 appliance:
   secret_key_base: $SECRET
 EOF
 fi
-=======
->>>>>>> 1ef2bc895dd8328e01078c62e57c27dbbc50bf6d
 popd
-if [ ! -f ../appliance_config/bioportal_web_ui/config/secrets.yml ]; then
-  SECRET=$(bundle exec rake secret)
-  echo $SECRET
-  cat <<EOF > ../appliance_config/bioportal_web_ui/config/secrets.yml 
-appliance:
-  secret_key_base: $SECRET
-EOF
-fi
 
 if [ ! -d ontologies_api ]; then 
   git clone https://github.com/ncbo/ontologies_api ontologies_api
@@ -60,10 +48,10 @@ git checkout "$API_RELEASE"
 bundle install --deployment --binstubs
 popd
 
-if [ ! -d ../appliance_config/ontologies_linked_data ]; then
-  git clone https://github.com/ncbo/ontologies_linked_data ../appliance_config/ontologies_linked_data
+if [ ! -d ${VIRTUAL_APPLIANCE_REPO}/appliance_config/ontologies_linked_data ]; then
+  git clone https://github.com/ncbo/ontologies_linked_data ${VIRTUAL_APPLIANCE_REPO}/appliance_config/ontologies_linked_data
 fi
-pushd ../appliance_config/ontologies_linked_data
+pushd ${VIRTUAL_APPLIANCE_REPO}/appliance_config/ontologies_linked_data
 git pull
 git checkout "$ONTOLOGIES_LINKED_DATA_RELEASE"
 popd
