@@ -2,11 +2,6 @@
 # Script for cleaning up files used for packaging appliance
 # DO NOT RUN
 
-if "$1" != 'cleanit'
-  echo 'this script is not intended to be run'
-  exit 1
-fi
-
 #cleaning log files
 TOMCAT=/usr/share/tomcat
 MYSQL=/var/lib/mysql
@@ -45,7 +40,7 @@ extra(){
 /bin/rm -Rf /home/ec2-user/.ssh/*
 /bin/rm -Rf /tmp/*
 /bin/rm -Rf /root/tmp
-yum remove puppet* 
+yum remove 'puppet*'
 rpm -e ruby-augeas
 rpm -e facter
 #rpm -e augeas-libs
@@ -92,7 +87,7 @@ history -c
 swap(){
 swapoff -a
 dd if=/dev/zero of=/dev/mapper/vg_sys-lv_swap bs=102400
-mkswap dev/mapper/vg_sys-lv_swap 
+mkswap /dev/mapper/vg_sys-lv_swap 
 }
 
 shrink(){
@@ -101,7 +96,7 @@ dd if=/dev/zero of=/tmp/delme bs=102400 || rm -rf /tmp/delme
 unconfig(){
 redis-cli del ontoportal.instance.id
 touch /root/firstboot
-echo '@reboot root /srv/ncbo/virtual_appliance/utils/bootstrap/firstboot.rb && /bin/rm /root/firstboot && /bin/rm /etc/cron.d/firstboot' >> /etc/cron.d/firstboot
+echo '@reboot root /srv/ncbo/virtual_appliance/utils/bootstrap/firstboot.rb && /bin/rm /root/firstboot && /bin/rm /etc/cron.d/firstboot' > /etc/cron.d/firstboot
 sys-unconfig
 }
 

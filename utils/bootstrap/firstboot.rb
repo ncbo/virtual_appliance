@@ -14,7 +14,7 @@ end
 require_relative '../apikey.rb' 
 
 CONFIG_FILE = '/srv/ncbo/virtual_appliance/appliance_config/site_config.rb'
-SECRETS_FILE = '/srv/ncbo/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yaml'
+SECRETS_FILE = '/srv/ncbo/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'
 
 # Reset API keys
 reset_apikey('admin')
