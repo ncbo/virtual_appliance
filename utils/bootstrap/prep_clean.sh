@@ -40,7 +40,7 @@ extra(){
 /bin/rm -Rf /home/ec2-user/.ssh/*
 /bin/rm -Rf /tmp/*
 /bin/rm -Rf /root/tmp
-yum remove 'puppet*'
+yum remove -y 'puppet*'
 rpm -e ruby-augeas
 rpm -e facter
 #rpm -e augeas-libs
@@ -97,7 +97,10 @@ unconfig(){
 redis-cli del ontoportal.instance.id
 touch /root/firstboot
 echo '@reboot root /srv/ncbo/virtual_appliance/utils/bootstrap/firstboot.rb && /bin/rm /root/firstboot && /bin/rm /etc/cron.d/firstboot' > /etc/cron.d/firstboot
-sys-unconfig
+chage -l root
+history -c
+#sys-unconfig
+
 }
 
 if [ "$1" = "nukeit" ]; then
