@@ -59,7 +59,7 @@ begin
     config.ontology_analytics_redis_port = 6379
 end
 rescue NameError
-  puts "(CNFG) >> LinkedData not available, cannot load config"
+ # puts "(CNFG) >> LinkedData not available, cannot load config"
 end
 begin
   Annotator.config do |config|
@@ -73,14 +73,14 @@ begin
     config.annotator_redis_port    = 6379
 end
 rescue NameError
-  puts "(CNFG) >> Annotator not available, cannot load config"
+ # puts "(CNFG) >> Annotator not available, cannot load config"
 end
 
 begin
   OntologyRecommender.config do |config|
 end
 rescue NameError
-  puts "(CNFG) >> OntologyRecommender not available, cannot load config"
+ # puts "(CNFG) >> OntologyRecommender not available, cannot load config"
 end
 
 begin
@@ -93,17 +93,18 @@ begin
     #config.ontology_rank               = ""
 end
 rescue NameError
-  puts "(CNFG) >> OntologiesAPI not available, cannot load config"
+ # puts "(CNFG) >> OntologiesAPI not available, cannot load config"
 end
 
 begin
   NcboCron.config do |config|
-    config.redis_host           = Annotator.settings.annotator_redis_host
-    config.redis_port           = Annotator.settings.annotator_redis_port
+    config.redis_host                = Annotator.settings.annotator_redis_host
+    config.redis_port                = Annotator.settings.annotator_redis_port
     config.enable_ontology_analytics = false
-    config.search_index_all_url = "http://localhost:8983/solr/term_search_core2"
+    config.enable_obofoundry_sync    = false
+    config.search_index_all_url      = "http://localhost:8983/solr/term_search_core2"
     config.property_search_server_index_all_url = "http://localhost:8983/solr/prop_search_core2"
-    config.ontology_report_path = "/srv/ncbo/reports/ontologies_report.json"
+    config.ontology_report_path      = "/srv/ncbo/reports/ontologies_report.json"
   end
 rescue NameError
   puts "(CNFG) >> NcboCron not available, cannot load config"
