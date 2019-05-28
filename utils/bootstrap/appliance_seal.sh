@@ -28,6 +28,7 @@ find . -type f -delete
 }
 
 extra(){
+/bin/rm -f /root/anaconda-ks.cfg
 /bin/rm /var/spool/mail/*
 /bin/rm -Rf /root/.ssh
 /bin/rm /root/.bash_history
@@ -94,16 +95,20 @@ shrink(){
 dd if=/dev/zero of=/tmp/delme bs=102400 || rm -rf /tmp/delme
 }
 unconfig(){
+# remove mac address
+sed -i -e '/^HWADDR=*/d' /etc/sysconfig/network-scripts/ifcfg-e*
+# reset ontoportal instance id
 redis-cli del ontoportal.instance.id
 touch /root/firstboot
 echo '@reboot root /srv/ncbo/virtual_appliance/utils/bootstrap/firstboot.rb && /bin/rm /root/firstboot && /bin/rm /etc/cron.d/firstboot' > /etc/cron.d/firstboot
-chage -l root
+chage -d 0 root
 history -c
 #sys-unconfig
 
 }
 
 if [ "$1" = "nukeit" ]; then
+  unset HISTFILE
   standard
   extra
   swap
