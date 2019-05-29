@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/local/rbenv/shims/ruby
 # Script for initial appliance setup:
 # 1. genereates new apikey for admin user,
 # 2. generates apikey for appliance user (appliance apikey is used by UI to access backend)
@@ -11,10 +11,10 @@ unless File.file?('/root/firstboot')
   abort ('doesnt look like this is the first time boot; aborting!')
 end
 
-Dir.chdir "/srv/ncbo/virtual_appliance/deployment/bioportal_web_ui"
-secret_key_base = `bundle exec rake secret`
+Dir.chdir "/srv/rails/bioportal_web_ui/current"
+secret_key_base = %[bundle exec rake secret]
 
-require_relative '../apikey.rb' 
+require_relative '../apikey.rb'
 
 CONFIG_FILE = '/srv/ncbo/virtual_appliance/appliance_config/site_config.rb'
 SECRETS_FILE = '/srv/ncbo/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'

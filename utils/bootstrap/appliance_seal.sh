@@ -50,7 +50,7 @@ rpm -e facter
 /bin/rm /home/ontoportal/.ruby-uuid
 /bin/rm -Rf /home/ontoportal/.pki
 /bin/rm -Rf /home/ontoportal/.passenger
-/bin/rm /etc/yum.repos.d/bmir.repo 
+/bin/rm /etc/yum.repos.d/bmir.repo
 /bin/rm /var/lib/dhclient/*
 /bin/rm -Rf /opt/solr_downloads
 
@@ -66,9 +66,10 @@ rm -Rf /srv/ncbo/ontologies_api/shared/bundle/ruby/$RUBYBNDL/cache/*
 
 rm /srv/redis/dump.rdb
 
-#rm -Rf /home/ontoportal/virtual_appliance/appliance_config
-#rm -Rf /home/ontoportal/virtual_appliance/deployment/bioportal_web_ui
-#rm -Rf /home/ontoportal/virtual_appliance/deployment/ontologies_api
+# Remove deployment related directories; those can be re-created during deploymnet
+rm -Rf /srv/ncbo/virtual_appliance/deployment/bioportal_web_ui
+rm -Rf /srv/ncbo/virtual_appliance/deployment/ontologies_api
+rm -Rf /srv/ncbo/virtual_appliance/appliance_config/ontologies_linked_data
 #remove SSH host keys (or perhaps sys-unconfig takes care of it)
 yum clean all
 }
@@ -76,7 +77,7 @@ yum clean all
 hist(){
 for i in .viminfo .mysql_history .bash_history .rediscli_history .pry_history .ssh/known_host .bundle/cache .gitconfig .rbenv
 do
-  shred -u /root/$i 
+  shred -u /root/$i
   shred -u /home/ec2-user/$i
   shred -u /home/ontoportal/$i
   shred -u /srv/4store/$i
@@ -88,7 +89,7 @@ history -c
 swap(){
 swapoff -a
 dd if=/dev/zero of=/dev/mapper/vg_sys-lv_swap bs=102400
-mkswap /dev/mapper/vg_sys-lv_swap 
+mkswap /dev/mapper/vg_sys-lv_swap
 }
 
 shrink(){
@@ -96,13 +97,17 @@ dd if=/dev/zero of=/tmp/delme bs=102400 || rm -rf /tmp/delme
 }
 unconfig(){
 # remove mac address
-sed -i -e '/^HWADDR=*/d' /etc/sysconfig/network-scripts/ifcfg-e*
+sed -i -e '/HWADDR/c\' /etc/sysconfig/network-scripts/ifcfg-e*
 # reset ontoportal instance id
+/bin/systemctl start redis-server-presistant.service
+sleep 1
 redis-cli del ontoportal.instance.id
 touch /root/firstboot
 echo '@reboot root /srv/ncbo/virtual_appliance/utils/bootstrap/firstboot.rb && /bin/rm /root/firstboot && /bin/rm /etc/cron.d/firstboot' > /etc/cron.d/firstboot
 chage -d 0 root
+: > /etc/machine-id
 history -c
+
 #sys-unconfig
 
 }
