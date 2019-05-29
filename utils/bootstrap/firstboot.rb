@@ -12,7 +12,7 @@ unless File.file?('/root/firstboot')
 end
 
 Dir.chdir "/srv/rails/bioportal_web_ui/current"
-secret_key_base = %[bundle exec rake secret]
+secret_key_base = `bundle exec rake secret`
 
 require_relative '../apikey.rb'
 
@@ -33,7 +33,7 @@ FileUtils.cp "#{CONFIG_FILE}", '/srv/rails/bioportal_web_ui/current/config'
 
 # reset secret_key_base
 secrets_yml = File.read(SECRETS_FILE)
-new_content = secrets_yml.gsub(/^  secret_key_base: .*$/, "  secret_key_base: \"#{secret_key_base}\"")
+new_content = secrets_yml.gsub(/^  secret_key_base: .*$/, "  secret_key_base: #{secret_key_base}")
 File.open(SECRETS_FILE, 'w') { |file| file.puts new_content }
 FileUtils.cp "#{SECRETS_FILE}", '/srv/rails/bioportal_web_ui/current/config'
 
