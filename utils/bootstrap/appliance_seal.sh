@@ -102,7 +102,8 @@ sed -i -e '/HWADDR/c\' /etc/sysconfig/network-scripts/ifcfg-e*
 /bin/systemctl start redis-server-presistant.service
 sleep 1
 redis-cli del ontoportal.instance.id
-touch /root/firstboot
+touch /srv/ncbo/firstboot
+chown ontoportal:ontoportal /srv/ncbo/firstboot
 echo '@reboot root /srv/ncbo/virtual_appliance/utils/bootstrap/firstboot.rb && /bin/rm /root/firstboot && /bin/rm /etc/cron.d/firstboot' > /etc/cron.d/firstboot
 chage -d 0 root
 : > /etc/machine-id

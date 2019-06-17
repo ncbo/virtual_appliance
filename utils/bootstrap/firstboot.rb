@@ -7,7 +7,7 @@
 
 
 # dont run if this is not the first boot.
-unless File.file?('/root/firstboot')
+unless File.file?('/srv/ncbo/firstboot')
   abort ('doesnt look like this is the first time boot; aborting!')
 end
 
@@ -41,4 +41,4 @@ FileUtils.chown 'ontoportal', 'ontoportal', '/srv/rails/bioportal_web_ui/current
 
 puts ("initial ontoportal config is complete")
 # restart ontoportal stack
-system "/usr/local/bin/oprestart"
+system "sudo /usr/local/bin/oprestart"
