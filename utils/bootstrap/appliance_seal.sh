@@ -25,6 +25,10 @@ find . -type f -delete
 /bin/rm /srv/redis/http_cache/*
 /bin/rm /srv/ncbo/ncbo_cron/logs/*
 /bin/rm /srv/solr/logs/*
+
+/bin/rm /root/original-ks.cfg
+/bin/rm /root/anaconda-ks.cfg
+/bin/rm /root/ks-p*.log
 }
 
 extra(){
