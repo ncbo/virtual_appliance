@@ -55,7 +55,7 @@ rpm -e facter
 /bin/rm -Rf /opt/solr_downloads
 
 #remove old kernels
-package-cleanup --oldkernels --count=1
+package-cleanup -y --oldkernels --count=1
 runuser -l ontoportal -c  'gem cleanup'
 
 #ruby gem caches
@@ -104,7 +104,6 @@ sleep 1
 redis-cli del ontoportal.instance.id
 touch /srv/ncbo/firstboot
 chown ontoportal:ontoportal /srv/ncbo/firstboot
-echo '@reboot root /srv/ncbo/virtual_appliance/utils/bootstrap/firstboot.rb && /bin/rm /root/firstboot && /bin/rm /etc/cron.d/firstboot' > /etc/cron.d/firstboot
 chage -d 0 root
 : > /etc/machine-id
 history -c
