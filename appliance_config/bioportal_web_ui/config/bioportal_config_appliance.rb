@@ -1,7 +1,7 @@
 # coding: utf-8
 #
-# bioportal_web_ui config file for default OntoPortal appliance.  
-# It can be futher customized in the global.rb file 
+# bioportal_web_ui config file for default OntoPortal appliance.
+# It can be futher customized in the global.rb file
 if File.exist?('config/site_config.rb')
   require_relative 'site_config.rb'
 end
@@ -19,7 +19,7 @@ ensure
 end
 
 # Appliance needs to know its own address to display proper URLs
-# Ideally it should be set to FQDN but we fall back to using IP address if FQDN is not manually set. 
+# Ideally it should be set to FQDN but we fall back to using IP address if FQDN is not manually set.
 $REST_HOSTNAME ||= local_ip
 $REST_PORT ||= '8080'
 $UI_HOSTNAME ||= local_ip
@@ -35,9 +35,16 @@ $SITE ||= "OntoPortal Appliance"
 # The URL for the BioPortal Rails UI (this application)
 $UI_URL = "http://#{$UI_HOSTNAME}"
 
+# REST core service address
+$REST_URL ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}"
+
 # URL where BioMixer GWT app is located
 $BIOMIXER_URL = "//#{$UI_HOSTNAME}/BioMixer"
-$PROXY_URL = "//#{$UI_HOSTNAME}:8082/AnnotatorPlus"
+
+# annotator proxy location.  https://github.com/sifrproject/annotators/
+# annotator proxy is running on tomcat which is reverse proxied by nginx
+$PROXY_URL = "#{$REST_URL}"
+
 # If you are running a PURL server to provide URLs for ontologies in your BioPortal instance, enable this option
 $PURL_ENABLED = false
 

@@ -7,7 +7,7 @@
         year_month_day_concise: '%Y-%m-%d', # 2017-03-01
         month_day_year: '%b %-d, %Y', # Mar 1, 2017
         monthfull_day_year: '%B %-d, %Y' # March 1, 2017
-      } 
+      }
     },
 
     layouts: {
@@ -28,11 +28,14 @@
     },
 
     annotator: {
-      intro: 'Get annotations for biomedical text with classes from the ontologies'
+      index: {
+        intro: 'Get annotations for biomedical text with classes from the ontologies',
+        annotatorplus_html: '<em>Check out <a href="%{annotatorplus_href}">AnnotatorPlus</a> beta; a new version of the Annotator with added support for negation, and more!</em>'
+      }
     },
 
     recommender: {
-      intro: 'Get recommendations for the most relevant ontologies based on an excerpt from a biomedical text or a list of keywords' 
+      intro: 'Get recommendations for the most relevant ontologies based on an excerpt from a biomedical text or a list of keywords'
     },
 
     search: {
