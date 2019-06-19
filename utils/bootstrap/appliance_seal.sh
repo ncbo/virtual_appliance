@@ -24,11 +24,14 @@ find . -type f -delete
 /bin/rm /srv/redis/goo_cache/*
 /bin/rm /srv/redis/http_cache/*
 /bin/rm /srv/ncbo/ncbo_cron/logs/*
+/bin/rm /srv/rails/bioportal_web_ui/shared/log/*
+/bin/rm /srv/ncbo/ontologies_api/shared/log/*
 /bin/rm /srv/solr/logs/*
 
 /bin/rm /root/original-ks.cfg
 /bin/rm /root/anaconda-ks.cfg
 /bin/rm /root/ks-p*.log
+/bin/rm /srv/rails/bioportal_web_ui/shared/log/*
 }
 
 extra(){
@@ -62,11 +65,20 @@ rpm -e facter
 package-cleanup -y --oldkernels --count=1
 runuser -l ontoportal -c  'gem cleanup'
 
+pushd /srv/ncbo/virtual_appliance/deployment/bioportal_web_ui
+bundle exec cap appliance bundler:cleanup
+popd
+pushd /srv/ncbo/virtual_appliance/deployment/ontologies_api
+bundle exec cap appliance bundler:cleanup
+popd
+
 #ruby gem caches
 rm -Rf /srv/rails/bioportal_web_ui/shared/bundle/ruby/$RUBYBNDL/cache/*
 rm -Rf /srv/ncbo/ncbo_cron/vendor/bundle/ruby/$RUBYBNDL/cache/*
 rm -Rf /srv/ncbo/ontologies_api/shared/bundle/ruby/$RUBYBNDL/cache/*
 
+rm -Rf /srv/rails/bioportal_web_ui/repo
+rm -Rf /srv/ncbo/ontologies_api/repo
 
 rm /srv/redis/dump.rdb
 
