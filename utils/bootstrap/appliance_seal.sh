@@ -115,7 +115,7 @@ unconfig(){
 # remove mac address
 sed -i -e '/HWADDR/c\' /etc/sysconfig/network-scripts/ifcfg-e*
 # reset ontoportal instance id
-/bin/systemctl start redis-server-persistant.service
+/bin/systemctl start redis-server-persistent.service
 sleep 1
 redis-cli del ontoportal.instance.id
 touch /srv/ncbo/firstboot
