@@ -1,0 +1,100 @@
+Our Sites Terms of Use
+Last updated: June 21, 2019
+
+These Terms of Use applies to BioPortal and OntoPortal Web sites and services [“Our Sites”] that are operated by the Stanford Center for Biomedical Informatics Research [BMIR, “us”, or “we”], as well as to any BMIR software applications that you download or instantiate for use on your own systems [“Our Applications”]. We may update this policy at any time; if we do so we will revise the date and place notices on Our Sites if changes are material. We will obtain your consent if that is required by law.
+
+BMIR is not responsible for the content or policies of sites to which Our Sites may link.
+
+By using Our Sites, you agree to follow and be bound by the following terms and conditions concerning your use of Our Sites ("Terms of Use") and our Privacy Policy. We may modify or terminate our services from time to time, for any reason, and without notice.
+
+The ontologies, terminologies, metadata, templates, and other resources provided by Our Sites may be downloaded in whole or in part and used, provided that 
+  1. The end user follows the applicable licensing terms, including appropriately crediting the original provider of the resources.
+  2. The end user has obtained the appropriate licenses required by the developers of the accessed materials.
+
+
+Use of Ontologies
+
+In general, any ontology submitted to Our Sites will be freely available for public use, unless the content is marked as private (in which case it is not shared via Our Sites) or the Licensing Attribute is defined in the metadata for that ontology. If an end user re-uses ontologies with a Licensing attribute defined, Our Sites consider it the end user’s responsibility to possess appropriate licenses for the re-use.  Only the submitter of the ontology (either an individual or organization who is the authorized owner of the ontology content or a designated representative) will be able to modify it or submit new versions, except that ontologies which are automatically ingested/updated by Our Sites may be changed at their source location on the web by anyone having that authority.
+
+All submitted ontology content will be indexed and made available for search and visualization to all users of Our Sites worldwide.  Our Sites may provide an International Resource Identifier for each concept within an ontology so that the concept can be referenced in semantic Web applications.
+
+
+Use of SNOMED Clinical Terms®
+
+Our Sites include SNOMED Clinical Terms® (SNOMED CT®) which is used by permission of the International Health Terminology Standards Development Organization (IHTSDO). All rights reserved. SNOMED CT® was originally created by the College of American Pathologists. “SNOMED”, “SNOMED CT” and “SNOMED Clinical Terms” are registered trademarks of the IHTSDO (www.ihtsdo.org).
+
+Use of SNOMED CT in Our Sites is governed by the conditions of the following SNOMED CT Sub-license issued by the Center for Biomedical Informatics Research.
+
+  1. The meaning of the terms “Affiliate”, or “Data Analysis System”, “Data Creation System”, “Derivative”, “End User”, “Extension”, “Member”, “Non-Member Territory”, “SNOMED CT” and “SNOMED CT Content” are as defined in the IHTSDO Affiliate License Agreement (see www.ihtsdo.org/license.pdf).
+  2. Information about Affiliate Licensing is available at www.ihtsdo.org/license. Individuals or organizations wishing to register as IHTSDO Affiliates can register at www.ihtsdo.org/salsa, subject to acceptance of the Affiliate License Agreement (see www.ihtsdo.org/license.pdf).
+  3. The current list of IHTSDO Member Territories can be viewed at www.ihtsdo.org/members. Countries not included in that list are “Non-Member Territories”.
+  4. End Users, that do not hold an IHTSDO Affiliate License, may access SNOMED CT® using Our Sites subject to acceptance of and adherence to the following sub-license limitations:
+    a. The sub-licensee is only permitted to access SNOMED CT® using this software (or service) for the purpose of exploring and evaluating the terminology. 2, The sub-licensee is not permitted the use of this software as part of a system that constitutes a SNOMED CT “Data Creation System” or “Data Analysis System”, as defined in the IHTSDO Affiliate License. This means that the sub-licensee must not use Our Sites to add or copy SNOMED CT identifiers into any type of record system, database or document.
+    b. The sub-licensee is not permitted to translate or modify SNOMED CT Content or Derivatives.
+    c. The sub-licensee is not permitted to distribute or share SNOMED CT Content or Derivatives.
+  5. IHTSDO Affiliates may use Our Sites as part of a “Data Creation System” or “Data Analysis System” subject to the following conditions:
+    a. The IHTSDO Affiliate, using Our Sites must accept full responsibility for any reporting and fees due for use or deployment of such a system in a Non-Member Territory.
+    b. The IHTSDO Affiliate must not use Our Sites to access or interact with SNOMED CT in any way that is not permitted by the Affiliate License Agreement.
+    c. In the event of termination of the Affiliate License Agreement, the use of Our Sites will be subject to the End User limitations noted in 4
+
+
+Use of Software
+
+Any software (either source code, or bundled applications referred to as “Our Applications”) that is made available to download from Our Sites ("Our Software") is the copyrighted work of Stanford Center for Biomedical Informatics Research. Use of Our Software is governed by the terms of the Software Distribution Agreement which accompanies or is included with Our Software ("License Agreement"), or as expressly stated on the website pages accompanying the software. Our Software is made available for download solely for use by end users according to the License Agreement. Absent a License Agreement that accompanies Our Software, use of Our Software will be governed by the Terms of Use. 
+
+
+Use of Forums and Public Communication
+
+"Forum" means a discussion group, chat area, bulletin board, news group, letter to BMIR, its staff or associates, or e-mail function offered as part of Our Sites. You agree not to upload, email, post, publish or otherwise transmit through a Forum any content that:
+  1. Is false or misleading,
+  2. Is defamatory,
+  3. Is harassing or invades another's privacy, or promotes bigotry, racism, hatred or harm against any group or individual,
+  4. Is obscene,
+  5. Infringes another's rights, including but not limited to intellectual property rights,
+  6. Violates any applicable laws or regulations, or
+  7. Constitutes commercial use, including unsolicited bulk e-mail, "junk mail," "spam" or chain letters.
+
+You shall not distribute or otherwise publish any content containing a solicitation of funds, promotion, advertising, solicitation for goods or services, or other commercial matter. You agree not to solicit other users of Our Sites to use or join or become members of any commercial online or offline service or other organization. Except where expressly authorized by us, you agree not to collect or store personal data about other users. 
+
+By uploading, emailing, posting, publishing or otherwise transmitting content to any Forum or submitting any content to Our Sites, you automatically grant (or warrant that the owner of such rights has expressly granted) the Stanford Center for Biomedical Informatics Research a perpetual, royalty-free, irrevocable, nonexclusive right and license to use, reproduce, modify, adapt, publish, transmit and distribute such content in any form, medium, or technology now known or later developed. In addition, you warrant that all so-called moral rights in the content have been waived.
+
+To make a submission of any copyrighted material to Our Sites you must either be the copyright owner or have the explicit permission of the copyright owner to do so.
+
+
+Passwords and Security
+
+You are responsible for maintaining the confidentiality of any password(s) or API key(s) you are given to access Our Sites, and are fully responsible for all activities that occur under your password(s). You agree to notify us immediately of any unauthorized use of your password(s). We are concerned about the security of personal information we have collected from you and we take reasonable steps to prevent unauthorized access to that information.
+
+
+Termination of Use
+
+You agree that we may terminate or suspend your access to Our Sites and any account(s) for Cause, wherein Cause shall mean (1) misconduct by the user of Our Sites, (2) material breach of any provision of the Terms of Use, and (3) fraud or any other illegal or wrongful conduct by the user. In the event of terminating a user account, we will notify the user of the reasons for the termination or suspension. Access to Our Sites may be monitored by us as described in our Privacy Policy.
+
+
+DMCA Notice/Takedown Procedure
+
+The Stanford Center for Biomedical Ontology Research abides by the federal Digital Millennium Copyright Act (DMCA) by responding to notices of alleged infringement that comply with the DMCA and other applicable laws. As part of our response, we may remove or disable access to material residing on a site that is controlled or operated by us that is claimed to be infringing, in which case we will make a good-faith attempt to contact the person who submitted the affected material so that they may make a counter-notification, also in accordance with the DMCA.
+
+
+Medical/Clinical Use Disclaimer
+
+Materials on Our Sites have not necessarily been reviewed or approved by the Food and Drug Administration. All materials on this Site are provided for informational and review purposes. It is not intended to, and does not in any way, substitute for professional medical advice.
+
+The materials and services should not be relied upon for medical diagnosis or treatment, nor should you disregard the advice of your physical or other health care provider or delay seeking such advice due to anything you have read on or accessed through Our Sites. The Stanford Center for Biomedical Ontology Research assumes no responsibility for any injury and/or damage to person(s) or property as a matter of products and/or services liability, negligence or otherwise, or from any use or operation of any methods, products, services, instructions or ideas contained in the material provided by Our Sites.
+
+
+Disclaimer
+
+Except where expressly provided otherwise, Our Sites, and all content, materials, information, software, products and services provided on Our Sites, are provided on an "as is" and "as available" basis. The Stanford Center for Biomedical Ontology Research expressly disclaims all warranties of any kind, whether express or implied, including, but not limited to, the implied warranties of merchantability, fitness for a particular purpose and non-infringement. 
+
+Any content, materials, information or software downloaded or otherwise obtained through the use of Our Sites is done at your own discretion and risk. We shall have no responsibility for any damage to your computer system or loss of data that results from the download of any content, materials, information or software. We reserve the right to make changes or updates to Our Sites at any time without notice.
+
+
+Limitation of Liability
+
+In no event shall the Stanford Center for Biomedical Ontology Research be liable for any direct, indirect, incidental, special or consequential damages, or damages for loss of profits, revenue, data or use, incurred by you or any third party, whether in an action in contract or tort, arising from your access to, or use of, Our Sites. Some jurisdictions do not allow the limitation or exclusion of liability. Accordingly, some of the above limitations may not apply to you.
+
+
+Indemnity
+
+You agree to defend, indemnify and hold harmless the Stanford Center for Biomedical Informatics Research and its staff and associates from and against any and all claims, liabilities, damages, losses or expenses, including reasonable attorneys' fees and costs, arising out of or in any way connected with your access to or use of Our Sites.
