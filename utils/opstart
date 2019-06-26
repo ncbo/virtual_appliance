@@ -8,7 +8,7 @@ services='
 tomcat.service
 redis-server-goo.service
 redis-server-http.service
-redis-server-presistant.service
+redis-server-presistent.service
 mgrep.service
 memcached.service
 solr.service
