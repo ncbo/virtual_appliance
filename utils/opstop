@@ -9,7 +9,7 @@ unicorn.service
 memcached.service
 redis-server-goo.service
 redis-server-http.service
-redis-server-presistent.service
+redis-server-persistent.service
 mgrep.service
 solr.service
 tomcat.service
