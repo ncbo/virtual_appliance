@@ -14,6 +14,6 @@ git checkout tags/$NCBO_BRANCH
 git branch
 popd
 
-rsync -avr $SORL_CONF/* /srv/solr/data/config
+rsync -avr $SORL_CONF/* /srv/solr/config
 
 sudo systemctl restart solr
