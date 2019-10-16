@@ -1,4 +1,6 @@
-#Script for deploying biomixer war file to tomcat
+#!/usr/bin/env bash
+#
+# OntoPortal Appliance deployment script for biomixer
 #
 
 source $(dirname "$0")/versions

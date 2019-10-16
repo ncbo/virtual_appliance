@@ -1,11 +1,15 @@
 #!/bin/bash
-# wrapper for deploying ontologies_api
-# To update ontologies_api you will need to set NCBO_BRANCH to appropriate git repo release/tag 
+#
+# OntoPortal Appliance deployment wrapper for ontologies_api
+# https://github.com/ncbo/ontologies_api
+# Script sets up deployment environment and runs capistrano deployment job
 
 source $(dirname "$0")/versions
 COMPONENT=ontologies_api
 
 export NCBO_BRANCH=$API_RELEASE
+echo "deploying $COMPONENT from $NCBO_BRANCH branch"
+
 # copy site config which contains customised settings for the appliance
 
 if  [ -f  '${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb' ]; then
@@ -14,5 +18,6 @@ if  [ -f  '${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb' ]; then
 fi
 
 pushd $COMPONENT
+bundle install --with development --without default --deployment --binstubs
 bundle exec cap appliance deploy
 popd

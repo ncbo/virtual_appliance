@@ -1,5 +1,7 @@
-#Script for updating solr configuration for NCBO BioPortal
+#!/usr/bin/env bash
 #
+# OntoPortal Appliance script for updating solr configuraion
+
 
 source $(dirname "$0")/versions
 
