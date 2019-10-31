@@ -10,7 +10,9 @@ COMPONENT=ontologies_linked_data
 NCBO_BRANCH=$ONTOLOGIES_LINKED_DATA_RELEASE
 SORL_CONF=$LOCAL_CONFIG_PATH/$COMPONENT/config/solr
 
+echo "deploying SOLR config from $NCBO_BRANCH branch of ontologies_linked_data"
 pushd ../appliance_config/ontologies_linked_data/
+
 git pull
 git checkout tags/$NCBO_BRANCH
 git branch
