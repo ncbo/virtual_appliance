@@ -1,62 +1,13 @@
 # coding: utf-8
 #
+#Appliance bioportal_web_ui config
+# This file should not be modified.  Most of the site related settings should be done in
+# site_config.rb
+
 # bioportal_web_ui config file for default OntoPortal appliance.
-# It can be futher customized in the global.rb file
 if File.exist?('config/site_config.rb')
   require_relative 'site_config.rb'
 end
-require 'socket'
-require 'net/http'
-require 'uri'
-
-# Simple IP address lookup. This doesn't make connection to external hosts
-def local_ip_simple
-  orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true  # turn off reverse DNS resolution temporarily
-
-  UDPSocket.open do |s|
-    s.connect '8.8.8.8', 1 #google
-    s.addr.last
-  end
-ensure
-  Socket.do_not_reverse_lookup = orig
-end
-
-# Determine public IP address from AWS metadata if its available
-def aws_metadata_public_ipv4
-  url = URI.parse("http://169.254.169.254/latest/meta-data/public-ipv4")
-  http = Net::HTTP.new(url.host, url.port)
-  http.read_timeout = 2
-  http.open_timeout = 2
-
-  begin
-    resp = http.start() {|http|
-      http.get(url.path)
-    }
-    case resp
-    #read AWS meta-data/public-ipv4
-    when Net::HTTPSuccess then
-      resp.body
-    else
-      #metadata is off so falling back
-      return false
-    end
-  rescue Exception => e
-  #metadata is not availalbe
-  return false
-  end
-end
-
-# local IP address lookup.
-def local_ip
-  #first try AWS metadata lookup
-  result = aws_metadata_public_ipv4
-  unless result
-   #if AWS metadata is not avaiable fall back
-   result = local_ip_simple
-  end
-  result
-end
-
 
 # Appliance needs to know its own address to display proper URLs
 # Ideally it should be set to FQDN but we fall back to using IP address if FQDN is not manually set.

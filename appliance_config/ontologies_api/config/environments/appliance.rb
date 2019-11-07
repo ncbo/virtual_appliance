@@ -1,16 +1,6 @@
-#local IP address lookup. This hack doesn't make connection to external hosts
-
-require 'socket'
-  def local_ip
-    orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true  # turn off reverse DNS resolution temporarily
-
-    UDPSocket.open do |s|
-      s.connect '8.8.8.8', 1 #google
-      s.addr.last
-    end
-  ensure
-    Socket.do_not_reverse_lookup = orig
-  end
+#Appliance ontologies_api config
+# This file should not be modified.  Most of site related settings should be done in
+# site_config.rb
 
 if File.exist?('config/environments/site_config.rb')
   require_relative 'site_config.rb'

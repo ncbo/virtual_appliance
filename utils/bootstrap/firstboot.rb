@@ -24,6 +24,30 @@ reset_apikey('admin')
 reset_apikey('ontoportal_ui')
 api_key = get_apikey('ontoportal_ui')
 
+#set Admin password to the AWS AMI ID
+if `virt-what | tail -1` == 'aws'
+  require 'net/http'
+  require 'uri'
+  admin_apikey = get_apikey('admin')
+  #get instance ID
+  uri = URI.parse('http://169.254.169.254/latest/meta-data/instance-id')
+  res = Net::HTTP.get_response(uri)
+  instance_id = res.body
+
+  uri = URI.parse("http://localhost:8080/users/admin?apikey=#{admin_apikey}")
+  request = Net::HTTP::Patch.new(uri)
+  request.body = "password=#{instance_id}"
+
+  response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+    http.request(request)
+  end
+
+   puts response.code
+   puts response.body
+   puts ("set admin password to #{instance_id}")
+end
+
+
 # update config files
 # overwrite appliance apikey
 site_config = File.read(CONFIG_FILE)
