@@ -1,6 +1,9 @@
 #!/bin/bash
 # Script to restart OntoPortal stack
-
+if (( $EUID != 0 )); then
+    echo "Please run with \"sudo $0\""
+    exit
+fi
 services='
 ncbo_cron.service
 httpd.service
