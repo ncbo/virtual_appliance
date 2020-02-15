@@ -1,0 +1,23 @@
+#!/bin/bash
+# Ontoportal daemon servides status
+
+services='
+4s-boss.service
+4s-backend.service
+4s-httpd.service
+tomcat.service
+redis-server-goo.service
+redis-server-http.service
+redis-server-persistent.service
+mgrep.service
+memcached.service
+solr.service
+ncbo_cron.service
+unicorn.service
+nginx.service
+httpd.service
+'
+for service in $services; do
+  isactive=$(/bin/systemctl is-active $service)
+  echo ${service} ${isactive}
+done |  column  -t

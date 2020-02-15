@@ -44,7 +44,7 @@ if `virt-what | tail -1` == 'aws'
 
    puts response.code
    puts response.body
-   puts ("set admin password to #{instance_id}")
+   puts ("Running on AWS; admin password is set to #{instance_id}")
 end
 
 
@@ -54,7 +54,7 @@ site_config = File.read(CONFIG_FILE)
 new_content = site_config.gsub(/^\$API_KEY =.*$/, "\$API_KEY = \"#{api_key}\"")
 File.open(CONFIG_FILE, 'w') { |file| file.puts new_content }
 FileUtils.cp "#{CONFIG_FILE}", '/srv/rails/bioportal_web_ui/current/config'
-
+puts "UI API KEY #{api_key}"
 # reset secret_key_base
 secrets_yml = File.read(SECRETS_FILE)
 new_content = secrets_yml.gsub(/^  secret_key_base: .*$/, "  secret_key_base: #{secret_key_base}")
@@ -62,7 +62,8 @@ File.open(SECRETS_FILE, 'w') { |file| file.puts new_content }
 FileUtils.cp "#{SECRETS_FILE}", '/srv/rails/bioportal_web_ui/current/config'
 
 FileUtils.chown 'ontoportal', 'ontoportal', '/srv/rails/bioportal_web_ui/current/config'
+system "cat /srv/rails/bioportal_web_ui/current/config/site_config.rb"
 
 puts ("initial ontoportal config is complete")
 # restart ontoportal stack
-system "sudo /usr/local/bin/oprestart"
+system "/usr/local/bin/oprestart"

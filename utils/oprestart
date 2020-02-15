@@ -5,6 +5,6 @@ if (( $EUID != 0 )); then
     echo "Please run with \"sudo $0\""
     exit
 fi
-opstop
-opstart
+/usr/local/bin/opstop
+/usr/local/bin/opstart
 
