@@ -62,8 +62,8 @@ File.open(SECRETS_FILE, 'w') { |file| file.puts new_content }
 FileUtils.cp "#{SECRETS_FILE}", '/srv/rails/bioportal_web_ui/current/config'
 
 FileUtils.chown 'ontoportal', 'ontoportal', '/srv/rails/bioportal_web_ui/current/config'
-system "cat /srv/rails/bioportal_web_ui/current/config/site_config.rb"
+# system "cat /srv/rails/bioportal_web_ui/current/config/site_config.rb"
 
-puts ("initial ontoportal config is complete")
+puts ("initial ontoportal config is complete,")
 # restart ontoportal stack
-system "/usr/local/bin/oprestart"
+system "sudo /usr/local/bin/oprestart"
