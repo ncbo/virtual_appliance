@@ -25,7 +25,7 @@ reset_apikey('ontoportal_ui')
 api_key = get_apikey('ontoportal_ui')
 
 #set Admin password to the AWS AMI ID
-if `virt-what | tail -1` == 'aws'
+if `sudo /usr/sbin/virt-what | tail -1` == 'aws'
   require 'net/http'
   require 'uri'
   admin_apikey = get_apikey('admin')
@@ -41,7 +41,6 @@ if `virt-what | tail -1` == 'aws'
   response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
     http.request(request)
   end
-
    puts response.code
    puts response.body
    puts ("Running on AWS; admin password is set to #{instance_id}")
