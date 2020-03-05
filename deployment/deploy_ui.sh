@@ -18,6 +18,11 @@ if  [ -f  "${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb" ]; then
  cp ${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb ${VIRTUAL_APPLIANCE_REPO}/appliance_config/${COMPONENT}/config
 fi
 
+if [ ! -d $COMPONENT ]; then
+  echo "can't find repo for $COMPONENT is not available.  Please run setup_deploy_env.sh"
+  exit 1
+fi
+
 pushd $COMPONENT
 
 # install capistrano for running deployment rake task

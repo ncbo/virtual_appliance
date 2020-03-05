@@ -17,6 +17,11 @@ if  [ -f  "${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb" ]; then
  echo 'copying site overides file'
 fi
 
+if [ ! -d $COMPONENT ]; then
+  echo "can't find repo for $COMPONENT is not available.  Please run setup_deploy_env.sh"
+  exit 1
+fi
+
 pushd $COMPONENT
 bundle install --with development --without default --deployment --binstubs
 bundle exec cap appliance deploy

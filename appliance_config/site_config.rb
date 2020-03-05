@@ -2,6 +2,7 @@
 require 'socket'
 require 'net/http'
 require 'uri'
+require 'ipaddr'
 
 # Simple IP address lookup. This doesn't make connection to external hosts
 def local_ip_simple
@@ -17,19 +18,45 @@ end
 
 # Determine public IP address from AWS metadata if its available
 def aws_metadata_public_ipv4
-  url = URI.parse("http://169.254.169.254/latest/meta-data/public-ipv4")
-  http = Net::HTTP.new(url.host, url.port)
+  uri = URI.parse("http://169.254.169.254/latest/meta-data/public-ipv4")
+  http = Net::HTTP.new(uri.host, uri.port)
   http.read_timeout = 2
   http.open_timeout = 2
 
   begin
-    resp = http.start() {|http|
-      http.get(url.path)
-    }
-    case resp
+    request = Net::HTTP::Get.new(uri.request_uri)
+    response = http.request(request)
+    case response
     #read AWS meta-data/public-ipv4
     when Net::HTTPSuccess then
-      resp.body
+     #return IP address if its valid ip address
+     IPAddress.valid? response.body ? response.body : false
+    else
+      #metadata is off so falling back
+      return false
+    end
+  rescue Exception => e
+  #metadata is probably not availalbe
+  return false
+  end
+end
+
+def azure_metadata_public_ipv4
+  #https://github.com/cloudbooster/Azure-Instance-Metadata/blob/master/Instance-Metadata.md#retrieving-public-ip-address
+  uri = URI.parse("http://169.254.169.254/metadata/instance/network/interface/0/ipv4/ipaddress/0/publicip?api-version=2017-03-01&format=text")
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.read_timeout = 2
+  http.open_timeout = 2
+
+  begin
+    request = Net::HTTP::Get.new(uri.request_uri)
+    request['Metadata'] = true
+    response = http.request(request)
+
+    case response
+    #read AWS meta-data/public-ipv4
+    when Net::HTTPSuccess then
+     IPAddress.valid? response.body ? response.body : false
     else
       #metadata is off so falling back
       return false
@@ -43,23 +70,26 @@ end
 # local IP address lookup.
 def local_ip
   #first try AWS metadata lookup
-  result = aws_metadata_public_ipv4
-  unless result
-   #if AWS metadata is not avaiable fall back
-   result = local_ip_simple
+  ip_addres = aws_metadata_public_ipv4
+  unless ip_address
+    #check azure metadata lookup
+    ip_address =  azure_metadata_public_ipv4
+    unless ip_address
+      #if AWS metadata is not avaiable fall back
+      ip_address = local_ip_simple
+    end
   end
-  result
+  ip_address
 end
-
 
 #$REST_HOSTNAME = 'data.ontoportal.example.org'
 #$REST_PORT = '8080'
-#REST_URL_PREFIX = 'http://data.ontoportal.example.org'
+#$REST_URL_PREFIX = 'http://data.ontoportal.example.org'
 #$UI_HOSTNAME = 'ontoportal.example.org'
 
 # Organization info
 #$ORG = "NCBO"
-#$ORG_URL = "http://www.bioontology.org"
+#$ORG_URL = "http://ontoportal.org"
 
 # Site name (required)
 #$SITE = "OntoPortal Appliance"
@@ -95,6 +125,3 @@ $API_KEY = "4f804d33-0784-4201-afcf-51ec3cb7e9c8"
 #ENV['RECAPTCHA_PUBLIC_KEY']  = ''
 #ENV['RECAPTCHA_PRIVATE_KEY'] = ''
 
-#-----------------------------------------------------------#
-# ontologies_api config
-#-----------------------------------------------------------#
