@@ -24,12 +24,17 @@ reset_apikey('admin')
 reset_apikey('ontoportal_ui')
 api_key = get_apikey('ontoportal_ui')
 
-#set Admin password to the AWS AMI ID
-if `sudo /usr/sbin/virt-what | tail -1` == 'aws'
+# AWS marketplace doesn't like fixed passwords for administrative access
+# so we set OntoPortal web Admin password to the instance_id
+# https://docs.aws.amazon.com/marketplace/latest/userguide/product-and-ami-policies.html
+virt_what = `sudo /usr/sbin/virt-what | tail -1`
+case virt_what.chomp
+
+when "aws"
   require 'net/http'
   require 'uri'
   admin_apikey = get_apikey('admin')
-  #get instance ID
+  # get instance ID from metadata
   uri = URI.parse('http://169.254.169.254/latest/meta-data/instance-id')
   res = Net::HTTP.get_response(uri)
   instance_id = res.body
@@ -38,12 +43,13 @@ if `sudo /usr/sbin/virt-what | tail -1` == 'aws'
   request = Net::HTTP::Patch.new(uri)
   request.body = "password=#{instance_id}"
 
-  response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+  response = Net::HTTP.start(uri.hostname, uri.port) do |http|
     http.request(request)
   end
-   puts response.code
-   puts response.body
-   puts ("Running on AWS; admin password is set to #{instance_id}")
+
+  puts response.code
+  puts response.body
+  puts ("Running on AWS; admin password is set to #{instance_id}")
 end
 
 
@@ -63,6 +69,6 @@ FileUtils.cp "#{SECRETS_FILE}", '/srv/rails/bioportal_web_ui/current/config'
 FileUtils.chown 'ontoportal', 'ontoportal', '/srv/rails/bioportal_web_ui/current/config'
 # system "cat /srv/rails/bioportal_web_ui/current/config/site_config.rb"
 
-puts ("initial ontoportal config is complete,")
+puts ("initial OntoPortal config is complete,")
 # restart ontoportal stack
 system "sudo /usr/local/bin/oprestart"
