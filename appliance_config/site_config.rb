@@ -30,14 +30,15 @@ def aws_metadata_public_ipv4
     #read AWS meta-data/public-ipv4
     when Net::HTTPSuccess then
      #return IP address if its valid ip address
-     IPAddress.valid? response.body ? response.body : false
+     (IPAddr.new(response) rescue nil).nil? ? response.body : false
     else
       #metadata is off so falling back
       return false
     end
   rescue Exception => e
-  #metadata is probably not availalbe
-  return false
+    #metadata is probably not availalbe
+    puts "exception #{e.message}"
+    return false
   end
 end
 
@@ -56,14 +57,15 @@ def azure_metadata_public_ipv4
     case response
     #read AWS meta-data/public-ipv4
     when Net::HTTPSuccess then
-     IPAddress.valid? response.body ? response.body : false
+     (IPAddr.new(response) rescue nil).nil? ? response.body : false
     else
       #metadata is off so falling back
       return false
     end
   rescue Exception => e
-  #metadata is not availalbe
-  return false
+    #metadata is not availalbe
+    puts "exception #{e.message}"
+    return false
   end
 end
 
