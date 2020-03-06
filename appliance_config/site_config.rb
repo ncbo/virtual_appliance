@@ -72,7 +72,7 @@ end
 # local IP address lookup.
 def local_ip
   #first try AWS metadata lookup
-  ip_addres = aws_metadata_public_ipv4
+  ip_address = aws_metadata_public_ipv4
   unless ip_address
     #check azure metadata lookup
     ip_address =  azure_metadata_public_ipv4
