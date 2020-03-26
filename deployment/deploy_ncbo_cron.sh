@@ -24,6 +24,10 @@ gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --
 bundle install --deployment
 
 # Copy config files
+if  [ -f  "${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb" ]; then
+ cp ${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb ${VIRTUAL_APPLIANCE_REPO}/appliance_config/${COMPONENT}/config
+ echo 'copying site overides file'
+fi
 rsync -avr $LOCAL_CONFIG_PATH/$COMPONENT/* /srv/ncbo/ncbo_cron
 popd
 sudo /bin/systemctl start ncbo_cron
