@@ -17,7 +17,19 @@ unicorn.service
 nginx.service
 httpd.service
 '
+
+NC=$(tput sgr0)
+RED=$(tput setaf 1)
+GRN=$(tput setaf 2)
+
 for service in $services; do
   isactive=$(/bin/systemctl is-active $service)
-  echo ${service} ${isactive}
-done |  column  -t
+  STATUS=$((STATUS + $?))
+  if [[ "$isactive" == 'active' ]]; then
+     COLOR=$GRN
+  else
+     COLOR=$RED
+  fi
+  printf "%*s %b\n" -35 "${service}" "${COLOR}${isactive}${NC}"
+done
+exit $STATUS
