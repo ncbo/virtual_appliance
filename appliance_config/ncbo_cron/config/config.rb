@@ -1,22 +1,22 @@
-#Appliance ontologies_api config
+# Appliance ncbo_cron config
 # This file should not be modified.  Most of site related settings should be set
 # in site_config.rb
-
+require '/srv/ncbo/virtual_appliance/utils/hostname_lookup.rb'
 if File.exist?('config/environments/site_config.rb') || File.exist?('config/site_config.rb')
   require_relative 'site_config.rb'
 end
 
-$REST_HOSTNAME ||= local_ip
+$REST_FQDN ||= fqdn
 $REST_PORT ||= '8080'
-$UI_HOSTNAME ||= local_ip
-$REST_URL_PREFIX ||="http://#{$REST_HOSTNAME}:#{$REST_PORT}/"
+$UI_FQDN ||= $REST_FQDN
+$REST_URL_PREFIX ||= "#{$REST_FQDN}:#{$REST_PORT}/"
 
 begin
   LinkedData.config do |config|
     config.goo_host                   = 'localhost'
     config.goo_port                   = 8081
     config.rest_url_prefix            = "#{$REST_URL_PREFIX}"
-    config.ui_host                    = "http://#{$UI_HOSTNAME}"
+    config.ui_host                    = "#{$UI_FQDN}"
     config.search_server_url          = 'http://localhost:8983/solr/term_search_core1'
     config.property_search_server_url = 'http://localhost:8983/solr/prop_search_core1'
     config.repository_folder          = '/srv/ncbo/repository'

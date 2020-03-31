@@ -7,9 +7,9 @@
 
 # Versions of virtual appliance components
 APPLIANCE_VERSION=3.0rc2
-API_RELEASE='v5.15.1'
+API_RELEASE='v5.15.2'
 UI_RELEASE='v5.8.4'
-NCBO_CRON_RELEASE='v5.15.1'
+NCBO_CRON_RELEASE='v5.15.2'
 ONTOLOGIES_LINKED_DATA_RELEASE=$API_RELEASE
 
 # general settings
