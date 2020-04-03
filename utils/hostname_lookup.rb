@@ -41,7 +41,7 @@ def aws_metadata_public_ipv4
     end
   rescue Exception => e
     # metadata is probably not availalbe
-    puts "exception #{e.message}"
+    # puts "exception #{e.message}"
     false
   end
 end
