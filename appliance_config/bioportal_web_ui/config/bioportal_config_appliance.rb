@@ -6,15 +6,15 @@
 
 # bioportal_web_ui config file for default OntoPortal appliance.
 
-require '/srv/ncbo/virtual_appliance/utils/hostname_lookup.rb'
+require '/srv/ontoportal/virtual_appliance/utils/hostname_lookup.rb'
 require_relative 'site_config.rb' if File.exist?('config/site_config.rb')
 
 # Appliance needs to know its own address to display proper URLs
-# Ideally it should be set to FQDN but we fall back to using IP address if FQDN is not manually set.
-$REST_FQDN ||= fqdn
+# Ideally it should be set to HOSTNAME but we fall back to using IP address if HOSTNAME is not manually set.
+$REST_HOSTNAME ||= ip_address
 $REST_PORT ||= '8080'
-$UI_FQDN ||= "#{$REST_FQDN}"
-$REST_URL_PREFIX ||= "#{$REST_FQDN}:#{$REST_PORT}"
+$UI_HOSTNAME ||= $REST_HOSTNAME
+$REST_URL_PREFIX ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}/"
 
 # Organization info
 $ORG ||= 'OntoPortal Alliance'
@@ -24,13 +24,13 @@ $ORG_URL ||= 'http://appliance.ontoportal.org'
 $SITE ||= 'OntoPortal Appliance'
 
 # The URL for the BioPortal Rails UI (this application)
-$UI_URL = "#{$UI_FQDN}"
+$UI_URL = "#{$UI_HOSTNAME}"
 
 # REST core service address
-$REST_URL ||= "#{$REST_FQDN}:#{$REST_PORT}"
+$REST_URL ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}"
 
 # URL where BioMixer GWT app is located
-$BIOMIXER_URL = "#{$UI_FQDN}/BioMixer"
+$BIOMIXER_URL = "http://#{$UI_HOSTNAME}/BioMixer"
 
 # annotator proxy location.  https://github.com/sifrproject/annotators/
 # annotator proxy is running on tomcat which is reverse proxied by nginx
@@ -52,9 +52,6 @@ $RESOURCE_INDEX_DISABLED = true
 # Unique string representing the UI's id for use with the BioPortal Core
 $API_KEY ||= '1de0a270-29c5-4dda-b043-7c3580628cd5'
 
-# REST core service address
-$REST_URL ||= "http://#{$REST_FQDN}:#{$REST_PORT}"
-
 # Max number of children to return when rendering a tree view
 $MAX_CHILDREN = 2500
 
@@ -65,7 +62,7 @@ $MAX_POSSIBLE_DISPLAY = 10000
 $MAX_UPLOAD_SIZE = 1073741824
 
 # Release version (appears in the footer)
-$RELEASE_VERSION = 'OntoPortal Appliance 3.0.rc1'
+$RELEASE_VERSION = 'OntoPortal Appliance 3.0.rc2'
 
 # URL for release notes (see top-right menu item Support -> Release Notes)
 $RELEASE_NOTES = 'https://www.bioontology.org/wiki/BioPortal_Virtual_Appliance_Release_Notes'

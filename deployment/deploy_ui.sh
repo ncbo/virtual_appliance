@@ -8,9 +8,9 @@
 source $(dirname "$0")/versions
 
 COMPONENT=bioportal_web_ui
-export NCBO_BRANCH=$UI_RELEASE
+export BRANCH=$UI_RELEASE
 
-echo "deploying $COMPONENT from $NCBO_BRANCH branch"
+echo "deploying $COMPONENT from $BRANCH branch"
 
 # copy site config which contains customised settings for the appliance 
 if  [ -f  "${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb" ]; then

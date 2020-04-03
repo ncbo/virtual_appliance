@@ -6,7 +6,7 @@ sudo systemctl start 4s-boss
 sudo opstart
 ./kb_bootstrap_accounts.sh
 ruby ../bioportal_ontologies_import.rb
-pushd /srv/ncbo/ncbo_cron
+pushd /srv/ontoportal/ncbo_cron
 bin/ncbo_ontology_process -o STY
 popd
 

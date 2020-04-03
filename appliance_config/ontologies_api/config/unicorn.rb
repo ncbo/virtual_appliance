@@ -1,5 +1,5 @@
 application  = 'ontologies_api'
-app_path = "/srv/ncbo/#{application}"
+app_path = "/srv/ontoportal/#{application}"
 working_directory "#{app_path}/current/"
 
 worker_processes 8

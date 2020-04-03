@@ -7,19 +7,11 @@
 
 source $(dirname "$0")/versions
 echo 'Setting up deployment environment'
-#install capistrano gems required for deployment
-#gem install capistrano -v=3.8.2 --user-install --no-ri --no-rdoc
-#gem install capistrano-locally --user-install --no-ri --no-rdoc
-#gem install capistrano-bundler --user-install --no-ri --no-rdoc
-#gem install bundler -v=1.17.3 --user-install --no-ri --no-rdoc
-#gem install bundler -v=2.0.1 --user-install --no-ri --no-rdoc
-#gem install capistrano-rails --user-install --no-ri --no-rdoc
 
-
-#Determine if we need to deploy from a branch or a tag
-if [[ $API_RELEASE =~ ^v[0-9.]+ ]] ; then  API_RELEASE=tags/$API_RELEASE ; fi
-if [[ $UI_RELEASE =~ ^v[0-9.]+ ]] ; then UI_RELEASE=tags/$UI_RELEASE ; fi
-if [[ $ONTOLOGIES_LINKED_DATA_RELEASE =~ ^v[0-9.]+ ]] ; then ONTOLOGIES_LINKED_DATA_RELEASE=tags/$ONTOLOGIES_LINKED_DATA_RELEASE ; fi
+# Determine if we need to deploy from a branch or a tag
+if [[ $API_RELEASE =~ ^v[0-9.]+ ]] ; then  API_RELEASE=tags/${API_RELEASE} ; fi
+if [[ $UI_RELEASE =~ ^v[0-9.]+ ]] ; then UI_RELEASE=tags/${UI_RELEASE} ; fi
+if [[ $ONTOLOGIES_LINKED_DATA_RELEASE =~ ^v[0-9.]+ ]] ; then ONTOLOGIES_LINKED_DATA_RELEASE=tags/${ONTOLOGIES_LINKED_DATA_RELEASE} ; fi
 echo 'Setting up deployment env for UI'
 if [ ! -d bioportal_web_ui ]; then
   git clone https://github.com/ncbo/bioportal_web_ui bioportal_web_ui
@@ -30,7 +22,7 @@ git checkout "$UI_RELEASE"
 # Install exact version of bundler as required
 gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install --no-ri --no-rdoc
 
-#install gems required for deployment, i.e capistrano, rake, etc.  Rails gem is required for  generate secret
+# install gems required for deployment, i.e capistrano, rake, etc.  Rails gem is required for generate secret
 bundle install --with default development --deployment
 if [ ! -f ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/secrets.yml ]; then
   SECRET=$(bundle exec rake secret)

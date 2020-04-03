@@ -5,16 +5,21 @@
 # RELEASE numbers have to be compatible with this verision of the appliance stack
 #
 
+# general settings
+DATA_DIR=/srv/ontoportal/data
+APP_DIR=/srv/ontoportal
+VIRTUAL_APPLIANCE_REPO=/srv/ontoportal/virtual_appliance
+#export LOCAL_CONFIG_PATH=$VIRTUAL_APPLIANCE_REPO/appliance_config
+
 # Versions of virtual appliance components
 APPLIANCE_VERSION=3.0rc2
-API_RELEASE='v5.15.2'
-UI_RELEASE='v5.8.4'
-NCBO_CRON_RELEASE='v5.15.2'
+#API_RELEASE='v5.15.2'
+API_RELEASE='staging'
+#UI_RELEASE='v5.8.4'
+UI_RELEASE='staging'
+NCBO_CRON_RELEASE='staging'
 ONTOLOGIES_LINKED_DATA_RELEASE=$API_RELEASE
 
-# general settings
-VIRTUAL_APPLIANCE_REPO=/srv/ncbo/virtual_appliance
-#export LOCAL_CONFIG_PATH=$VIRTUAL_APPLIANCE_REPO/appliance_config
 if [ "$USER" != 'ontoportal' ]; then
   echo "you need to run this script as ontoportal user"
   exit 1

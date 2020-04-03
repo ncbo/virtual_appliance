@@ -1,25 +1,26 @@
-#Appliance ontologies_api config
+# Appliance ncbo_cron config
 # This file should not be modified.  Most of site related settings should be set
 # in site_config.rb
-
+require '/srv/ontoportal/virtual_appliance/utils/hostname_lookup.rb'
 if File.exist?('config/environments/site_config.rb') || File.exist?('config/site_config.rb')
   require_relative 'site_config.rb'
 end
 
-$REST_HOSTNAME ||= local_ip
+$REST_HOSTNAME ||= ip_address
 $REST_PORT ||= '8080'
-$UI_HOSTNAME ||= local_ip
-$REST_URL_PREFIX ||="http://#{$REST_HOSTNAME}:#{$REST_PORT}/"
+$UI_HOSTNAME ||= $REST_HOSTNAME
+$REST_URL_PREFIX ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}/"
+$DATADIR ||= '/srv/ontoportal/data'
 
 begin
   LinkedData.config do |config|
     config.goo_host                   = 'localhost'
     config.goo_port                   = 8081
     config.rest_url_prefix            = "#{$REST_URL_PREFIX}"
-    config.ui_host                    = "http://#{$UI_HOSTNAME}"
+    config.ui_host                    = "#{$UI_HOSTNAME}"
     config.search_server_url          = 'http://localhost:8983/solr/term_search_core1'
     config.property_search_server_url = 'http://localhost:8983/solr/prop_search_core1'
-    config.repository_folder          = '/srv/ncbo/repository'
+    config.repository_folder          = "#{$DATADIR}/repository"
     config.replace_url_prefix         = true
     config.enable_security            = true
 
@@ -60,7 +61,7 @@ rescue NameError
 end
 begin
   Annotator.config do |config|
-    config.mgrep_dictionary_file   = '/srv/mgrep/dictionary/dictionary.txt'
+    config.mgrep_dictionary_file   = "#{$DATADIR}/mgrep/dictionary/dictionary.txt"
     config.stop_words_default_file = './config/default_stop_words.txt'
     config.mgrep_host              = 'localhost'
     config.mgrep_port              = 55555
@@ -101,7 +102,7 @@ begin
     config.enable_ontology_analytics = false
     config.search_index_all_url = 'http://localhost:8983/solr/term_search_core2'
     config.property_search_server_index_all_url = 'http://localhost:8983/solr/prop_search_core2'
-    config.ontology_report_path = '/srv/ncbo/reports/ontologies_report.json'
+    config.ontology_report_path = "#{$DATADIR}/reports/ontologies_report.json"
     config.enable_spam_deletion = false
   end
 rescue NameError

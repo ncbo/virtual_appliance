@@ -7,8 +7,8 @@
 source $(dirname "$0")/versions
 COMPONENT=ontologies_api
 
-export NCBO_BRANCH=$API_RELEASE
-echo "deploying $COMPONENT from $NCBO_BRANCH branch"
+export BRANCH=$API_RELEASE
+echo "deploying $COMPONENT from $BRANCH branch"
 
 # copy site config which contains customised settings for the appliance
 

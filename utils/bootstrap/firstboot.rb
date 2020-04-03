@@ -5,20 +5,20 @@
 # 3. updates config files
 
 # dont run if this is not the first boot.
-unless File.file?('/srv/ncbo/firstboot')
+unless File.file?('/srv/ontoportal/firstboot')
   exit('firstboot script is skipped since this is not the first time boot')
 end
 
 system('sudo /usr/local/bin/opstatus') ||
   abort('Aborting! Some Ontoportal Services are not running')
 
-Dir.chdir '/srv/rails/bioportal_web_ui/current'
+Dir.chdir '/srv/ontoportal/bioportal_web_ui/current'
 secret_key_base = `bundle exec rake secret`
 
 require_relative '../apikey.rb'
 
-CONFIG_FILE = '/srv/ncbo/virtual_appliance/appliance_config/site_config.rb'
-SECRETS_FILE = '/srv/ncbo/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'
+CONFIG_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/site_config.rb'
+SECRETS_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'
 
 # Reset API keys
 reset_apikey('admin')
@@ -62,15 +62,15 @@ site_config = File.read(CONFIG_FILE)
 new_content = site_config.gsub(/^\$API_KEY =.*$/, "\$API_KEY = \"#{api_key}\"")
 new_content = new_content.gsub(/^\$CLOUD_PROVIDER =.*$/, "\$CLOUD_PROVIDER = \'#{cloud_provider}\'")
 File.open(CONFIG_FILE, 'w') { |file| file.puts new_content }
-FileUtils.cp CONFIG_FILE, '/srv/rails/bioportal_web_ui/current/config'
+FileUtils.cp CONFIG_FILE, '/srv/ontoportal/bioportal_web_ui/current/config'
 puts "UI API KEY #{api_key}"
 # reset secret_key_base
 secrets_yml = File.read(SECRETS_FILE)
 new_content = secrets_yml.gsub(/^  secret_key_base: .*$/, "  secret_key_base: #{secret_key_base}")
 File.open(SECRETS_FILE, 'w') { |file| file.puts new_content }
-FileUtils.cp SECRETS_FILE, '/srv/rails/bioportal_web_ui/current/config'
+FileUtils.cp SECRETS_FILE, '/srv/ontoportal/bioportal_web_ui/current/config'
 
-FileUtils.chown 'ontoportal', 'ontoportal', '/srv/rails/bioportal_web_ui/current/config'
+FileUtils.chown 'ontoportal', 'ontoportal', '/srv/ontoportal/bioportal_web_ui/current/config'
 # system "cat /srv/rails/bioportal_web_ui/current/config/site_config.rb"
 
 puts 'initial OntoPortal config is complete,'

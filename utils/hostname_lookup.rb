@@ -37,12 +37,12 @@ def aws_metadata_public_ipv4
       (IPAddr.new(response) rescue nil).nil? ? response.body : false
     else
       # metadata is off so falling back
-      return false
+      false
     end
   rescue Exception => e
     # metadata is probably not availalbe
     puts "exception #{e.message}"
-    return false
+    false
   end
 end
 
@@ -58,16 +58,16 @@ def aws_metadata_public_hostname
     case response
     # read AWS meta-data/public-hostname
     when Net::HTTPSuccess
-      # FIXME: check for valid URI before returning it
+      # FIXME: check for valid FQDN before returning it
       response.body
     else
       # metadata is off so falling back
-      return false
+      false
     end
   rescue Exception => e
     # metadata is probably not availalbe
-    puts "exception #{e.message}"
-    return false
+    # puts "exception #{e.message}"
+    false
   end
 end
 
@@ -89,17 +89,17 @@ def azure_metadata_public_ipv4
      (IPAddr.new(response) rescue nil).nil? ? response.body : false
     else
       # metadata is off so falling back
-      return false
+      false
     end
   rescue Exception => e
     # metadata is not availalbe
-    puts "exception #{e.message}"
-    return false
+    # puts "exception #{e.message}"
+    false
   end
 end
 
 # local IP address lookup.
-def local_ip
+def ip_address
   # first try AWS metadata lookup
   ip_address ||= aws_metadata_public_ipv4
   # then check azure metadata lookup
@@ -109,14 +109,15 @@ def local_ip
   ip_address
 end
 
-def fqdn
-  fqdn = nil
+def hostname
+  hostname = nil
   case $CLOUD_PROVIDER
   when 'AWS'
-    fqdn = aws_metadata_public_hostname
+    aws_metadata_public_hostname
+  when 'azure'
+    azure_metadata_public_ipv4
   else
-    ip_address = local_ip_simple
-    fqdn = 'http://' + ip_address
+    local_ip_simple
   end
-  fqdn
+  hostname
 end

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # manipulates apikey for a user
 
-NCBO_CRON_PATH='/srv/ncbo/ncbo_cron'
+NCBO_CRON_PATH='/srv/ontoportal/ncbo_cron'
 
 # Script uses ncbo_cron for changing apikey becase its easier then
 # working with the API since it requires deleting/re-creating user.
