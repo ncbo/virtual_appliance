@@ -24,7 +24,7 @@ $ORG_URL ||= 'http://appliance.ontoportal.org'
 $SITE ||= 'OntoPortal Appliance'
 
 # The URL for the BioPortal Rails UI (this application)
-$UI_URL = "#{$UI_HOSTNAME}"
+$UI_URL = "http://#{$UI_HOSTNAME}"
 
 # REST core service address
 $REST_URL ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}"
