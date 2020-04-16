@@ -12,12 +12,10 @@ VIRTUAL_APPLIANCE_REPO=/srv/ontoportal/virtual_appliance
 #export LOCAL_CONFIG_PATH=$VIRTUAL_APPLIANCE_REPO/appliance_config
 
 # Versions of virtual appliance components
-APPLIANCE_VERSION=3.0rc2
-#API_RELEASE='v5.15.2'
-API_RELEASE='staging'
-#UI_RELEASE='v5.8.4'
-UI_RELEASE='staging'
-NCBO_CRON_RELEASE='staging'
+APPLIANCE_VERSION='3.0.0-rc.3'
+API_RELEASE='v5.16.0'
+UI_RELEASE='v5.8.5'
+NCBO_CRON_RELEASE=$API_RELEASE
 ONTOLOGIES_LINKED_DATA_RELEASE=$API_RELEASE
 
 if [ "$USER" != 'ontoportal' ]; then
