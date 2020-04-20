@@ -1,0 +1,92 @@
+en:
+  
+  activerecord:
+    errors:
+      models:
+        license:
+          attributes:
+            encrypted_key:
+              invalid_license_key: is an invalid license key
+
+  admin:
+    licenses:
+      create:
+        success: License successfully renewed!
+
+  date:
+    formats:
+      year_month_day_concise: '%Y-%m-%d' # 2017-03-01
+      month_day_year: '%b %-d, %Y' # Mar 1, 2017
+      monthfull_day_year: '%B %-d, %Y' # March 1, 2017
+
+  layouts:
+    footer:
+      copyright_html: Copyright &copy; 2005‑2020, The Board of Trustees of Leland Stanford Junior University. All rights reserved.
+      grant_html: >
+        The <strong>National Center for Biomedical Ontology</strong> was founded as one of the National Centers for Biomedical 
+        Computing, supported by the NHGRI, the NHLBI, and the NIH Common Fund under grant U54-HG004028.
+    notices:
+      license_contact: >
+        For more information, email <a href="mailto:support@ontoportal.org">support@ontoportal.org</a> or 
+        visit <a href="https://ontoportal.org/licensing" target="_blank">https://ontoportal.org/licensing</a>.
+      license_obtain: >
+        If you are the owner of this OntoPortal installation, you can visit 
+        <a href="https://license.ontoportal.org" target="_blank">https://license.ontoportal.org</a> to obtain a license.
+      license_expired: >
+        We're sorry, but the license for this OntoPortal installation has expired. If you are the owner of this OntoPortal installation, 
+        please visit <a href="https://license.ontoportal.org" target="_blank">https://license.ontoportal.org</a> to renew your license.
+      license_trial:
+        one:
+          This installation of the OntoPortal Appliance is a trial license, which will expire in 1 day.
+        other:
+          This installation of the OntoPortal Appliance is a trial license, which will expire in %{count} days.
+
+  home:
+    index:
+      find_ontology_placeholder: Start typing ontology name, then choose from list
+      query_placeholder: Enter a class, e.g. Melanoma
+      tagline: 
+      title: Welcome to the %{organization} 
+      welcome: Welcome to %{site},
+    help:
+      welcome: Welcome to the National Center for Biomedical Ontology’s %{site}. %{site} is a web-based application for accessing and sharing biomedical ontologies.
+      getting_started: >
+        %{site} allows users to browse, upload, download, search, comment on, and create mappings for ontologies.
+      browse: >
+        Users can browse and explore individual ontologies by navigating either a tree structure or an animated graphical view. Users can also view mappings and 
+        ontology metadata, and download ontologies. Additionally, users who are signed in may submit a new ontology to the library.
+      rest_examples_html: View documentation and examples of the <a href="http://data.bioontology.org/documentation" target="_blank">%{site} REST API</a>.
+      announce_list_html: >
+        To receive notices of new releases or site outages, please subscribe to the 
+        <a href="https://mailman.stanford.edu/mailman/listinfo/bioontology-support" target="_blank">bioontology-support list</a>.
+
+  annotator:
+    index:
+      intro: Get annotations for biomedical text with classes from the ontologies
+      annotatorplus_html: <em>Check out <a href="%{annotatorplus_href}">AnnotatorPlus</a> beta; a new version of the Annotator with added support for negation, and more!</em>
+
+  recommender:
+    intro: Get recommendations for the most relevant ontologies based on an excerpt from a biomedical text or a list of keywords
+
+  search:
+    index:
+      intro: Search for a class in multiple ontologies
+      search_keywords_placeholder: Enter a class, e.g. Melanoma
+      categories_placeholder: Start typing to select categories or leave blank to use all
+      property_definition: Named association between two entities. Examples are "definition" (a relation between a class and some text) and "part-of" (a relation between two classes).
+      obsolete_definition: >
+        A class that the authors of the ontology have flagged as being obsolete and which they recommend that people not use. These classes 
+        are often left in ontologies (rather than removing them entirely) so that existing systems that depend on them will continue to function.
+
+  projects:
+    index:
+      intro: Browse a selection of projects that use %{site} resources
+
+  ontologies:
+    intro: Browse the library of ontologies
+
+  mappings:
+    intro: Browse mappings between classes in different ontologies
+
+  resource_index:
+    intro: Search biomedical resources
