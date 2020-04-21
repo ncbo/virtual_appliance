@@ -6,7 +6,8 @@
 
 # dont run if this is not the first boot.
 unless File.file?('/srv/ontoportal/firstboot')
-  exit('firstboot script is skipped since this is not the first time boot')
+  puts 'firstboot script is skipped since this is not the first time boot'
+  exit
 end
 
 system('sudo /usr/local/bin/opstatus') ||
