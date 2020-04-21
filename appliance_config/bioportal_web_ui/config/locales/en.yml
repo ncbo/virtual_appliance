@@ -45,9 +45,9 @@ en:
     index:
       find_ontology_placeholder: Start typing ontology name, then choose from list
       query_placeholder: Enter a class, e.g. Melanoma
-      tagline: 
+      tagline: ''
       title: Welcome to the %{organization} 
-      welcome: Welcome to %{site},
+      welcome: Welcome to %{site}
     help:
       welcome: Welcome to the National Center for Biomedical Ontology’s %{site}. %{site} is a web-based application for accessing and sharing biomedical ontologies.
       getting_started: >
