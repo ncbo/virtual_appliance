@@ -1,38 +1,43 @@
 # coding: utf-8
 
+$CLOUD_PROVIDER = 'NONE'
+
+# ----------------------------------------------------------------------
+# OntoPortal Customization
+
 #$REST_HOSTNAME = 'data.ontoportal.example.org'
 #$REST_PORT = '8080'
-#REST_URL_PREFIX = 'http://data.ontoportal.example.org'
+#$REST_URL_PREFIX = 'http://data.ontoportal.example.org'
 #$UI_HOSTNAME = 'ontoportal.example.org'
 
 # Organization info
-#$ORG = "NCBO"
-#$ORG_URL = "http://www.bioontology.org"
+#$ORG = 'NCBO'
+#$ORG_URL = 'http://ontoportal.org'
 
 # Site name (required)
-#$SITE = "OntoPortal Appliance"
+$SITE = 'OntoPortal Appliance'
 
 # Unique string representing the UI's id for use with the BioPortal Core
 # This api key is automatically generated on first boot and updated here
-$API_KEY = "1de0a270-29c5-4dda-b043-7c3580628cd5"
+$API_KEY = '1de0a270-29c5-4dda-b043-7c3580628cd5'
 
 # REST core service address
 #$REST_URL = "http://#{$REST_HOSTNAME}:#{$REST_PORT}"
 
 # Help page, launched from Support -> Help menu item in top navigation bar.
-#$WIKI_HELP_PAGE = "https://www.bioontology.org/wiki/index.php/BioPortal_Help"
+#$WIKI_HELP_PAGE = 'https://www.bioontology.org/wiki/index.php/BioPortal_Help'
 
 # Google Analytics ID (optional)
-#$ANALYTICS_ID = ""
+#$ANALYTICS_ID = ''
 
 # Announcements mailman mailing list REQUEST address, EX: list-request@lists.example.org
 # NOTE: You must use the REQUEST address for the mailing list. ONLY WORKS WITH MAILMAN LISTS.
-#$ANNOUNCE_LIST = "appliance-users-request@example.org"
+#$ANNOUNCE_LIST = 'appliance-users-request@example.org'
 
 # Email addresses used for sending notifications (errors, feedback, support)
-#$SUPPORT_EMAIL = "support@example.org"
-#$ADMIN_EMAIL = "admin@example.org"
-#$ERROR_EMAIL = "errors@example.org"
+#$SUPPORT_EMAIL = 'support@example.org'
+#$ADMIN_EMAIL = 'admin@example.org'
+#$ERROR_EMAIL = 'errors@example.org'
 
 # reCAPTCHA
 # In order to use reCAPTCHA on the user account creation page:
@@ -43,6 +48,3 @@ $API_KEY = "1de0a270-29c5-4dda-b043-7c3580628cd5"
 #ENV['RECAPTCHA_PUBLIC_KEY']  = ''
 #ENV['RECAPTCHA_PRIVATE_KEY'] = ''
 
-#-----------------------------------------------------------#
-# ontologies_api config
-#-----------------------------------------------------------#

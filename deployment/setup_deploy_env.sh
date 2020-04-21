@@ -7,6 +7,14 @@
 
 source $(dirname "$0")/versions
 echo 'Setting up deployment environment'
+CONFIG_DIR=$VIRTUAL_APPLIANCE_REPO/appliance_config
+
+# copy default version controlled config files to local config files
+[ -e ${CONFIG_DIR}/site_config.rb ] || cp ${CONFIG_DIR}/site_config.rb.default ${CONFIG_DIR}/site_config.rb
+[ -e ${CONFIG_DIR}/bioportal_web_ui/config/bioportal_config_appliance.rb.default ] || cp ${CONFIG_DIR}/bioportal_web_ui/config/bioportal_config_appliance.rb.default ${CONFIG_DIR}/bioportal_web_ui/config/bioportal_config_appliance.rb
+[ -e ${CONFIG_DIR}/ontologies_api/config/environments/appliance.rb.default ] || cp ${CONFIG_DIR}/ontologies_api/config/environments/appliance.rb.default ${CONFIG_DIR}/ontologies_api/config/environments/appliance.rb
+[ -e ${CONFIG_DIR}/ncbo_cron/config/config.rb.default ] || cp ${CONFIG_DIR}/ncbo_cron/config/config.rb.default ${CONFIG_DIR}/ncbo_cron/config/config.rb
+
 
 # Determine if we need to deploy from a branch or a tag
 if [[ $API_RELEASE =~ ^v[0-9.]+ ]] ; then  API_RELEASE=tags/${API_RELEASE} ; fi
@@ -23,6 +31,7 @@ git checkout "$UI_RELEASE"
 gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install --no-ri --no-rdoc
 
 # install gems required for deployment, i.e capistrano, rake, etc.  Rails gem is required for generate secret
+[ !$VIRTUAL_APPLIANCE_REPO/appliance_config/bioportal_web_ui/config 
 bundle install --with default development --deployment
 if [ ! -f ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/secrets.yml ]; then
   SECRET=$(bundle exec rake secret)
