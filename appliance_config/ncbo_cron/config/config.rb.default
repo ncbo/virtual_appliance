@@ -13,10 +13,10 @@ $REST_URL_PREFIX ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}/"
 $DATADIR ||= '/srv/ontoportal/data'
 
 GOO_BACKEND_NAME = '4store'
-GOO_PORT        = GOO_BACKEND_NAME.include?("AG") ? 10035                                  : 8081
-GOO_PATH_QUERY  = GOO_BACKEND_NAME.include?("AG") ? "/repositories/#{JOB_NAME}"            : '/sparql/'
-GOO_PATH_DATA   = GOO_BACKEND_NAME.include?("AG") ? "/repositories/#{JOB_NAME}/statements" : '/data/'
-GOO_PATH_UPDATE = GOO_BACKEND_NAME.include?("AG") ? "/repositories/#{JOB_NAME}/statements" : '/update/'
+GOO_PORT        = GOO_BACKEND_NAME.include?('AG') ? 10035                                 : 8081
+GOO_PATH_QUERY  = GOO_BACKEND_NAME.include?('AG') ? '/repositories/ontoportal'            : '/sparql/'
+GOO_PATH_DATA   = GOO_BACKEND_NAME.include?('AG') ? '/repositories/ontoportal/statements' : '/data/'
+GOO_PATH_UPDATE = GOO_BACKEND_NAME.include?('AG') ? '/repositories/ontoportal/statements' : '/update/'
 
 begin
   LinkedData.config do |config|
