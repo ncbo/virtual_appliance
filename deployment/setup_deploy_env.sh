@@ -27,6 +27,14 @@ fi
 pushd bioportal_web_ui
 git fetch
 git checkout "$UI_RELEASE"
+
+# remove BioPortal specific tagline from locales file
+if [ ! -e ${CONFIG_DIR}/bioportal_web_ui/config/locales/en.yml ]; then
+ echo "tweaking locales file"
+ cp config/locales/en.yml ${CONFIG_DIR}/bioportal_web_ui/config/locales
+ sed -ie "s/the world's most comprehensive repository of biomedical ontologies/your ontology repository for your ontologies/"  ${CONFIG_DIR}/bioportal_web_ui/config/locales/en.yml
+fi
+
 # Install exact version of bundler as required
 gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install --no-ri --no-rdoc
 
