@@ -12,10 +12,21 @@ $UI_HOSTNAME ||= $REST_HOSTNAME
 $REST_URL_PREFIX ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}/"
 $DATADIR ||= '/srv/ontoportal/data'
 
+GOO_BACKEND_NAME = '4store'
+GOO_PORT        = GOO_BACKEND_NAME.include?("AG") ? 10035                                  : 8081
+GOO_PATH_QUERY  = GOO_BACKEND_NAME.include?("AG") ? "/repositories/#{JOB_NAME}"            : '/sparql/'
+GOO_PATH_DATA   = GOO_BACKEND_NAME.include?("AG") ? "/repositories/#{JOB_NAME}/statements" : '/data/'
+GOO_PATH_UPDATE = GOO_BACKEND_NAME.include?("AG") ? "/repositories/#{JOB_NAME}/statements" : '/update/'
+
 begin
   LinkedData.config do |config|
     config.goo_host                   = 'localhost'
-    config.goo_port                   = 8081
+    config.goo_port                   = "#{GOO_PORT}"
+    config.goo_backend_name           = "#{GOO_BACKEND_NAME}"
+    config.goo_path_query             = "#{GOO_PATH_QUERY}"
+    config.goo_path_data              = "#{GOO_PATH_DATA}"
+    config.goo_path_update            = "#{GOO_PATH_UPDATE}"
+
     config.rest_url_prefix            = "#{$REST_URL_PREFIX}"
     config.ui_host                    = "#{$UI_HOSTNAME}"
     config.search_server_url          = 'http://localhost:8983/solr/term_search_core1'
