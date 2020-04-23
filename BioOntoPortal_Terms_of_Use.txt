@@ -73,26 +73,26 @@ You agree that we may terminate or suspend your access to Our Sites and any acco
 
 DMCA Notice/Takedown Procedure
 
-The Stanford Center for Biomedical Ontology Research abides by the federal Digital Millennium Copyright Act (DMCA) by responding to notices of alleged infringement that comply with the DMCA and other applicable laws. As part of our response, we may remove or disable access to material residing on a site that is controlled or operated by us that is claimed to be infringing, in which case we will make a good-faith attempt to contact the person who submitted the affected material so that they may make a counter-notification, also in accordance with the DMCA.
+The Stanford Center for Biomedical Informatics Research abides by the federal Digital Millennium Copyright Act (DMCA) by responding to notices of alleged infringement that comply with the DMCA and other applicable laws. As part of our response, we may remove or disable access to material residing on a site that is controlled or operated by us that is claimed to be infringing, in which case we will make a good-faith attempt to contact the person who submitted the affected material so that they may make a counter-notification, also in accordance with the DMCA.
 
 
 Medical/Clinical Use Disclaimer
 
 Materials on Our Sites have not necessarily been reviewed or approved by the Food and Drug Administration. All materials on this Site are provided for informational and review purposes. It is not intended to, and does not in any way, substitute for professional medical advice.
 
-The materials and services should not be relied upon for medical diagnosis or treatment, nor should you disregard the advice of your physical or other health care provider or delay seeking such advice due to anything you have read on or accessed through Our Sites. The Stanford Center for Biomedical Ontology Research assumes no responsibility for any injury and/or damage to person(s) or property as a matter of products and/or services liability, negligence or otherwise, or from any use or operation of any methods, products, services, instructions or ideas contained in the material provided by Our Sites.
+The materials and services should not be relied upon for medical diagnosis or treatment, nor should you disregard the advice of your physical or other health care provider or delay seeking such advice due to anything you have read on or accessed through Our Sites. The Stanford Center for Biomedical Informatics Research assumes no responsibility for any injury and/or damage to person(s) or property as a matter of products and/or services liability, negligence or otherwise, or from any use or operation of any methods, products, services, instructions or ideas contained in the material provided by Our Sites.
 
 
 Disclaimer
 
-Except where expressly provided otherwise, Our Sites, and all content, materials, information, software, products and services provided on Our Sites, are provided on an "as is" and "as available" basis. The Stanford Center for Biomedical Ontology Research expressly disclaims all warranties of any kind, whether express or implied, including, but not limited to, the implied warranties of merchantability, fitness for a particular purpose and non-infringement. 
+Except where expressly provided otherwise, Our Sites, and all content, materials, information, software, products and services provided on Our Sites, are provided on an "as is" and "as available" basis. The Stanford Center for Biomedical Informatics Research expressly disclaims all warranties of any kind, whether express or implied, including, but not limited to, the implied warranties of merchantability, fitness for a particular purpose and non-infringement. 
 
 Any content, materials, information or software downloaded or otherwise obtained through the use of Our Sites is done at your own discretion and risk. We shall have no responsibility for any damage to your computer system or loss of data that results from the download of any content, materials, information or software. We reserve the right to make changes or updates to Our Sites at any time without notice.
 
 
 Limitation of Liability
 
-In no event shall the Stanford Center for Biomedical Ontology Research be liable for any direct, indirect, incidental, special or consequential damages, or damages for loss of profits, revenue, data or use, incurred by you or any third party, whether in an action in contract or tort, arising from your access to, or use of, Our Sites. Some jurisdictions do not allow the limitation or exclusion of liability. Accordingly, some of the above limitations may not apply to you.
+In no event shall the Stanford Center for Biomedical Informatics Research be liable for any direct, indirect, incidental, special or consequential damages, or damages for loss of profits, revenue, data or use, incurred by you or any third party, whether in an action in contract or tort, arising from your access to, or use of, Our Sites. Some jurisdictions do not allow the limitation or exclusion of liability. Accordingly, some of the above limitations may not apply to you.
 
 
 Indemnity
