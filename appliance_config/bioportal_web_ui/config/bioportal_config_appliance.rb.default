@@ -1,6 +1,6 @@
 # coding: utf-8
 #
-#Appliance bioportal_web_ui config
+# Appliance bioportal_web_ui config
 # This file should not be modified.  Most of the site related settings should be done in
 # site_config.rb
 
@@ -17,7 +17,7 @@ $UI_HOSTNAME ||= $REST_HOSTNAME
 $REST_URL_PREFIX ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}/"
 
 # Organization info
-$ORG ||= 'OntoPortal Alliance'
+#$ORG = 'OntoPortal Alliance'
 $ORG_URL ||= 'http://appliance.ontoportal.org'
 
 # Site name (required)
