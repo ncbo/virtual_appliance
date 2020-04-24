@@ -7,9 +7,8 @@ timeout 180
 preload_app true
 user 'ontoportal', 'ontoportal'
 
-#uncomment to enable logging for troubleshooting:
-#stderr_path 'log/unicorn.stderr.log'
-#stdout_path 'log/unicorn.stdout.log'
+stderr_path 'log/unicorn.stderr.log'
+stdout_path 'log/unicorn.stdout.log'
 pid 'tmp/pids/unicorn.pid'
 
 # Listen on both fast-failing unix data socket (for nginx) & a backloggable TCP connection
