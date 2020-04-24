@@ -32,7 +32,7 @@ git checkout "$UI_RELEASE"
 if [ ! -e ${CONFIG_DIR}/bioportal_web_ui/config/locales/en.yml ]; then
  echo "tweaking locales file"
  cp config/locales/en.yml ${CONFIG_DIR}/bioportal_web_ui/config/locales
- sed -ie "s/the world's most comprehensive repository of biomedical ontologies/your ontology repository for your ontologies/"  ${CONFIG_DIR}/bioportal_web_ui/config/locales/en.yml
+ sed -i "s/the world's most comprehensive repository of biomedical ontologies/your ontology repository for your ontologies/"  ${CONFIG_DIR}/bioportal_web_ui/config/locales/en.yml
 fi
 
 # Install exact version of bundler as required
