@@ -8,10 +8,10 @@
   - appliance packaging is fully automated with packer, puppet, deployment and bootstrap scripts. 
 - OS Changes for VMWare ova package:
   - CentOS 6 is upgraded to CentOS 7.7
-  - console based firstboot configuraiton is removed.  
+  - console based firstboot configuration is removed.  
   - eth0 is configured to do DHCP by default
-  - root is required to change initial passwod on first login
-- Applicaton Stack changes:
+  - root is required to change initial password on first login
+- Application Stack changes:
   - Apache, MariaDB, memcached, tomcat, redis are installed from EPEL repo
   - Nginx updated to 1.17
   - Solr updated to 6.5
@@ -31,10 +31,10 @@
   - new: annotatorplus proxy
 - Appliance includes deployment scripts for performing limited minor and patch version updates of Ontoportal application components.
 - Appliance customization process is changed:
-   - /srv/ontoportal/virtual_appliance/appliance_config/site_config.rb for setting basic customiation such as hostname, Site Name and Organzation. 
+   - /srv/ontoportal/virtual_appliance/appliance_config/site_config.rb for setting basic customization such as hostname, Site Name and Organzation. 
    - /srv/ontoportal/virtual_appliance/appliance_config/<component> customization and overwrites for ontoportal components such as UI and API
-   - srv/ontoportal/virtual_appliance/appliance_config/deployments contains application deployment cripts
- - experimental support for AllegroGraph 
+   - srv/ontoportal/virtual_appliance/appliance_config/deployments contains application deployment scripts
+ - experimental support for AllegroGraph
  - Updated Ontoportal branding
   
  
