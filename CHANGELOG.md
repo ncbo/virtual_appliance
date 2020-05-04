@@ -14,7 +14,7 @@
 - Application Stack changes:
   - Apache, MariaDB, memcached, tomcat, redis are installed from EPEL repo
   - Nginx updated to 1.17
-  - Solr updated to 6.5
+  - Solr updated to 8.2
   - Java 11
   - ruby 2.5.7
   - Allegro Graph v6.4.1 is installed but not activated.
