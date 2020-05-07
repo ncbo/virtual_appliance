@@ -39,7 +39,7 @@
 - Appliance customization process is changed:
    - /srv/ontoportal/virtual_appliance/appliance_config/site_config.rb for setting basic customization such as hostname, Site Name and Organzation. 
    - /srv/ontoportal/virtual_appliance/appliance_config/<component> customization and overwrites for ontoportal components such as UI and API
-   - srv/ontoportal/virtual_appliance/appliance_config/deployments contains application deployment scripts
+   - /srv/ontoportal/virtual_appliance/appliance_config/deployments contains application deployment scripts
  - experimental support for AllegroGraph
  - Updated Ontoportal branding
   
