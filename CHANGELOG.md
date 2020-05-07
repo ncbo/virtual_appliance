@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 - AWS AMI
+## [3.0.1] - 2020-05-0
+- Application Stack updates:
+ - CentOS upgraded to 7.9
+ - disable root passwod.  Users have to use centos user login for SSH access.
+- Fixed:
+  - https://github.com/ncbo/virtual_appliance/issues/16
 
 ## [3.0.0] - 2020-04-24
 - Packaging:
