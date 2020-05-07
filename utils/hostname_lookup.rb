@@ -101,7 +101,7 @@ end
 # local IP address lookup.
 def ip_address
   # first try AWS metadata lookup
-  ip_address ||= aws_metadata_public_ipv4
+  ip_address ||= aws_metadata_public_hostname
   # then check azure metadata lookup
   ip_address ||= azure_metadata_public_ipv4
   # fall back to local ip address if AWS/azure metadata is not avaiable
