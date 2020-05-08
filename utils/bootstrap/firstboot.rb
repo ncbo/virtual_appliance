@@ -21,28 +21,52 @@ require_relative '../apikey.rb'
 CONFIG_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/site_config.rb'
 SECRETS_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'
 
+def aws_metadata_instance_id
+  require 'net/http'
+  require 'uri'
+  uri = URI.parse('http://169.254.169.254/latest/meta-data/instance-id')
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.read_timeout = 2
+  http.open_timeout = 2
+
+  begin
+    request = Net::HTTP::Get.new(uri.request_uri)
+    response = http.request(request)
+    case response
+    # read AWS meta-data/instance-id
+    when Net::HTTPSuccess
+      # sanity check, instance id should start with i-
+      if response.body.include? 'i-'
+        response.body
+      else
+        false
+      end
+    else
+      # metadata is off so falling back
+      false
+    end
+  rescue Exception => e
+    # metadata is probably not availalbe
+    # puts "exception #{e.message}"
+    false
+  end
+end
+
 # Reset API keys
 reset_apikey('admin')
 reset_apikey('ontoportal_ui')
 api_key = get_apikey('ontoportal_ui')
 
-# Attempting to detect what cloud provider or platfrom we are running on.
-cloud_provider = 'NONE'
-virt_what = `sudo /usr/sbin/virt-what | tail -1`.chomp
 
-case virt_what
-# AWS marketplace doesn't like fixed passwords for administrative access
-# so we set OntoPortal web Admin password to the instance_id
+# AWS marketplace requires using randomized passwords for administrative access
+# so we set instance_id as OntoPortal web Admin initial password
 # https://docs.aws.amazon.com/marketplace/latest/userguide/product-and-ami-policies.html
-when 'aws'
-  require 'net/http'
-  require 'uri'
+
+instance_id = aws_metadata_instance_id
+
+if instance_id
   cloud_provider = 'AWS'
   admin_apikey = get_apikey('admin')
-  # get instance ID from metadata
-  uri = URI.parse('http://169.254.169.254/latest/meta-data/instance-id')
-  res = Net::HTTP.get_response(uri)
-  instance_id = res.body
 
   uri = URI.parse("http://localhost:8080/users/admin?apikey=#{admin_apikey}")
   request = Net::HTTP::Patch.new(uri)
