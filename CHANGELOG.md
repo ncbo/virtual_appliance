@@ -1,7 +1,9 @@
 # Changelog
 
-## [Unreleased]
-- AWS AMI
+## [3.0.2] - Unreleased
+- Fixed:
+  - unable to yum update [#17](https://github.com/ncbo/virtual_appliance/issues/17)
+  - firstboot script fail on AWS [#18](https://github.com/ncbo/virtual_appliance/issues/18)
 ## [3.0.1] - 2020-05-06
 - Application Stack updates:
  - CentOS upgraded to 7.9
