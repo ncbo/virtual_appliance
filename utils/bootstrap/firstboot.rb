@@ -18,8 +18,10 @@ secret_key_base = `bundle exec rake secret`
 
 require_relative '../apikey.rb'
 
-CONFIG_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/site_config.rb'
-SECRETS_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'
+CONFIG_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/site_config.rb'.freeze
+SECRETS_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'.freeze
+MAINTENANCE_FILE = '/srv/ontoportal/bioportal_web_ui/current/public/maintenance.html'.freeze
+UI_CONFIG_DIR = '/srv/ontoportal/bioportal_web_ui/current/config'.freeze
 
 def aws_metadata_instance_id
   require 'net/http'
@@ -87,17 +89,17 @@ site_config = File.read(CONFIG_FILE)
 new_content = site_config.gsub(/^\$API_KEY =.*$/, "\$API_KEY = \"#{api_key}\"")
 new_content = new_content.gsub(/^\$CLOUD_PROVIDER =.*$/, "\$CLOUD_PROVIDER = \'#{cloud_provider}\'")
 File.open(CONFIG_FILE, 'w') { |file| file.puts new_content }
-FileUtils.cp CONFIG_FILE, '/srv/ontoportal/bioportal_web_ui/current/config'
-puts "UI API KEY #{api_key}"
+FileUtils.cp CONFIG_FILE, UI_CONFIG_DIR
+# puts "UI API KEY #{api_key}"
 # reset secret_key_base
 secrets_yml = File.read(SECRETS_FILE)
 new_content = secrets_yml.gsub(/^  secret_key_base: .*$/, "  secret_key_base: #{secret_key_base}")
 File.open(SECRETS_FILE, 'w') { |file| file.puts new_content }
-FileUtils.cp SECRETS_FILE, '/srv/ontoportal/bioportal_web_ui/current/config'
+FileUtils.cp SECRETS_FILE, UI_CONFIG_DIR
 
-FileUtils.chown 'ontoportal', 'ontoportal', '/srv/ontoportal/bioportal_web_ui/current/config'
+FileUtils.chown 'ontoportal', 'ontoportal', UI_CONFIG_DIR
 # system "cat /srv/rails/bioportal_web_ui/current/config/site_config.rb"
-
+File.delete(MAINTENANCE_FILE) if File.exist?(MAINTENANCE_FILE)
 puts 'initial OntoPortal config is complete,'
 # restart ontoportal stack
 system('sudo /usr/local/bin/oprestart')
