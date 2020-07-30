@@ -11,5 +11,6 @@ popd
 ruby ../bioportal_ontologies_import.rb
 pushd /srv/ontoportal/ncbo_cron
 bin/ncbo_ontology_process -o STY
-cp maintenance.html /srv/ontoportal/bioportal_web_ui/current/public/maintenance.html
+# set up maintanence page which will remain in palce untill firstboot.rb removes it.
+cp maintenance.html /srv/ontoportal/bioportal_web_ui/current/public/system/maintenance.html
 popd

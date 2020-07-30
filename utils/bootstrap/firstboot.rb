@@ -20,7 +20,7 @@ require_relative '../apikey.rb'
 
 CONFIG_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/site_config.rb'.freeze
 SECRETS_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'.freeze
-MAINTENANCE_FILE = '/srv/ontoportal/bioportal_web_ui/current/public/maintenance.html'.freeze
+MAINTENANCE_FILE = '/srv/ontoportal/bioportal_web_ui/current/public/system/maintenance.html'.freeze
 UI_CONFIG_DIR = '/srv/ontoportal/bioportal_web_ui/current/config'.freeze
 
 def aws_metadata_instance_id
