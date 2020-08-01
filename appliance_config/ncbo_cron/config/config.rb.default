@@ -108,13 +108,25 @@ end
 
 begin
   NcboCron.config do |config|
-    config.redis_host           = Annotator.settings.annotator_redis_host
-    config.redis_port           = Annotator.settings.annotator_redis_port
-    config.enable_ontology_analytics = false
-    config.search_index_all_url = 'http://localhost:8983/solr/term_search_core2'
-    config.property_search_server_index_all_url = 'http://localhost:8983/solr/prop_search_core2'
-    config.ontology_report_path = "#{$DATADIR}/reports/ontologies_report.json"
-    config.enable_spam_deletion = false
+    config.redis_host                              = Annotator.settings.annotator_redis_host
+    config.redis_port                              = Annotator.settings.annotator_redis_port
+    config.enable_ontology_analytics               = false
+    config.search_index_all_url                    = 'http://localhost:8983/solr/term_search_core2'
+    config.property_search_server_index_all_url    = 'http://localhost:8983/solr/prop_search_core2'
+    config.ontology_report_path                    = "#{$DATADIR}/reports/ontologies_report.json"
+    config.enable_spam_deletion                    = false
+
+    # Google Analytics config
+    config.enable_ontology_analytics               = false
+    config.cron_ontology_analytics                 = '30 */4 * * *'
+    config.analytics_service_account_email_address = 'myontoportal@developer.gserviceaccount.com'
+    config.analytics_path_to_key_file              = 'config/myontoportal-analytics.p12'
+    config.analytics_profile_id                    = 'ga:1234567'
+    config.analytics_app_name                      = 'MyOntoPortal'
+    config.analytics_app_version                   = '1.0.0'
+    config.analytics_start_date                    = '2020-01-01'
+    config.analytics_filter_str                    = ''
+
   end
 rescue NameError
   puts '(CNFG) >> NcboCron not available, cannot load config'
