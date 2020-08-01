@@ -1,6 +1,8 @@
 #!/bin/bash
 # Ontoportal daemon servides status
 
+TERM=linux
+
 services='
 4s-boss.service
 4s-backend.service
@@ -21,6 +23,24 @@ httpd.service
 NC=$(tput sgr0)
 RED=$(tput setaf 1)
 GRN=$(tput setaf 2)
+VERBOSE=false
+
+
+while getopts "v" Option
+  do
+   case $Option in
+     v )
+       VERBOSE=true
+     ;;
+   esac
+done
+if $VERBOSE; then
+  echo "SOLR status:"
+  curl "http://localhost:8983/solr/admin/cores?action=STATUS"
+  echo "4store status:"
+  4s-admin list-stores
+  curl "curl localhost:8081/status/"
+fi
 
 for service in $services; do
   isactive=$(/bin/systemctl is-active $service)
@@ -33,3 +53,4 @@ for service in $services; do
   printf "%*s %b\n" -35 "${service}" "${COLOR}${isactive}${NC}"
 done
 exit $STATUS
+
