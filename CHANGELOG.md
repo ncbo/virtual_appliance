@@ -1,6 +1,12 @@
 # Changelog
 
-## [3.0.2] - Unreleased
+## [3.0.2] - 2020-08-07
+- Ontoportal Web UI displays a maintenance page until firstboot process is completed.
+- Ontoportal Stack Changes:
+  - bioportal_web_ui [v5.9.5](https://github.com/ncbo/bioportal_web_ui/releases/tag/v5.9.5)
+  - ontologies_api/ncbo_cron v5.18.1
+  - nginx downgraded to v1.16 which is included in epel yum repo
+  - ruby 2.6.6
 - Fixed:
   - unable to yum update [#17](https://github.com/ncbo/virtual_appliance/issues/17)
   - firstboot script fail on AWS [#18](https://github.com/ncbo/virtual_appliance/issues/18)
