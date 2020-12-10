@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.3] - 2020-12-09
+- Updated AlegroGraph to v7.0.4 RC3 to address goo compatibility issues.
+- Ontoportal Stack Changes:
+  - bioportal_web_ui [v6.2.0](https://github.com/ncbo/bioportal_web_ui/releases/tag/v6.2.0)
+  - ontologies_api/ncbo_cron v5.19.0
+  - Ruby on Rails v5.2
 ## [3.0.2] - 2020-08-07
 - Ontoportal Web UI displays a maintenance page until firstboot process is completed.
 - Ontoportal Stack Changes:
