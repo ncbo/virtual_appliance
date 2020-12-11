@@ -62,7 +62,7 @@ $MAX_POSSIBLE_DISPLAY = 10000
 $MAX_UPLOAD_SIZE = 1073741824
 
 # Release version (appears in the footer)
-$RELEASE_VERSION = 'OntoPortal Appliance 3.0.2'
+$RELEASE_VERSION = 'OntoPortal Appliance 3.0.3'
 
 # URL for release notes (see top-right menu item Support -> Release Notes)
 $RELEASE_NOTES = 'https://www.bioontology.org/wiki/BioPortal_Virtual_Appliance_Release_Notes'
