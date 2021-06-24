@@ -1,4 +1,5 @@
 #!/bin/bash
+#  !!!!!!!! AG licence is required !!!!!!!
 
 sudo opstop
 sudo service agraph start
