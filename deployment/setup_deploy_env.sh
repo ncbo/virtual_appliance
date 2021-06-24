@@ -35,11 +35,13 @@ if [ ! -e ${CONFIG_DIR}/bioportal_web_ui/config/locales/en.yml ]; then
  sed -i "s/the world's most comprehensive repository of biomedical ontologies/your ontology repository for your ontologies/"  ${CONFIG_DIR}/bioportal_web_ui/config/locales/en.yml
 fi
 
-# Install exact version of bundler as required
-gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install --no-ri --no-rdoc
+# Install the exact version of bundler that we need
+gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install
 
-# install gems required for deployment, i.e capistrano, rake, etc.  Rails gem is required for generate secret
-bundle install --with default development --deployment
+# install gems required for deployment, i.e capistrano, rake, etc.  Rails gem is required for generating secret
+bundle config set deployment 'true'
+#bundle config set with 'default'
+bundle install
 if [ ! -f ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/secrets.yml ]; then
   SECRET=$(bundle exec rake secret)
   if [ $? -ne 0 ]; then
@@ -61,9 +63,14 @@ pushd ontologies_api
 git fetch
 git checkout "$API_RELEASE"
 # Install exact version of bundler as required
-gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install --no-ri --no-rdoc
+gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install
 #install gems required for deployment, i.e capistrano, rake, etc. 
-bundle install --with development --without default --deployment --binstubs
+bundle config set deployment 'true'
+bundle config unset with
+bundle config set with 'development'
+bundle config unset without
+bundle config set without 'default:test'
+bundle install --binstubs
 popd
 
 if [ ! -d ${VIRTUAL_APPLIANCE_REPO}/appliance_config/ontologies_linked_data ]; then

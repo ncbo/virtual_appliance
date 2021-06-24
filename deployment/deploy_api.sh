@@ -23,6 +23,9 @@ if [ ! -d $COMPONENT ]; then
 fi
 
 pushd $COMPONENT
-bundle install --with development --without default --deployment --binstubs
+gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install
+
+bundle install --binstubs
+
 bundle exec cap appliance deploy
 popd

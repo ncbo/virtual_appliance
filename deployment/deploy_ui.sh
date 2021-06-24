@@ -24,8 +24,13 @@ if [ ! -d $COMPONENT ]; then
 fi
 
 pushd $COMPONENT
+# installing correct version of bundler
+gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install
 
 # install capistrano for running deployment rake task
-bundle install --with development --without default --deployment
+
+#bundle config set deployment 'true'
+#bundle config set with 'development test'
+bundle install
 bundle exec cap appliance deploy
 popd
