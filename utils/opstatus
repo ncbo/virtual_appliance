@@ -39,7 +39,7 @@ if $VERBOSE; then
   curl "http://localhost:8983/solr/admin/cores?action=STATUS"
   echo "4store status:"
   4s-admin list-stores
-  curl "curl localhost:8081/status/"
+  curl "http://localhost:8081/status/"
 fi
 
 for service in $services; do

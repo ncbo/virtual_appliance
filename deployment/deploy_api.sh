@@ -8,7 +8,7 @@ source $(dirname "$0")/versions
 COMPONENT=ontologies_api
 
 export BRANCH=$API_RELEASE
-echo "deploying $COMPONENT from $BRANCH branch"
+echo "====> deploying $COMPONENT from $BRANCH branch"
 
 # copy site config which contains customised settings for the appliance
 
@@ -18,13 +18,12 @@ if  [ -f  "${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb" ]; then
 fi
 
 if [ ! -d $COMPONENT ]; then
-  echo "can't find repo for $COMPONENT is not available.  Please run setup_deploy_env.sh"
+  echo "===> Repo for $COMPONENT is not available.  Please run setup_deploy_env.sh"
   exit 1
 fi
 
 pushd $COMPONENT
 gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install
-
 bundle install --binstubs
 
 bundle exec cap appliance deploy

@@ -10,7 +10,7 @@ source $(dirname "$0")/versions
 COMPONENT=bioportal_web_ui
 export BRANCH=$UI_RELEASE
 
-echo "deploying $COMPONENT from $BRANCH branch"
+echo "====> deploying $COMPONENT from $BRANCH branch"
 
 # copy site config which contains customised settings for the appliance 
 if  [ -f  "${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb" ]; then
@@ -19,7 +19,7 @@ if  [ -f  "${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb" ]; then
 fi
 
 if [ ! -d $COMPONENT ]; then
-  echo "can't find repo for $COMPONENT is not available.  Please run setup_deploy_env.sh"
+  echo "===> Repo for $COMPONENT is not available.  Please run setup_deploy_env.sh"
   exit 1
 fi
 
@@ -28,9 +28,6 @@ pushd $COMPONENT
 gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install
 
 # install capistrano for running deployment rake task
-
-#bundle config set deployment 'true'
-#bundle config set with 'development test'
 bundle install
 bundle exec cap appliance deploy
 popd

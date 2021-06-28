@@ -100,6 +100,10 @@ FileUtils.cp SECRETS_FILE, UI_CONFIG_DIR
 FileUtils.chown 'ontoportal', 'ontoportal', UI_CONFIG_DIR
 # system "cat /srv/rails/bioportal_web_ui/current/config/site_config.rb"
 File.delete(MAINTENANCE_FILE) if File.exist?(MAINTENANCE_FILE)
+
+# reset ontoportal instance id
+system('redis-cli del ontoportal.instance.id')
+
 puts 'initial OntoPortal config is complete,'
 # restart ontoportal stack
 system('sudo /usr/local/bin/oprestart')
