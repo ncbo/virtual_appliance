@@ -8,8 +8,8 @@ services='
 4s-backend.service
 4s-httpd.service
 tomcat.service
-redis-server-goo_cache.service
-redis-server-http_cache.service
+redis-server-goo.service
+redis-server-http.service
 redis-server-persistent.service
 mgrep.service
 memcached.service

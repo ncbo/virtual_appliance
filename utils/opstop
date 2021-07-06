@@ -10,8 +10,8 @@ httpd.service
 nginx.service
 unicorn.service
 memcached.service
-redis-server-goo_cache.service
-redis-server-http_cache.service
+redis-server-goo.service
+redis-server-http.service
 redis-server-persistent.service
 mgrep.service
 solr.service
