@@ -102,7 +102,7 @@ FileUtils.chown 'ontoportal', 'ontoportal', UI_CONFIG_DIR
 File.delete(MAINTENANCE_FILE) if File.exist?(MAINTENANCE_FILE)
 
 # reset ontoportal instance id
-system('redis-cli del ontoportal.instance.id')
+# system('redis-cli del ontoportal.instance.id')
 
 puts 'initial OntoPortal config is complete,'
 # restart ontoportal stack
