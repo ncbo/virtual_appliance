@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.0.4] - 2021-07-07
+- Ontoportal Stack Changes:
+  - bioportal_web_ui [v6.4.0](https://github.com/ncbo/bioportal_web_ui/releases/tag/v6.4.0)
+  - ontologies_api/ncbo_cron v5.21.0
+  - solr upgraded to 8.8.2
+  - ruby 2.6.7
+  - Https is enabled in Apache/Web_UI using self-signed certificates.
+- Fixed:
+  - [yum update process breaks apache](https://github.com/ncbo/virtual_appliance/issues/20)
 ## [3.0.3] - 2020-12-09
 - Updated AlegroGraph to v7.0.4 RC3 to address goo compatibility issues.
 - Ontoportal Stack Changes:
