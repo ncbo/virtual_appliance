@@ -86,7 +86,7 @@ def azure_metadata_public_ipv4
     case response
     # read AWS meta-data/public-ipv4
     when Net::HTTPSuccess
-     (IPAddr.new(response) rescue nil).nil? ? response.body : false
+      (IPAddr.new(response) rescue nil).nil? ? response.body : false
     else
       # metadata is off so falling back
       false
@@ -98,12 +98,40 @@ def azure_metadata_public_ipv4
   end
 end
 
+def gcp_metadata_public_ipv4
+  uri = URI.parse('http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip')
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.read_timeout = 2
+  http.open_timeout = 2
+
+  begin
+    request = Net::HTTP::Get.new(uri.request_uri)
+    request['Metadata-Flavor'] = 'Google'
+    response = http.request(request)
+    case response
+    # read GCP external-ip
+    when Net::HTTPSuccess
+      # return IP address if its valid ip address
+      (IPAddr.new(response) rescue nil).nil? ? response.body : false
+    else
+      # metadata is off so falling back
+      false
+    end
+  rescue Exception => e
+    # metadata is probably not availalbe
+    # puts "exception #{e.message}"
+    false
+  end
+end
+
 # local IP address lookup.
 def ip_address
   # first try AWS metadata lookup
   ip_address ||= aws_metadata_public_hostname
   # then check azure metadata lookup
   ip_address ||= azure_metadata_public_ipv4
+  # then check GCP metadata lookup
+  ip_address ||= gcp_metadata_public_ipv4
   # fall back to local ip address if AWS/azure metadata is not avaiable
   ip_address ||= local_ip_simple
   ip_address
@@ -116,6 +144,8 @@ def hostname
     aws_metadata_public_hostname
   when 'azure'
     azure_metadata_public_ipv4
+  when 'GCP'
+    gcp_metadata_public_ipv4
   else
     local_ip_simple
   end
