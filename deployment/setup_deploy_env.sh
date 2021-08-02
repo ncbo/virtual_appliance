@@ -8,6 +8,7 @@
 source $(dirname "$0")/versions
 echo '====> Setting up deployment environment'
 bundle config --global set deployment 'true'
+bundle config --global set path $BUNDLE_PATH
 CONFIG_DIR=$VIRTUAL_APPLIANCE_REPO/appliance_config
 cat ~/.bundle/config
 # copy default version controlled config files to local config files
