@@ -30,7 +30,7 @@ $UI_URL = "http://#{$UI_HOSTNAME}"
 $REST_URL ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}"
 
 # URL where BioMixer GWT app is located
-$BIOMIXER_URL = "http://#{$UI_HOSTNAME}/BioMixer"
+$BIOMIXER_URL = "//#{$UI_HOSTNAME}/BioMixer"
 
 # annotator proxy location.  https://github.com/sifrproject/annotators/
 # annotator proxy is running on tomcat which is reverse proxied by nginx
