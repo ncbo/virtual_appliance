@@ -3,8 +3,10 @@
 # Appliance bioportal_web_ui config
 # This file should not be modified.  Most of the site related settings should be done in
 # site_config.rb
-
 # bioportal_web_ui config file for default OntoPortal appliance.
+
+# temporary fix for https://github.com/ncbo/bioportal_web_ui/issues/176 on CentOS7
+ENV['SSL_CERT_FILE'] = '/etc/pki/tls/cert.pem'
 
 require '/srv/ontoportal/virtual_appliance/utils/hostname_lookup.rb'
 require_relative 'site_config.rb' if File.exist?('config/site_config.rb')
