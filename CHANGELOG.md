@@ -1,12 +1,30 @@
 # Changelog
 
+## [3.0.6] - 2022-01-07
+- Addressed log4j/log4shell log4j / log4shell CVE-2021-44228 vulnerability
+- Ontoportal Stack Changes:
+  - bioportal_web_ui [v6.5.1](https://github.com/ncbo/bioportal_web_ui/releases/tag/v6.5.1)
+  - ontologies_api/ncbo_cron v5.22.1
+  - solr upgraded to 8.11.1
+  - ruby 2.6.9
+  - annotatorplus 
+  - https is enabled in nginx for the api on port 8443.
+- Known Issues:
+  - deployment of proper TLS/SSL certificates is required for the full enablement of HTTPS
+## [3.0.5] - 2021-09-24
+- AllegroGraph is removed because it is not fully supported at this time. This
+    reduced the size of OVF down to 1.7Gb
+- Ontoportal Stack Changes:
+  - bioportal_web_ui [v6.5.0](https://github.com/ncbo/bioportal_web_ui/releases/tag/v6.5.0)
+- Known Issues:
+  - OntoPortal footer displays incorrect version of the appliance.
 ## [3.0.4] - 2021-07-07
 - Ontoportal Stack Changes:
   - bioportal_web_ui [v6.4.0](https://github.com/ncbo/bioportal_web_ui/releases/tag/v6.4.0)
   - ontologies_api/ncbo_cron v5.22.0
   - solr upgraded to 8.8.2
   - ruby 2.6.7
-  - Https is enabled in Apache/Web_UI using self-signed certificates.
+  - https is enabled in Apache/Web_UI using self-signed certificates.
 - Fixed:
   - [yum update process breaks apache](https://github.com/ncbo/virtual_appliance/issues/20)
 ## [3.0.3] - 2020-12-09
