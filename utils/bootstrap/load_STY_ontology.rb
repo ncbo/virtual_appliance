@@ -21,7 +21,7 @@ SUBMISSION_DETAILS = {
   'contact': { 'name': 'admin', 'email': 'admin@example.org' },
   'hasOntologyLanguage': 'UMLS',
   'released': '2021-11-01',
-  file: File.new('/srv/ontoportal/virtual_appliance/utils/bootstrap/umls_sematictypes.ttl', 'rb'),
+  file: File.new('/srv/ontoportal/virtual_appliance/utils/bootstrap/umls_semantictypes.ttl', 'rb'),
   'description': 'UMLS Semantic Network\\r\\nThe Semantic Network consists of (1) a set of broad subject categories, or Semantic Types, that provide a consistent categorization of all concepts represented in the UMLS Metathesaurus, and (2) a set of useful and important relationships, or Semantic Relations, that exist between Semantic Types. This section of the documentation provides an overview of the Semantic Network, and describes the files of the Semantic Network. Sample records illustrate structure and content of these files.\\r\\n\\r\\nThe Semantic Network is distributed as one of the UMLS Knowledge Sources and as an open source resource available on the Semantic Network Web site, subject to these terms and conditions.',
   'status': 'production',
   'version': '2021AB'
