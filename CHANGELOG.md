@@ -1,7 +1,7 @@
 # Changelog
 
 ## [3.0.6] - 2022-01-07
-- Addressed log4j/log4shell log4j / log4shell CVE-2021-44228 vulnerability
+- Addressed log4j/log4shell CVE-2021-44228 vulnerability
 - Ontoportal Stack Changes:
   - bioportal_web_ui [v6.5.1](https://github.com/ncbo/bioportal_web_ui/releases/tag/v6.5.1)
   - ontologies_api/ncbo_cron v5.22.1
