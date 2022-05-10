@@ -3,8 +3,10 @@
 # Appliance bioportal_web_ui config
 # This file should not be modified.  Most of the site related settings should be done in
 # site_config.rb
-
 # bioportal_web_ui config file for default OntoPortal appliance.
+
+# temporary fix for https://github.com/ncbo/bioportal_web_ui/issues/176 on CentOS7
+ENV['SSL_CERT_FILE'] = '/etc/pki/tls/cert.pem'
 
 require '/srv/ontoportal/virtual_appliance/utils/hostname_lookup.rb'
 require_relative 'site_config.rb' if File.exist?('config/site_config.rb')
@@ -30,7 +32,7 @@ $UI_URL = "http://#{$UI_HOSTNAME}"
 $REST_URL ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}"
 
 # URL where BioMixer GWT app is located
-$BIOMIXER_URL = "http://#{$UI_HOSTNAME}/BioMixer"
+$BIOMIXER_URL = "//#{$UI_HOSTNAME}/BioMixer"
 
 # annotator proxy location.  https://github.com/sifrproject/annotators/
 # annotator proxy is running on tomcat which is reverse proxied by nginx
@@ -62,7 +64,7 @@ $MAX_POSSIBLE_DISPLAY = 10000
 $MAX_UPLOAD_SIZE = 1073741824
 
 # Release version (appears in the footer)
-$RELEASE_VERSION = 'OntoPortal Appliance 3.0.3'
+$RELEASE_VERSION = 'OntoPortal Appliance 3.0.6'
 
 # URL for release notes (see top-right menu item Support -> Release Notes)
 $RELEASE_NOTES = 'https://www.bioontology.org/wiki/BioPortal_Virtual_Appliance_Release_Notes'

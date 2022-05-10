@@ -13,7 +13,10 @@ popd
 cp /srv/ontoportal/virtual_appliance/utils/bootstrap/maintenance.html /srv/ontoportal/bioportal_web_ui/current/public/system
 
 ./kb_bootstrap_accounts.sh
-ruby ../bioportal_ontologies_import.rb
+
+# bioportal_ontology_import script fails to create submission during aws ami packaging for some unknown reason.
+#ruby ../bioportal_ontologies_import.rb
+ruby load_STY_ontology.rb
 
 pushd /srv/ontoportal/ncbo_cron
 bin/ncbo_ontology_process -o STY
