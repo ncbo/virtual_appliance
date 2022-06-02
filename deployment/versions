@@ -9,11 +9,11 @@
 DATA_DIR=/srv/ontoportal/data
 APP_DIR=/srv/ontoportal
 VIRTUAL_APPLIANCE_REPO=/srv/ontoportal/virtual_appliance
-BUNDLE_PATH='vendor/bundle'
+BUNDLE_PATH='/srv/ontoportal/.bundle'
 #export LOCAL_CONFIG_PATH=$VIRTUAL_APPLIANCE_REPO/appliance_config
 
 # Versions of virtual appliance components
-APPLIANCE_VERSION='3.1.0'
+APPLIANCE_VERSION='3.1.1'
 API_RELEASE='v5.22.3'
 UI_RELEASE='v6.7.1'
 NCBO_CRON_RELEASE=$API_RELEASE
