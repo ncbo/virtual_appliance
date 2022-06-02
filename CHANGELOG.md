@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.1.1] - 2022-06-02
+- OntoPortal Stack Changes:
+  - tomcat v9.0.63
+  - Disable TLS 1 and weak ciphers in apache and nginx
 ## [3.1.0] - 2022-05-10
 - OntoPortal Stack Changes:
   - bioportal_web_ui [v6.7.1](https://github.com/ncbo/bioportal_web_ui/releases/tag/v6.7.1)
@@ -7,7 +11,6 @@
   - ruby v2.7.6
   - tomcat v9.0.62 installed from source
   - redis instances are renamed goo -> goo_cache and http -> http_cache
-
 ## [3.0.6] - 2022-01-07
 - Addressed log4j/log4shell CVE-2021-44228 vulnerability
 - OntoPortal Stack Changes:
