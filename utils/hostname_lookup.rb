@@ -70,7 +70,7 @@ def aws_metadata_public_hostname
     end
   rescue StandardError => e
     # metadata is not availalbe
-    puts "exception for aws #{e.message}"
+    # puts "exception for aws #{e.message}"
     false
   end
 end
@@ -96,7 +96,7 @@ def azure_metadata_public_ipv4
     end
   rescue StandardError => e
     # metadata is not availalbe
-    puts "exception for azure #{e.message}"
+    # puts "exception for azure #{e.message}"
     false
   end
 end
@@ -121,7 +121,7 @@ def gcp_metadata_public_ipv4
     end
   rescue StandardError => e
     # metadata is probably not availalbe
-    puts "exception for gcp #{e.message}"
+    # puts "exception for gcp #{e.message}"
     false
   end
 end
