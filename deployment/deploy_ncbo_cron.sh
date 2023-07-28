@@ -1,11 +1,11 @@
 #!/bin/bash
+#
 # OntoPortal Appliance deployment script for ncbo_cron
 # https://github.com/ncbo/ncbo_cron
 
 source $(dirname "$0")/versions
-
 COMPONENT=ncbo_cron
-#export BRANCH=$NCBO_CRON_RELEASE
+
 BRANCH=$NCBO_CRON_RELEASE
 LOCAL_CONFIG_PATH=${VIRTUAL_APPLIANCE_REPO}/appliance_config
 

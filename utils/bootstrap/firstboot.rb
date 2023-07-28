@@ -104,7 +104,7 @@ File.delete(MAINTENANCE_FILE) if File.exist?(MAINTENANCE_FILE)
 # reset ontoportal instance id
 # system('redis-cli del ontoportal.instance.id')
 
-puts 'initial OntoPortal config is complete,'
 # restart ontoportal stack
 system('sudo /srv/ontoportal/virtual_appliance/utils/bootstrap/gen_tlscert.sh')
 system('sudo /usr/local/bin/oprestart')
+puts 'initial OntoPortal config is complete,'

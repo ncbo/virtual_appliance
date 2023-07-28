@@ -7,7 +7,7 @@
 
 # URL of the API and APIKEY of the BioPortal we want to import data FROM
 SOURCE_API = 'http://data.bioontology.org'
-SOURCE_APIKEY = ENV['SOURCE_APIKEY'] ||  '8b5b7825-538d-40e0-9e9e-5ab9274a9aeb'
+SOURCE_APIKEY = ENV['SOURCE_APIKEY']
 
 # URL of the API and APIKEY of the BioPortal we want to import data TO
 TARGET_API = 'http://localhost:8080'

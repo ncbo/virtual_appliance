@@ -1,52 +1,62 @@
-# MySQL (default setup).  Versions 4.1 and 5.0 are recommended.
+# MySQL. Versions 5.5.8 and up are supported.
 #
-# Install the MySQL driver:
-#   gem install mysql
-# On Mac OS X:
-#   sudo gem install mysql -- --with-mysql-dir=/usr/local/mysql
-# On Mac OS X Leopard:
-#   sudo env ARCHFLAGS="-arch i386" gem install mysql -- --with-mysql-config=/usr/local/mysql/bin/mysql_config
-#       This sets the ARCHFLAGS environment variable to your native architecture
-# On Windows:
-#   gem install mysql
-#       Choose the win32 build.
-#       Install MySQL and put its /bin directory on your path.
+# Install the MySQL driver
+#   gem install mysql2
+#
+# Ensure the MySQL gem is defined in your Gemfile
+#   gem "mysql2"
 #
 # And be sure to use new-style password hashing:
-#   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
-development:
-  adapter: mysql
-  encoding: utf8
-  database: bioportal_ui_development
-  username: user
-  password: password
+#   https://dev.mysql.com/doc/refman/5.7/en/password-hashing.html
+#
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: root
+  password:
   host: localhost
 
-# Warning: The database defined as 'test' will be erased and
-# re-generated from your development database when you run 'rake'.
+development:
+  <<: *default
+  database: bioportal_ui_dev
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  adapter: mysql
-  encoding: utf8
+  <<: *default
   database: bioportal_ui_test
-  username: user
-  password: password
-  socket: localhost
 
+# As with config/credentials.yml, you never want to store sensitive information,
+# like your database password, in your source code. If your source code is
+# ever seen by anyone, they now have access to your database.
+#
+# Instead, provide the password or a full connection URL as an environment
+# variable when you boot the app. For example:
+#
+#   DATABASE_URL="mysql2://myuser:mypass@localhost/somedatabase"
+#
+# If the connection URL is provided in the special DATABASE_URL environment
+# variable, Rails will automatically merge its configuration values on top of
+# the values provided in this file. Alternatively, you can specify a connection
+# URL environment variable explicitly:
+#
+#   production:
+#     url: <%= ENV["MY_APP_DATABASE_URL"] %>
+#
+# Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
+# for a full overview on how database connection configuration can be specified.
+#
 production:
-  adapter: mysql
-  encoding: utf8
-  socket: /var/lib/mysql/mysql.sock
+  <<: *default
   database: bioportal_ui_production
-  username: user
-  password: password
-  host: localhost
+  username: bp_user
+  password: <%= ENV["BIOPORTAL_WEB_UI_DATABASE_PASSWORD"] %>
 
 appliance:
-  adapter: mysql2
-  encoding: utf8
-  socket: /var/lib/mysql/mysql.sock
+  <<: *default
   database: bioportal_web_ui_appliance
   username: bp_ui_appliance
+  # password: *E6BC9C3207D0623E9C3C5134577D2B6E50A1424C
   password: aYT5pe7T6eEDYJgT
-  host: localhost
