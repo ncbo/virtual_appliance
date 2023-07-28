@@ -5,7 +5,7 @@
 # Script sets up deployment environment and runs capistrano deployment job
 
 #source versions
-source $(dirname "$0")/versions
+source "$(dirname "$0")/versions"
 
 COMPONENT=bioportal_web_ui
 export BRANCH=$UI_RELEASE
@@ -24,8 +24,6 @@ if [ ! -d $COMPONENT ]; then
 fi
 
 pushd $COMPONENT
-# installing correct version of bundler
-gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install
 
 # install capistrano for running deployment rake task
 bundle install

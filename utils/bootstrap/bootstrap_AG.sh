@@ -2,7 +2,8 @@
 
 sudo opstop
 sudo systemctl enable agraph
-sudo systemctl start agraph
+# needs to be done manually with admin linux account
+# sudo systemctl start agraph
 ./bootstrap_create_AG_repository.sh
 pushd /srv/ontoportal/virtual_appliance/deployment
 sh setup_deploy_env.sh

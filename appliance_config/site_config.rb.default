@@ -17,7 +17,7 @@ $CLOUD_PROVIDER = 'NONE'
 # Site name (required)
 $SITE = 'OntoPortal Appliance'
 
-# Unique string representing the UI's id for use with the BioPortal Core
+# Unique string representing the UI's id for use with the OntoPortal API (ontologies_api)
 # This api key is automatically generated on first boot and updated here
 $API_KEY = '1de0a270-29c5-4dda-b043-7c3580628cd5'
 
@@ -47,4 +47,3 @@ $API_KEY = '1de0a270-29c5-4dda-b043-7c3580628cd5'
 #ENV['USE_RECAPTCHA'] = 'false'
 #ENV['RECAPTCHA_PUBLIC_KEY']  = ''
 #ENV['RECAPTCHA_PRIVATE_KEY'] = ''
-

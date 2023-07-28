@@ -10,11 +10,12 @@ unless File.file?('/srv/ontoportal/firstboot')
   exit
 end
 
+puts 'starting firstboot script'
+
 system('sudo /usr/local/bin/opstatus') ||
   abort('Aborting! Some Ontoportal Services are not running')
 
 Dir.chdir '/srv/ontoportal/bioportal_web_ui/current'
-secret_key_base = `bundle exec rake secret`
 
 require_relative '../apikey.rb'
 
@@ -90,21 +91,17 @@ new_content = site_config.gsub(/^\$API_KEY =.*$/, "\$API_KEY = \"#{api_key}\"")
 new_content = new_content.gsub(/^\$CLOUD_PROVIDER =.*$/, "\$CLOUD_PROVIDER = \'#{cloud_provider}\'")
 File.open(CONFIG_FILE, 'w') { |file| file.puts new_content }
 FileUtils.cp CONFIG_FILE, UI_CONFIG_DIR
-# puts "UI API KEY #{api_key}"
-# reset secret_key_base
-secrets_yml = File.read(SECRETS_FILE)
-new_content = secrets_yml.gsub(/^  secret_key_base: .*$/, "  secret_key_base: #{secret_key_base}")
-File.open(SECRETS_FILE, 'w') { |file| file.puts new_content }
-FileUtils.cp SECRETS_FILE, UI_CONFIG_DIR
-
 FileUtils.chown 'ontoportal', 'ontoportal', UI_CONFIG_DIR
 # system "cat /srv/rails/bioportal_web_ui/current/config/site_config.rb"
-File.delete(MAINTENANCE_FILE) if File.exist?(MAINTENANCE_FILE)
 
 # reset ontoportal instance id
 # system('redis-cli del ontoportal.instance.id')
 
 # restart ontoportal stack
+system('sudo /srv/ontoportal/virtual_appliance/utils/bootstrap/reset_ui_encrypted_credentials.sh')
 system('sudo /srv/ontoportal/virtual_appliance/utils/bootstrap/gen_tlscert.sh')
 system('sudo /usr/local/bin/oprestart')
+
+File.delete(MAINTENANCE_FILE) if File.exist?(MAINTENANCE_FILE)
+
 puts 'initial OntoPortal config is complete,'

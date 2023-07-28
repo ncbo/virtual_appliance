@@ -27,6 +27,9 @@ GOO_PATH_UPDATE = GOO_BACKEND_NAME.include?('AG') ? '/repositories/ontoportal/st
 
 begin
   LinkedData.config do |config|
+    # Enforce autherization.  This must be disabled in ncbo_cron config.rb
+    config.enable_security            = false
+
     config.goo_host                   = 'localhost'
     config.goo_port                   = "#{GOO_PORT}"
     config.goo_backend_name           = "#{GOO_BACKEND_NAME}"
@@ -41,8 +44,8 @@ begin
     config.repository_folder          = "#{$DATADIR}/repository"
     config.replace_url_prefix         = true
 
-    # Enforce authentication.  This must be disabled in ncbo_cron config.rb
-    config.enable_security            = false
+    # Java max memory for owlapi used for processing ontologies.  Increase for parsing large ontologies.
+    config.java_max_heap_size = '10240M'
 
     # Caches
     Goo.use_cache             = true
@@ -71,7 +74,7 @@ begin
     config.smtp_auth_type         = :none # :none, :plain, :login, :cram_md5
     config.smtp_domain            = 'example.org'
 
-    # Ontology Google Analytics Redis
+    # Ontology Analytics Redis (stores ontology hit statistics pulled from Google Analytics)
     config.ontology_analytics_redis_host = 'localhost'
     config.ontology_analytics_redis_port = 6379
   end
@@ -128,23 +131,22 @@ end
 
 begin
   NcboCron.config do |config|
-    config.redis_host                              = Annotator.settings.annotator_redis_host
-    config.redis_port                              = Annotator.settings.annotator_redis_port
-    config.search_index_all_url                    = 'http://localhost:8983/solr/term_search_core2'
-    config.property_search_server_index_all_url    = 'http://localhost:8983/solr/prop_search_core2'
-    config.ontology_report_path                    = "#{$DATADIR}/reports/ontologies_report.json"
-    config.enable_spam_deletion                    = false
+    config.redis_host                           = Annotator.settings.annotator_redis_host
+    config.redis_port                           = Annotator.settings.annotator_redis_port
+    config.search_index_all_url                 = 'http://localhost:8983/solr/term_search_core2'
+    config.property_search_server_index_all_url = 'http://localhost:8983/solr/prop_search_core2'
+    config.ontology_report_path                 = "#{$DATADIR}/reports/ontologies_report.json"
+    config.enable_spam_deletion                 = false
+    config.disable-dictionary-generation        = false
 
-    # Google Analytics config
-    config.enable_ontology_analytics               = false
-    config.cron_ontology_analytics                 = '30 */4 * * *'
-    config.analytics_service_account_email_address = 'myontoportal@developer.gserviceaccount.com'
-    config.analytics_path_to_key_file              = 'config/myontoportal-analytics.p12'
-    config.analytics_profile_id                    = 'ga:1234567'
-    config.analytics_app_name                      = 'MyOntoPortal'
-    config.analytics_app_version                   = '1.0.0'
-    config.analytics_start_date                    = '2020-01-01'
-    config.analytics_filter_str                    = ''
+    # Google Analytics GA4 config
+    config.enable_ontology_analytics            = false
+    config.cron_ontology_analytics              = '30 */4 * * *'
+    config.analytics_path_to_key_file           = "config/myontoportal_analytics_key.json"
+    config.analytics_property_id                = "123456789"
+    config.analytics_path_to_ua_data_file       = "#{$DATADIR}/ga/bp_ua_data.json"
+    config.analytics_path_to_ga_data_file       = "#{$DATADIR}/ga/bp_ga_data.json"
+
   end
 rescue NameError
   puts '(CNFG) >> NcboCron not available, cannot load config'
