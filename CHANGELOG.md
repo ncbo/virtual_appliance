@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.2.1] - 2023-09-22
+- Disable deprecated ssh cyphers and kexalgorithms.
+- Ontoportal Stack Changes:
+  - ontologies_api [v5.26.0](https://github.com/ncbo/ontologies_api/releases/tag/v5.26.0)
+  - ncbo_cron [v5.26.0](https://github.com/ncbo/ncbo_cron/releases/tag/v5.26.0)
 ## [3.2.0] - 2023-07-26
 - OntoPortal Stack Changes:
   - tomcat v9.0.78

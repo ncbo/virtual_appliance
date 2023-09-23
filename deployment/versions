@@ -17,7 +17,7 @@ GH_ORG='ncbo'
 GH="https://github.com/${GH_ORG}"
 
 # Versions of virtual appliance components
-APPLIANCE_VERSION='3.2.0'
+APPLIANCE_VERSION='3.2.1'
 API_RELEASE='v5.26.0'
 UI_RELEASE='v6.11.0'
 NCBO_CRON_RELEASE=$API_RELEASE
