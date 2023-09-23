@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.0] - 2023-07-26
+- OntoPortal Stack Changes:
+  - tomcat v9.0.78
+  - ruby v2.7.8
+  - solr v8.11.2
+  - ontologies_api [v5.25.0](https://github.com/ncbo/ontologies_api/releases/tag/v5.25.0)
+  - ncbo_cron [v5.25.0](https://github.com/ncbo/ncbo_cron/releases/tag/v5.25.0)
+  - bioportal_web_ui [v6.11.0](https://github.com/ncbo/bioportal_web_ui/releases/tag/v6.11.0)
 ## [3.1.1] - 2022-06-02
 - OntoPortal Stack Changes:
   - tomcat v9.0.63
@@ -76,7 +84,7 @@
   - Solr updated to 8.2
   - Java 11
   - ruby 2.5.7
-  - Allegro Graph v6.4.1 is installed but not activated.
+  - AllegroGraph v6.4.1 is installed but not activated.
   - Directory structure is changed:
     - bioportal_web_ui is movded from /srv/rails/bioportal_web_ui to /srv/ontoportal/bioportal_web_ui
     - ontologies_api is moved from /srv/ncbo/ontologies_api to /srv/ontoportal/ontologies_api

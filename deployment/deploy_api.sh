@@ -4,7 +4,7 @@
 # https://github.com/ncbo/ontologies_api
 # Script sets up deployment environment and runs capistrano deployment job
 
-source $(dirname "$0")/versions
+source "$(dirname "$0")/versions"
 COMPONENT=ontologies_api
 
 export BRANCH=$API_RELEASE
@@ -23,8 +23,8 @@ if [ ! -d $COMPONENT ]; then
 fi
 
 pushd $COMPONENT
-gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install
-bundle install --binstubs
+bundle install
+bundle binstubs --all
 
 bundle exec cap appliance deploy
 popd

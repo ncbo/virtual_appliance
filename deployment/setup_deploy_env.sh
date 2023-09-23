@@ -5,7 +5,7 @@
 # its a bit of an overkill but is consistent with the way that bioportal stack is deployed in production 
 # script locks repos to specific tags which should be compatible with this particular version of appliance
 
-source $(dirname "$0")/versions
+source "$(dirname "$0")/versions"
 echo '====> Setting up deployment environment'
 bundle config --global set deployment 'true'
 bundle config --global set path $BUNDLE_PATH
@@ -24,7 +24,7 @@ if [[ $ONTOLOGIES_LINKED_DATA_RELEASE =~ ^v[0-9.]+ ]] ; then ONTOLOGIES_LINKED_D
 
 echo '=====> Setting up deployment env for UI'
 if [ ! -d bioportal_web_ui ]; then
-  git clone https://github.com/ncbo/bioportal_web_ui bioportal_web_ui
+  git clone ${GH}/bioportal_web_ui bioportal_web_ui
 fi
 pushd bioportal_web_ui
 git fetch
@@ -37,47 +37,43 @@ if [ ! -e ${CONFIG_DIR}/bioportal_web_ui/config/locales/en.yml ]; then
  sed -i "s/the world's most comprehensive repository of biomedical ontologies/your ontology repository for your ontologies/"  ${CONFIG_DIR}/bioportal_web_ui/config/locales/en.yml
 fi
 
-# Install the exact version of bundler that we need
-gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install
-
 # install gems required for deployment, i.e capistrano, rake, etc.  Rails gem is required for generating secret
 bundle config set --local deployment 'true'
 bundle config set --local path $BUNDLE_PATH
 bundle install
 
-if [ ! -f ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/secrets.yml ]; then
-  SECRET=$(bundle exec rake secret)
+# set up encrypted credentials, rails v5.2 is required"
+if [ ! -f ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/credentials/appliance.yml.enc ]; then
+  echo "====> resetting rails credentials"
+  EDITOR='echo "secret_key_base: $(bundle exec rake secret)" > ' bundle exec rails credentials:edit --environment appliance
   if [ $? -ne 0 ]; then
-    echo "==>  What a show stopper!!! Unable to generate secret !!!"
-    exit $?
+    echo "==>  Unable to generate secret !!!"
+    exit
   fi
-  cat <<EOF > ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/secrets.yml 
-appliance:
-  secret_key_base: $SECRET
-EOF
+  cp config/credentials/appliance.* ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/credentials/
 fi
 popd
 
 echo '=====> Setting up deployment env for API'
 if [ ! -d ontologies_api ]; then 
-  git clone https://github.com/ncbo/ontologies_api ontologies_api
+  git clone ${GH}/ontologies_api ontologies_api
 fi
+
 pushd ontologies_api
 git fetch
 git checkout "$API_RELEASE"
-# Install exact version of bundler as required
-gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)" --user-install
 #install gems required for deployment, i.e capistrano, rake, etc. 
 bundle config set --local path $BUNDLE_PATH
 bundle config set --local deployment 'true'
 bundle config set --local with 'development'
 bundle config set --local without 'default:test'
 
-bundle install --binstubs
+bundle install
+bundle binstubs --all
 popd
 
 if [ ! -d ${VIRTUAL_APPLIANCE_REPO}/appliance_config/ontologies_linked_data ]; then
-  git clone https://github.com/ncbo/ontologies_linked_data ${VIRTUAL_APPLIANCE_REPO}/appliance_config/ontologies_linked_data
+  git clone ${GH}/ontologies_linked_data ${VIRTUAL_APPLIANCE_REPO}/appliance_config/ontologies_linked_data
 fi
 pushd ${VIRTUAL_APPLIANCE_REPO}/appliance_config/ontologies_linked_data
 git fetch

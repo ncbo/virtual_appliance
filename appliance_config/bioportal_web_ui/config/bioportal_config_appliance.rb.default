@@ -28,7 +28,7 @@ $SITE ||= 'OntoPortal Appliance'
 # The URL for the BioPortal Rails UI (this application)
 $UI_URL = "http://#{$UI_HOSTNAME}"
 
-# REST core service address
+# OntoPortal API service address
 $REST_URL ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}"
 
 # URL where BioMixer GWT app is located
@@ -48,10 +48,8 @@ $PURL_PREFIX = 'http://purl.bioontology.org/ontology'
 # If your BioPortal installation includes Annotator set this to false
 $ANNOTATOR_DISABLED = false
 
-# If your BioPortal installation includes Resource Index set this to false
-$RESOURCE_INDEX_DISABLED = true
-
 # Unique string representing the UI's id for use with the BioPortal Core
+# API_KEY is reset on the first boot and is set in the site_config.rb
 $API_KEY ||= '1de0a270-29c5-4dda-b043-7c3580628cd5'
 
 # Max number of children to return when rendering a tree view
@@ -64,10 +62,7 @@ $MAX_POSSIBLE_DISPLAY = 10000
 $MAX_UPLOAD_SIZE = 1073741824
 
 # Release version (appears in the footer)
-$RELEASE_VERSION = 'OntoPortal Appliance 3.1.1'
-
-# URL for release notes (see top-right menu item Support -> Release Notes)
-$RELEASE_NOTES = 'https://www.bioontology.org/wiki/BioPortal_Virtual_Appliance_Release_Notes'
+$RELEASE_VERSION = 'OntoPortal Appliance 3.2.0'
 
 # Pairing a name with an array of ontology virtual ids will allow you to filter ontologies based on a subdomain.
 # If your main UI is hosted at example.org and you add custom.example.org pointing to the same Rails installation
@@ -75,9 +70,6 @@ $RELEASE_NOTES = 'https://www.bioontology.org/wiki/BioPortal_Virtual_Appliance_R
 # Any number of slices can be added. Groups are added automatically using the group acronym as the subdomain.
 $ENABLE_SLICES = false
 $ONTOLOGY_SLICES = {}
-
-# Help page, launched from Support -> Help menu item in top navigation bar.
-$WIKI_HELP_PAGE = 'https://www.bioontology.org/wiki/BioPortal_Help'
 
 # Google Analytics ID (optional)
 $ANALYTICS_ID ||= ''
@@ -122,7 +114,6 @@ ENV['RECAPTCHA_PRIVATE_KEY'] ||= ''
 
 # Custom BioPortal logging
 require 'log'
-$REMOTE_LOGGING = false
 
 ##
 # Custom Ontology Details
