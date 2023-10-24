@@ -1,7 +1,9 @@
 # Changelog
 
-## [3.2.1] - 2023-09-22
-- Disable deprecated ssh cyphers and kexalgorithms.
+## [3.2.1] - 2023-09-24
+- Disable deprecated ssh cyphers and kexalgorithms to make vulnerability
+  scanners happier
+- improve robustness of the firstboot and hostname_lookup scripts
 - Ontoportal Stack Changes:
   - ontologies_api [v5.26.0](https://github.com/ncbo/ontologies_api/releases/tag/v5.26.0)
   - ncbo_cron [v5.26.0](https://github.com/ncbo/ncbo_cron/releases/tag/v5.26.0)
