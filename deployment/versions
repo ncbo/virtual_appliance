@@ -18,10 +18,10 @@ GH="https://github.com/${GH_ORG}"
 
 # Versions of virtual appliance components
 APPLIANCE_VERSION='3.2.2'
-API_RELEASE='v5.26.1'
+API_RELEASE='v5.26.2'
 UI_RELEASE='v6.11.0'
-NCBO_CRON_RELEASE='v5.26.0'
-ONTOLOGIES_LINKED_DATA_RELEASE=$API_RELEASE
+NCBO_CRON_RELEASE=$API_RELEASE
+ONTOLOGIES_LINKED_DATA_RELEASE='v5.26.1'
 
 if [ "$USER" != 'ontoportal' ]; then
   echo "you need to run this script as ontoportal user"
