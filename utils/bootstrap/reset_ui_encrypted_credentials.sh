@@ -1,7 +1,7 @@
 #!/bin/bash
 # script for resetting ROR encrypted credentials for appliance environment
 # FIXME: this needs to be re-written as a rake task
-
+BUNDLE_GEMFILE=/srv/ontoportal/bioportal_web_ui/current/Gemfile
 pushd /srv/ontoportal/bioportal_web_ui/current || exit 1
   echo "====> resetting rails encrypted credentials"
   SECRET=$(/usr/local/rbenv/shims/bundle exec rake secret)
