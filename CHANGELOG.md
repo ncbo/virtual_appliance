@@ -1,11 +1,18 @@
 # Changelog
 
+## [3.2.2] - 2023-10-15
+- Ontoportal Stack Changes:
+  - nodejs v16
+  - certbot is installed by default
+  - ontologies_api [v5.26.2](https://github.com/ncbo/ontologies_api/releases/tag/v5.26.2)
+  - ncbo_cron [v5.26.2](https://github.com/ncbo/ncbo_cron/releases/tag/v5.26.2)
 ## [3.2.1] - 2023-09-24
 - Disable deprecated ssh cyphers and kexalgorithms to make vulnerability
   scanners happier
 - improve robustness of the firstboot and hostname_lookup scripts
 - Ontoportal Stack Changes:
-  - ontologies_api [v5.26.0](https://github.com/ncbo/ontologies_api/releases/tag/v5.26.0)
+  - tomcat v9.0.92
+  - ontologies_api [v5.26.1](https://github.com/ncbo/ontologies_api/releases/tag/v5.26.1)
   - ncbo_cron [v5.26.0](https://github.com/ncbo/ncbo_cron/releases/tag/v5.26.0)
 ## [3.2.0] - 2023-07-26
 - OntoPortal Stack Changes:
