@@ -23,7 +23,7 @@ end
 
 Dir.chdir '/srv/ontoportal/bioportal_web_ui/current'
 
-require_relative '../apikey.rb'
+require_relative '../apikey'
 
 CONFIG_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/site_config.rb'.freeze
 SECRETS_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'.freeze
@@ -101,11 +101,13 @@ FileUtils.chown 'ontoportal', 'ontoportal', UI_CONFIG_DIR
 # reset ontoportal instance id
 # system('redis-cli del ontoportal.instance.id')
 
-# restart ontoportal stack
-system('sudo /srv/ontoportal/virtual_appliance/utils/bootstrap/reset_ui_encrypted_credentials.sh')
+system('/srv/ontoportal/virtual_appliance/utils/bootstrap/reset_ui_encrypted_credentials.sh')
 system('sudo /srv/ontoportal/virtual_appliance/utils/bootstrap/gen_tlscert.sh')
+# restart ontoportal stack
+puts "Restarting OntoPortal stack"
 system('sudo /usr/local/bin/oprestart')
+system('sudo /usr/local/bin/opstatus')
 
 File.delete(MAINTENANCE_FILE) if File.exist?(MAINTENANCE_FILE)
 
-puts 'initial OntoPortal config is complete,'
+puts 'initial OntoPortal bootstrap is complete,'
