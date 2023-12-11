@@ -62,7 +62,7 @@ $MAX_POSSIBLE_DISPLAY = 10000
 $MAX_UPLOAD_SIZE = 1073741824
 
 # Release version (appears in the footer)
-$RELEASE_VERSION = 'OntoPortal Appliance 3.2.1'
+$RELEASE_VERSION = 'OntoPortal Appliance 3.2.2'
 
 # Pairing a name with an array of ontology virtual ids will allow you to filter ontologies based on a subdomain.
 # If your main UI is hosted at example.org and you add custom.example.org pointing to the same Rails installation
@@ -109,8 +109,6 @@ $ERROR_EMAIL ||= 'errors@example.org'
 #    2. Include the corresponding keys below (between the single quotes)
 #    3. Set the USE_RECAPTCHA option to 'true'
 ENV['USE_RECAPTCHA'] ||= 'false'
-ENV['RECAPTCHA_PUBLIC_KEY'] ||= ''
-ENV['RECAPTCHA_PRIVATE_KEY'] ||= ''
 
 # Custom BioPortal logging
 require 'log'
