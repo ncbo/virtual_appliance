@@ -9,16 +9,9 @@ require 'ipaddr'
 # It is recomened to set the Domain name/URL of the ontoportal appliance
 # in the Ontoportal Customization section instead of relying on this functions.
 
-# Simple IP address lookup. This doesn't make connection to external hosts
+# Simple IP address lookup.
 def local_ip_simple
-  orig, Socket.do_not_reverse_lookup = Socket.do_not_reverse_lookup, true  # turn off reverse DNS resolution temporarily
-
-  UDPSocket.open do |s|
-    s.connect '8.8.8.8', 1 # google dns
-    s.addr.last
-  end
-ensure
-  Socket.do_not_reverse_lookup = orig
+  Socket.ip_address_list.detect { |intf| intf.ipv4? && !intf.ipv4_loopback? }&.ip_address || false
 end
 
 # validate FQDN
@@ -136,7 +129,7 @@ def ip_address
   ip_address ||= gcp_metadata_public_ipv4
   # fall back to local ip address if AWS/azure metadata is not avaiable
   ip_address ||= local_ip_simple
-  # it should naver happen but if it does then use localhost if everything fails
+  # use localhost if everything fails
   ip_address || 'localhost'
 end
 

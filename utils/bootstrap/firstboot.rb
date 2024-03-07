@@ -12,12 +12,18 @@ end
 
 puts 'starting firstboot script'
 
-system('sudo /usr/local/bin/opstatus') ||
-  abort('Aborting! Some Ontoportal Services are not running')
+n = 0
+until system('sudo /usr/local/bin/opstatus')
+  # some services might be slow to start on VMs with low resources
+  puts 'some services are not running. waiting for 15 seconds for the services to start'
+  sleep 15
+  n += 1
+  abort('Aborting! Some Ontoportal Services failed to start. Unable to continue') if n > 3
+end
 
 Dir.chdir '/srv/ontoportal/bioportal_web_ui/current'
 
-require_relative '../apikey.rb'
+require_relative '../apikey'
 
 CONFIG_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/site_config.rb'.freeze
 SECRETS_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'.freeze
@@ -60,7 +66,6 @@ reset_apikey('admin')
 reset_apikey('ontoportal_ui')
 api_key = get_apikey('ontoportal_ui')
 
-
 # AWS marketplace requires using randomized passwords for administrative access
 # so we set instance_id as OntoPortal web Admin initial password
 # https://docs.aws.amazon.com/marketplace/latest/userguide/product-and-ami-policies.html
@@ -92,16 +97,17 @@ new_content = new_content.gsub(/^\$CLOUD_PROVIDER =.*$/, "\$CLOUD_PROVIDER = \'#
 File.open(CONFIG_FILE, 'w') { |file| file.puts new_content }
 FileUtils.cp CONFIG_FILE, UI_CONFIG_DIR
 FileUtils.chown 'ontoportal', 'ontoportal', UI_CONFIG_DIR
-# system "cat /srv/rails/bioportal_web_ui/current/config/site_config.rb"
 
 # reset ontoportal instance id
 # system('redis-cli del ontoportal.instance.id')
 
-# restart ontoportal stack
-system('sudo /srv/ontoportal/virtual_appliance/utils/bootstrap/reset_ui_encrypted_credentials.sh')
+system('/srv/ontoportal/virtual_appliance/utils/bootstrap/reset_ui_encrypted_credentials.sh')
 system('sudo /srv/ontoportal/virtual_appliance/utils/bootstrap/gen_tlscert.sh')
+# restart ontoportal stack
+puts "Restarting OntoPortal stack"
 system('sudo /usr/local/bin/oprestart')
+system('sudo /usr/local/bin/opstatus')
 
 File.delete(MAINTENANCE_FILE) if File.exist?(MAINTENANCE_FILE)
 
-puts 'initial OntoPortal config is complete,'
+puts 'initial OntoPortal bootstrap is complete,'
