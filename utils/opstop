@@ -6,7 +6,7 @@ if (( $EUID != 0 )); then
 fi
 services='
 ncbo_cron.service
-httpd.service
+apache2.service
 nginx.service
 unicorn.service
 memcached.service

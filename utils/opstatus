@@ -17,7 +17,7 @@ solr.service
 ncbo_cron.service
 unicorn.service
 nginx.service
-httpd.service
+apache2.service
 '
 
 NC=$(tput sgr0)

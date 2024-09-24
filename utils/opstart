@@ -15,7 +15,7 @@ solr.service
 ncbo_cron.service
 unicorn.service
 nginx.service
-httpd.service
+apache2.service
 '
 for service in $services; do
   /bin/systemctl start $service

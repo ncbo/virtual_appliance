@@ -1,9 +1,13 @@
 #!/bin/bash
 # sets up deployment environment for the appliance
 #
-# Script pulls various ncbo bioportal repos that it needs for like capistrano scripts
+# Script pulls various ncbo bioportal repos that it needs for the capistrano deployment
 # its a bit of an overkill but is consistent with the way that bioportal stack is deployed in production 
 # script locks repos to specific tags which should be compatible with this particular version of appliance
+
+#generate_secret_key_base() {
+#  echo $(bundle exec rails secret)
+#}
 
 source "$(dirname "$0")/versions"
 echo '====> Setting up deployment environment'
@@ -22,7 +26,8 @@ if [[ $API_RELEASE =~ ^v[0-9.]+ ]] ; then  API_RELEASE=tags/${API_RELEASE} ; fi
 if [[ $UI_RELEASE =~ ^v[0-9.]+ ]] ; then UI_RELEASE=tags/${UI_RELEASE} ; fi
 if [[ $ONTOLOGIES_LINKED_DATA_RELEASE =~ ^v[0-9.]+ ]] ; then ONTOLOGIES_LINKED_DATA_RELEASE=tags/${ONTOLOGIES_LINKED_DATA_RELEASE} ; fi
 
-echo '=====> Setting up deployment env for UI'
+echo "=====> Setting up deployment env for UI from ${GH}"
+
 if [ ! -d bioportal_web_ui ]; then
   git clone ${GH}/bioportal_web_ui bioportal_web_ui
 fi
@@ -42,15 +47,10 @@ bundle config set --local deployment 'true'
 bundle config set --local path $BUNDLE_PATH
 bundle install
 
+echo "!!!!! need to set up creds in ${VIRTUAL_APPLIANCE_REPO} repo"
 # set up encrypted credentials, rails v5.2 is required"
-if [ ! -f ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/credentials/appliance.yml.enc ]; then
-  echo "====> resetting rails credentials"
-  EDITOR='echo "secret_key_base: $(bundle exec rake secret)" > ' bundle exec rails credentials:edit --environment appliance
-  if [ $? -ne 0 ]; then
-    echo "==>  Unable to generate secret !!!"
-    exit
-  fi
-  cp config/credentials/appliance.* ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/credentials/
+if [ ! -f ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/credentials/zappliance.yml.enc ]; then
+  /srv/ontoportal/virtual_appliance/utils/bootstrap/reset_ui_encrypted_credentials.sh
 fi
 popd
 
