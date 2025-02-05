@@ -1,15 +1,31 @@
 #!/bin/bash
-# script for resetting ROR encrypted credentials for appliance environment
+# script for resetting rails encrypted credentials for appliance environment
 # FIXME: this needs to be re-written as a rake task
-BUNDLE_GEMFILE=/srv/ontoportal/bioportal_web_ui/current/Gemfile
-pushd /srv/ontoportal/bioportal_web_ui/current || exit 1
+
+pwd
   echo "====> resetting rails encrypted credentials"
-  SECRET=$(/usr/local/rbenv/shims/bundle exec rake secret)
+  #SECRET=$(/usr/local/rbenv/shims/bundle exec rake secret)
+  SECRET=$(bin/rails secret)
   if [ $? -ne 0 ]; then
     echo "==> Unable to generate secret !!!"
     exit 1
   fi
 
-  EDITOR='echo "secret_key_base: $(bundle exec rake secret)" > ' bundle exec rails credentials:edit --environment appliance
+  # Generate a secret_key_base and store it in credentials
+  # EDITOR='echo "secret_key_base: $(bundle exec rake secret)" > ' bundle exec rails credentials:edit --environment appliance
+  # generating credentials file and programmatically adding keys to it doesn't work in rails 7.0 when used with --environemnt
+  # this issue is addressed in rails 7.1
+  # As a temporary workaround we generate credentials for production env and copy files into appliance env.
+
+  #EDITOR='echo "secret_key_base: $(bin/rails secret)" > ' bin/rails credentials:edit --environment appliance
+  EDITOR='echo "secret_key_base: $(bin/rails secret)" > ' bin/rails credentials:edit
+  if [ $? -ne 0 ] || [ ! -f config/credentials/appliance.yml.enc ] ; then
+    echo "==>  Unable to generate secret !!!"
+    exit
+  fi
+
+  mv config/master.key config/credentials/appliance.key
+  mv config/credentials.yml.enc config/credentials/appliance.yml.enc
+
   cp config/credentials/appliance.* /srv/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/credentials/ || exit 1
 popd

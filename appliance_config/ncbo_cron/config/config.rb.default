@@ -6,7 +6,7 @@
 # For more information please see https://ontoportal.github.io/administration/steps
 
 # Import site_config settings
-require '/srv/ontoportal/virtual_appliance/utils/hostname_lookup.rb'
+require '/opt/ontoportal/virtual_appliance/utils/hostname_lookup.rb'
 if File.exist?('config/environments/site_config.rb') || File.exist?('config/site_config.rb')
   require_relative 'site_config.rb'
 end

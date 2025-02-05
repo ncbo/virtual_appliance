@@ -5,7 +5,7 @@
 # Script sets up deployment environment and runs capistrano deployment job
 
 #source versions
-source "$(dirname "$0")/versions"
+source "$(dirname "$0")/config.sh"
 
 COMPONENT=bioportal_web_ui
 export BRANCH=$UI_RELEASE

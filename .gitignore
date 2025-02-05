@@ -1,3 +1,16 @@
-appliance_config/bioportal_web_ui/config/secrets.yml
 deployment/bioportal_web_ui
 deployment/ontologies_api
+appliance_config/ontologies_linked_data
+
+#generated config files:
+appliance_config/site_config.rb
+appliance_config/ncbo_cron/config/config.rb
+appliance_config/ncbo_cron/config/site_config.rb
+appliance_config/ontologies_api/config/environments/appliance.rb
+appliance_config/ontologies_api/config/environments/site_config.rb
+appliance_config/bioportal_web_ui/config/bioportal_config_appliance.rb
+appliance_config/bioportal_web_ui/config/site_config.rb
+
+#secrets
+appliance_config/bioportal_web_ui/config/secrets.yml
+appliance_config/bioportal_web_ui/config/credentials/appliance*
