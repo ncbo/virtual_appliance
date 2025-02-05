@@ -1,0 +1,5 @@
+---
+BUNDLE_DEPLOYMENT: "true"
+BUNDLE_WITH: "development"
+BUNDLE_WITHOUT: "default:test"
+BUNDLE_SET: "deployment true"

@@ -21,14 +21,14 @@ until system('sudo /usr/local/bin/opstatus')
   abort('Aborting! Some Ontoportal Services failed to start. Unable to continue') if n > 3
 end
 
-Dir.chdir '/srv/ontoportal/bioportal_web_ui/current'
+Dir.chdir '/opt/ontoportal/bioportal_web_ui/current'
 
 require_relative '../apikey'
 
-CONFIG_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/site_config.rb'.freeze
-SECRETS_FILE = '/srv/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'.freeze
-MAINTENANCE_FILE = '/srv/ontoportal/bioportal_web_ui/current/public/system/maintenance.html'.freeze
-UI_CONFIG_DIR = '/srv/ontoportal/bioportal_web_ui/current/config'.freeze
+CONFIG_FILE = '/opt/ontoportal/virtual_appliance/appliance_config/site_config.rb'.freeze
+SECRETS_FILE = '/opt/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'.freeze
+MAINTENANCE_FILE = '/opt/ontoportal/bioportal_web_ui/current/public/system/maintenance.html'.freeze
+UI_CONFIG_DIR = '/opt/ontoportal/bioportal_web_ui/current/config'.freeze
 
 def aws_metadata_instance_id
   require 'net/http'
@@ -101,8 +101,8 @@ FileUtils.chown 'ontoportal', 'ontoportal', UI_CONFIG_DIR
 # reset ontoportal instance id
 # system('redis-cli del ontoportal.instance.id')
 
-system('/srv/ontoportal/virtual_appliance/utils/bootstrap/reset_ui_encrypted_credentials.sh')
-system('sudo /srv/ontoportal/virtual_appliance/utils/bootstrap/gen_tlscert.sh')
+system('/opt/ontoportal/virtual_appliance/utils/bootstrap/reset_ui_encrypted_credentials.sh')
+system('sudo /opt/ontoportal/virtual_appliance/utils/bootstrap/gen_tlscert.sh')
 # restart ontoportal stack
 puts "Restarting OntoPortal stack"
 system('sudo /usr/local/bin/oprestart')

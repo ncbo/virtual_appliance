@@ -5,69 +5,44 @@
 # site_config.rb
 # bioportal_web_ui config file for default OntoPortal appliance.
 
-# temporary fix for https://github.com/ncbo/bioportal_web_ui/issues/176 on CentOS7
-ENV['SSL_CERT_FILE'] = '/etc/pki/tls/cert.pem'
-
-require '/srv/ontoportal/virtual_appliance/utils/hostname_lookup.rb'
+require '/opt/ontoportal/virtual_appliance/utils/hostname_lookup.rb'
 require_relative 'site_config.rb' if File.exist?('config/site_config.rb')
 
 # Appliance needs to know its own address to display proper URLs
 # Ideally it should be set to HOSTNAME but we fall back to using IP address if HOSTNAME is not manually set.
+
+# Organization info
+$ORG = ENV['ORG'] || "OntoPortal Alliance"
+$ORG_URL = ENV['ORG_URL'] || "https://ontoportal.org"
+
+# Site name (required)
+$SITE = ENV['SITE'] || "OntoPortal Appliance"
+
+# Full string for site, EX: "NCBO BioPortal", do not modify
+$ORG_SITE = $ORG.nil? || $ORG.empty? ? $SITE : "#{$ORG} #{$SITE}"
+
 $REST_HOSTNAME ||= ip_address
 $REST_PORT ||= '8080'
 $UI_HOSTNAME ||= $REST_HOSTNAME
-$REST_URL_PREFIX ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}/"
-
-# Organization info
-#$ORG = 'OntoPortal Alliance'
-$ORG_URL ||= 'http://appliance.ontoportal.org'
-
-# Site name (required)
-$SITE ||= 'OntoPortal Appliance'
 
 # The URL for the BioPortal Rails UI (this application)
-$UI_URL = "http://#{$UI_HOSTNAME}"
+$UI_URL = ENV['UI_URL'] || "http://#{$UI_HOSTNAME}"
 
 # OntoPortal API service address
 $REST_URL ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}"
-
-# URL where BioMixer GWT app is located
-$BIOMIXER_URL = "//#{$UI_HOSTNAME}/BioMixer"
 
 # annotator proxy location.  https://github.com/sifrproject/annotators/
 # annotator proxy is running on tomcat which is reverse proxied by nginx
 $PROXY_URL = "#{$REST_URL}"
 
-# If you are running a PURL server to provide URLs for ontologies in your BioPortal instance, enable this option
-$PURL_ENABLED = false
-
-# The PURL URL is generated using this prefix + the abbreviation for an ontology.
-# The PURL URL generation algorithm can be altered in app/models/ontology_wrapper.rb
-$PURL_PREFIX = 'http://purl.bioontology.org/ontology'
-
-# If your BioPortal installation includes Annotator set this to false
-$ANNOTATOR_DISABLED = false
-
 # Unique string representing the UI's id for use with the BioPortal Core
 # API_KEY is reset on the first boot and is set in the site_config.rb
 $API_KEY ||= '1de0a270-29c5-4dda-b043-7c3580628cd5'
 
-# Max number of children to return when rendering a tree view
-$MAX_CHILDREN = 2500
-
-# Max number of children that it's possible to display (more than this is either too slow or not helpful to users)
-$MAX_POSSIBLE_DISPLAY = 10000
-
-# Max size allowed for uploaded files
-$MAX_UPLOAD_SIZE = 1073741824
-
 # Release version (appears in the footer)
-$RELEASE_VERSION = 'OntoPortal Appliance 3.2.2'
+$RELEASE_VERSION = 'OntoPortal Appliance 4.0.0'
 
-# Pairing a name with an array of ontology virtual ids will allow you to filter ontologies based on a subdomain.
-# If your main UI is hosted at example.org and you add custom.example.org pointing to the same Rails installation
-# you could filter the ontologies visible at custom.example.org by adding this to the hash: "custom" => { :name => "Custom Slice", :ontologies => [1032, 1054, 1099] }
-# Any number of slices can be added. Groups are added automatically using the group acronym as the subdomain.
+# Enable Slices, filtering of ontologies based on subdomain and ontology groups
 $ENABLE_SLICES = false
 $ONTOLOGY_SLICES = {}
 
@@ -118,6 +93,9 @@ ENV['USE_RECAPTCHA'] ||= 'false'
 # Custom BioPortal logging
 require 'log'
 
+# URL where BioMixer GWT app is located
+$BIOMIXER_URL = "//#{$UI_HOSTNAME}/BioMixer"
+
 ##
 # Custom Ontology Details
 # Custom details can be added on a per ontology basis using a key/value pair as columns of the details table
@@ -133,6 +111,9 @@ $FRONT_NOTICE = ''
 # Site notice appears on all pages and remains closed indefinitely. Stored below as a hash with a unique key and a
 #  EX: $SITE_NOTICE = { :unique_key => 'Put your message here (can include <a href="/link">html</a> if you use
 $SITE_NOTICE = {}
+
+$UI_THEME = ENV['UI_THEME'] || 'ontoportal'
+
 ################################
 ## AUTO-GENERATED DO NOT MODIFY
 #################################
@@ -140,5 +121,3 @@ $SITE_NOTICE = {}
 # Full string for site, EX: "NCBO BioPortal"
 $ORG_SITE = ($ORG.nil? || $ORG.empty?) ? $SITE : "#{$ORG} #{$SITE}"
 
-# Email address to mail when exceptions are raised
-#ExceptionNotifier.exception_recipients = [$ERROR_EMAIL]

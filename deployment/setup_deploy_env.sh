@@ -9,7 +9,7 @@
 #  echo $(bundle exec rails secret)
 #}
 
-source "$(dirname "$0")/versions"
+source "$(dirname "$0")/config.sh"
 echo '====> Setting up deployment environment'
 bundle config --global set deployment 'true'
 bundle config --global set path $BUNDLE_PATH
@@ -26,7 +26,7 @@ if [[ $API_RELEASE =~ ^v[0-9.]+ ]] ; then  API_RELEASE=tags/${API_RELEASE} ; fi
 if [[ $UI_RELEASE =~ ^v[0-9.]+ ]] ; then UI_RELEASE=tags/${UI_RELEASE} ; fi
 if [[ $ONTOLOGIES_LINKED_DATA_RELEASE =~ ^v[0-9.]+ ]] ; then ONTOLOGIES_LINKED_DATA_RELEASE=tags/${ONTOLOGIES_LINKED_DATA_RELEASE} ; fi
 
-echo "=====> Setting up deployment env for UI from ${GH}"
+echo "=====> Setting up deployment env for UI from ${GH} release ${UI_RELEASE}"
 
 if [ ! -d bioportal_web_ui ]; then
   git clone ${GH}/bioportal_web_ui bioportal_web_ui
@@ -50,7 +50,7 @@ bundle install
 echo "!!!!! need to set up creds in ${VIRTUAL_APPLIANCE_REPO} repo"
 # set up encrypted credentials, rails v5.2 is required"
 if [ ! -f ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/credentials/zappliance.yml.enc ]; then
-  /srv/ontoportal/virtual_appliance/utils/bootstrap/reset_ui_encrypted_credentials.sh
+  /opt/ontoportal/virtual_appliance/utils/bootstrap/reset_ui_encrypted_credentials.sh
 fi
 popd
 

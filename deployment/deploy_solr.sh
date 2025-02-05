@@ -3,7 +3,7 @@
 # OntoPortal Appliance script for updating solr configuraion
 
 
-source "$(dirname "$0")/versions"
+source "$(dirname "$0")/config.sh"
 
 LOCAL_CONFIG_PATH=$VIRTUAL_APPLIANCE_REPO/appliance_config
 COMPONENT=ontologies_linked_data
