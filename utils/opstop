@@ -6,8 +6,8 @@ if (( $EUID != 0 )); then
 fi
 services='
 ncbo_cron.service
-apache2.service
 nginx.service
+ui.service
 unicorn.service
 memcached.service
 redis-server-goo_cache.service
@@ -16,9 +16,7 @@ redis-server-persistent.service
 mgrep.service
 solr.service
 tomcat.service
-4s-httpd.service
-4s-backend.service
-4s-boss.service
+agraph.service
 '
 
 for service in $services; do

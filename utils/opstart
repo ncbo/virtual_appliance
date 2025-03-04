@@ -1,10 +1,8 @@
 #!/bin/bash
-# Script to restart OntoPortal stack
+# Script to start OntoPortal stack
 
 services='
-4s-boss.service
-4s-backend.service
-4s-httpd.service
+agraph.service
 tomcat.service
 redis-server-goo_cache.service
 redis-server-http_cache.service
@@ -14,8 +12,8 @@ memcached.service
 solr.service
 ncbo_cron.service
 unicorn.service
+ui.service
 nginx.service
-apache2.service
 '
 for service in $services; do
   /bin/systemctl start $service

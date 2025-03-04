@@ -1,12 +1,10 @@
 #!/bin/bash
-# Ontoportal daemon servides status
+# Ontoportal backend servers status
 
 TERM=linux
 
 services='
-4s-boss.service
-4s-backend.service
-4s-httpd.service
+agraph.service
 tomcat.service
 redis-server-goo_cache.service
 redis-server-http_cache.service
@@ -16,8 +14,8 @@ memcached.service
 solr.service
 ncbo_cron.service
 unicorn.service
+ui.service
 nginx.service
-apache2.service
 '
 
 NC=$(tput sgr0)
@@ -37,9 +35,6 @@ done
 if $VERBOSE; then
   echo "SOLR status:"
   curl "http://localhost:8983/solr/admin/cores?action=STATUS"
-  echo "4store status:"
-  4s-admin list-stores
-  curl "http://localhost:8081/status/"
 fi
 
 for service in $services; do
