@@ -3,6 +3,7 @@ require 'socket'
 require 'net/http'
 require 'uri'
 require 'ipaddr'
+require 'resolv'
 
 # Functions for determine the external IP address of the appliance in the
 # initial/default deployment case.
@@ -17,6 +18,21 @@ end
 # validate FQDN
 def fqdn?(str)
   !!(str =~ /^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/)
+end
+
+# Aempt reverse DNS on local IP
+def reverse_dns_lookup
+  ip = local_ip_simple
+  return false unless ip
+
+  begin
+    # Attempt to resolve IP to hostname
+    host = Resolv.getname(ip)
+  rescue Resolv::ResolvError
+    host = false
+  end
+
+  host
 end
 
 # Determine public IP address from AWS metadata if its available
@@ -119,21 +135,25 @@ def gcp_metadata_public_ipv4
   end
 end
 
-# local IP address lookup.
-def ip_address
+# hostname/fqdn lookup.
+# ontoportal needs to know its own hostname/fqdn so that it can properly constract ajax calls to the backend
+# ideally it should be hardcoded in the site_config
+def my_hostname
   # first try AWS metadata lookup
   ip_address ||= aws_metadata_public_hostname
   # then check azure metadata lookup
   ip_address ||= azure_metadata_public_ipv4
   # then check GCP metadata lookup
   ip_address ||= gcp_metadata_public_ipv4
+  # then attempt to get hostname form reverse_dns
+  ip_address ||= reverse_dns_lookup
   # fall back to local ip address if AWS/azure metadata is not avaiable
   ip_address ||= local_ip_simple
   # use localhost if everything fails
   ip_address || 'localhost'
 end
 
-def hostname
+def dontuse_hostname
   hostname = nil
   case $CLOUD_PROVIDER
   when 'AWS'
