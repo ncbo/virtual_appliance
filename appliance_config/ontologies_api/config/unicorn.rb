@@ -1,8 +1,10 @@
 application  = 'ontologies_api'
-app_path = "/srv/ontoportal/#{application}"
+app_path = "/opt/ontoportal/#{application}"
 working_directory "#{app_path}/current/"
 
-worker_processes 8
+# Set worker_processes to half of available processors
+worker_processes [Etc.nprocessors / 2, 2].max
+
 timeout 180 
 preload_app true
 user 'ontoportal', 'ontoportal'
