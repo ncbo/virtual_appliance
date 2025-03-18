@@ -10,32 +10,72 @@
 #}
 
 source "$(dirname "$0")/config.sh"
+
 echo '====> Setting up deployment environment'
-bundle config --global set deployment 'true'
+bundle config set --global no-document 'true'
 bundle config --global set path $BUNDLE_PATH
+
 CONFIG_DIR=$VIRTUAL_APPLIANCE_REPO/appliance_config
 cat ~/.bundle/config
+
 # copy default version controlled config files to local config files
-[ -e ${CONFIG_DIR}/site_config.rb ] || cp ${CONFIG_DIR}/site_config.rb.default ${CONFIG_DIR}/site_config.rb
+[ -e ${CONFIG_DIR}/site_config.rb ] || cp ${CONFIG_DIR}/site_config.rb.default ${CONFIG_DIR}/site_config.rb && echo "created initial site_config"
 [ -e ${CONFIG_DIR}/bioportal_web_ui/config/bioportal_config_appliance.rb ] || cp ${CONFIG_DIR}/bioportal_web_ui/config/bioportal_config_appliance.rb.default ${CONFIG_DIR}/bioportal_web_ui/config/bioportal_config_appliance.rb
 [ -e ${CONFIG_DIR}/ontologies_api/config/environments/appliance.rb ] || cp ${CONFIG_DIR}/ontologies_api/config/environments/appliance.rb.default ${CONFIG_DIR}/ontologies_api/config/environments/appliance.rb
 [ -e ${CONFIG_DIR}/ncbo_cron/config/config.rb ] || cp ${CONFIG_DIR}/ncbo_cron/config/config.rb.default ${CONFIG_DIR}/ncbo_cron/config/config.rb
 
-# Determine if we need to deploy from a branch or a tag
-if [[ $API_RELEASE =~ ^v[0-9.]+ ]] ; then  API_RELEASE=tags/${API_RELEASE} ; fi
-if [[ $UI_RELEASE =~ ^v[0-9.]+ ]] ; then UI_RELEASE=tags/${UI_RELEASE} ; fi
-if [[ $ONTOLOGIES_LINKED_DATA_RELEASE =~ ^v[0-9.]+ ]] ; then ONTOLOGIES_LINKED_DATA_RELEASE=tags/${ONTOLOGIES_LINKED_DATA_RELEASE} ; fi
+checkout_release() {
+    local component="$1"
+    local release="$2"
+    local repo_url="${GH}/${component}"
 
-echo "=====> Setting up deployment env for UI from ${GH} release ${UI_RELEASE}"
+    # ANSI color codes
+    RED="\e[31m"
+    RESET="\e[0m"
 
-if [ ! -d bioportal_web_ui ]; then
-  git clone ${GH}/bioportal_web_ui bioportal_web_ui
-fi
+    if [[ -z "$component" || -z "$release" ]]; then
+        echo -e "${RED}Usage: checkout_release <component> <release>${RESET}"
+        return 1
+    fi
+
+    # Clone repository if the directory doesn't exist
+    if [[ ! -d "$component/.git" ]]; then
+        echo "Repository '$component' not found locally. Cloning from $repo_url..."
+        if ! git clone "$repo_url" "$component"; then
+            echo -e "${RED} Error: Failed to clone repository $repo_url ${RESET}"
+            return 1
+        fi
+    fi
+
+    # Change into the repository directory using pushd
+    pushd "$component" > /dev/null || return 1
+    echo "Checking out '$release' in $(pwd)..."
+
+    # If release starts with "v" followed by a number, assume it's a tag
+    if [[ "$release" =~ ^v[0-9]+ ]]; then
+        echo "'$release' looks like a tag, fetching tags..."
+        git fetch --tags
+        release="tags/$release"  # Modify release for tag checkout
+    fi
+
+    # Try to checkout the branch or tag
+    if ! git checkout "$release"; then
+        echo -e "${RED} "Error: Failed to check out $release. It may not exist.${RESET}""
+        popd > /dev/null  # Restore previous directory
+        return 1
+    fi
+
+    # Restore the previous directory
+    popd > /dev/null
+}
+
+echo "=====> Setting up deployment env for UI"
+
+checkout_release bioportal_web_ui $UI_RELEASE || exit 1
 pushd bioportal_web_ui
-git fetch
-git checkout "$UI_RELEASE"
 
 # remove BioPortal specific tagline from locales file
+# FIXME: this will be problematic in en.yml changes
 if [ ! -e ${CONFIG_DIR}/bioportal_web_ui/config/locales/en.yml ]; then
  echo "==> tweaking locales file"
  cp config/locales/en.yml ${CONFIG_DIR}/bioportal_web_ui/config/locales
@@ -55,13 +95,9 @@ fi
 popd
 
 echo '=====> Setting up deployment env for API'
-if [ ! -d ontologies_api ]; then 
-  git clone ${GH}/ontologies_api ontologies_api
-fi
-
+checkout_release ontologies_api "$API_RELEASE" || exit 1
 pushd ontologies_api
-git fetch
-git checkout "$API_RELEASE"
+
 #install gems required for deployment, i.e capistrano, rake, etc. 
 bundle config set --local path $BUNDLE_PATH
 bundle config set --local deployment 'true'
@@ -72,10 +108,6 @@ bundle install
 bundle binstubs --all
 popd
 
-if [ ! -d ${VIRTUAL_APPLIANCE_REPO}/appliance_config/ontologies_linked_data ]; then
-  git clone ${GH}/ontologies_linked_data ${VIRTUAL_APPLIANCE_REPO}/appliance_config/ontologies_linked_data
-fi
-pushd ${VIRTUAL_APPLIANCE_REPO}/appliance_config/ontologies_linked_data
-git fetch
-git checkout "$ONTOLOGIES_LINKED_DATA_RELEASE"
+pushd ${VIRTUAL_APPLIANCE_REPO}/appliance_config
+checkout_release ontologies_linked_data "$ONTOLOGIES_LINKED_DATA_RELEASE"
 popd
