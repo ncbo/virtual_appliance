@@ -74,14 +74,6 @@ echo "=====> Setting up deployment env for UI"
 checkout_release bioportal_web_ui $UI_RELEASE || exit 1
 pushd bioportal_web_ui
 
-# remove BioPortal specific tagline from locales file
-# FIXME: this will be problematic in en.yml changes
-if [ ! -e ${CONFIG_DIR}/bioportal_web_ui/config/locales/en.yml ]; then
- echo "==> tweaking locales file"
- cp config/locales/en.yml ${CONFIG_DIR}/bioportal_web_ui/config/locales
- sed -i "s/the world's most comprehensive repository of biomedical ontologies/your ontology repository for your ontologies/"  ${CONFIG_DIR}/bioportal_web_ui/config/locales/en.yml
-fi
-
 # install gems required for deployment, i.e capistrano, rake, etc.  Rails gem is required for generating secret
 bundle config set --local deployment 'true'
 bundle config set --local path $BUNDLE_PATH
@@ -89,7 +81,7 @@ bundle install
 
 echo "!!!!! need to set up creds in ${VIRTUAL_APPLIANCE_REPO} repo"
 # set up encrypted credentials, rails v5.2 is required"
-if [ ! -f ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/credentials/zappliance.yml.enc ]; then
+if [ ! -f ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/credentials/appliance.yml.enc ]; then
   /opt/ontoportal/virtual_appliance/utils/bootstrap/reset_ui_encrypted_credentials.sh
 fi
 popd
