@@ -1,10 +1,9 @@
 #!/bin/bash
 # script for resetting rails encrypted credentials for appliance environment
 # FIXME: this needs to be re-written as a rake task
-
-pwd
   echo "====> resetting rails encrypted credentials"
-  #SECRET=$(/usr/local/rbenv/shims/bundle exec rake secret)
+  export BUNDLE_PATH='/opt/ontoportal/.bundle'
+  bundle list --paths
   SECRET=$(bin/rails secret)
   if [ $? -ne 0 ]; then
     echo "==> Unable to generate secret !!!"
@@ -19,7 +18,7 @@ pwd
 
   #EDITOR='echo "secret_key_base: $(bin/rails secret)" > ' bin/rails credentials:edit --environment appliance
   EDITOR='echo "secret_key_base: $(bin/rails secret)" > ' bin/rails credentials:edit
-  if [ $? -ne 0 ] || [ ! -f config/credentials/appliance.yml.enc ] ; then
+  if [ $? -ne 0 ] || [ ! -f config/credentials.yml.enc ] ; then
     echo "==>  Unable to generate secret !!!"
     exit
   fi
@@ -27,5 +26,6 @@ pwd
   mv config/master.key config/credentials/appliance.key
   mv config/credentials.yml.enc config/credentials/appliance.yml.enc
 
-  cp config/credentials/appliance.* /srv/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/credentials/ || exit 1
+  cp config/credentials/appliance.* /opt/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/credentials/ || exit 1
 popd
+echo "done resetting rails encrypted credentials"

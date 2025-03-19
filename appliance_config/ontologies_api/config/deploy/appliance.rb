@@ -37,7 +37,6 @@ server 'localhost', roles: %w{app}
 
 BRANCH = ENV.include?('BRANCH') ? ENV['BRANCH'] : 'master'
 set :branch, "#{BRANCH}"
-set :deploy_to, "/opt/ontoportal/#{fetch(:application)}"
 
 # install gems into a common direcotry shared across ui, api and ncbo_cron to reduce disk usage
 set :bundle_path, "/opt/ontoportal/.bundle"

@@ -3,7 +3,6 @@
 # 1. genereates new apikey for admin user,
 # 2. generates apikey for appliance user (appliance apikey is used by UI to access backend)
 # 3. updates config files
-
 # dont run if this is not the first boot.
 unless File.file?('/srv/ontoportal/firstboot')
   puts 'firstboot script is skipped since this is not the first time boot'
@@ -18,11 +17,8 @@ until system('sudo /usr/local/bin/opstatus')
   puts 'some services are not running. waiting for 15 seconds for the services to start'
   sleep 15
   n += 1
-  abort('Aborting! Some Ontoportal Services failed to start. Unable to continue') if n > 3
+  abort('Aborting! Some Ontoportal Services failed to start. Unable to continue') if n > 5
 end
-
-Dir.chdir '/opt/ontoportal/bioportal_web_ui/current'
-
 require_relative '../apikey'
 
 CONFIG_FILE = '/opt/ontoportal/virtual_appliance/appliance_config/site_config.rb'.freeze
@@ -54,7 +50,7 @@ def aws_metadata_instance_id
       # metadata is off so falling back
       false
     end
-  rescue Exception => e
+  rescue StandardError => e
     # metadata is probably not availalbe
     # puts "exception #{e.message}"
     false
@@ -101,6 +97,9 @@ FileUtils.chown 'ontoportal', 'ontoportal', UI_CONFIG_DIR
 # reset ontoportal instance id
 # system('redis-cli del ontoportal.instance.id')
 
+Dir.chdir '/opt/ontoportal/bioportal_web_ui/current'
+# force loading bootsnap gem
+ENV['BUNDLE_GEMFILE'] = "/opt/ontoportal/bioportal_web_ui/current/Gemfile"
 system('/opt/ontoportal/virtual_appliance/utils/bootstrap/reset_ui_encrypted_credentials.sh')
 system('sudo /opt/ontoportal/virtual_appliance/utils/bootstrap/gen_tlscert.sh')
 # restart ontoportal stack

@@ -12,14 +12,14 @@ if File.exist?('config/environments/site_config.rb') || File.exist?('config/site
 end
 
 # set basic defaults if they are not set in the site_config.rb
-$REST_HOSTNAME ||= ip_address
-$REST_PORT ||= '8080'
+$REST_HOSTNAME ||= localhost
+$REST_PORT ||= '8443'
 $UI_HOSTNAME ||= $REST_HOSTNAME
 $REST_URL_PREFIX ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}/"
 $DATADIR ||= '/srv/ontoportal/data'
 
 # goo backend configuration for 4store or AG (AlegroGraph)
-GOO_BACKEND_NAME = '4store' # 4store or AG
+GOO_BACKEND_NAME = 'AG' # 4store or AG
 GOO_PORT        = GOO_BACKEND_NAME.include?('AG') ? 10035                                 : 8081
 GOO_PATH_QUERY  = GOO_BACKEND_NAME.include?('AG') ? '/repositories/ontoportal'            : '/sparql/'
 GOO_PATH_DATA   = GOO_BACKEND_NAME.include?('AG') ? '/repositories/ontoportal/statements' : '/data/'
