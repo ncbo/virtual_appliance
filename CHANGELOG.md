@@ -1,5 +1,19 @@
 # Changelog
-
+## [4.0.0.a] - 2025-03-20
+- CentOS 7 is replaced with Ubuntu 22.04
+- Apache/mod_passenger is replaced with nginx/puma
+- application lives under /opt/ontoportal while data lives under /srv/ontoportal
+- default ssh login username is renamed from centos to opadmin 
+- hostname_lookup script includes looking up hostname/fqdn via reverse dns (prt)
+- Ontoportal Stack Changes:
+  - ruby 3.1
+  - nodejs 20 (needed for yarn)
+  - https is default for both UI and API with self-signed ssl certificates
+  - solr v8.11.3
+  - tomcat 9.0.102
+  - ontologies_api [v5.33.5](https://github.com/ncbo/ontologies_api/releases/tag/v5.33.5)
+  - ncbo_cron [ v5.33.5](https://github.com/ncbo/ncbo_cron/releases/tag/v5.33.5)
+  - bioportal_web_ui [v7.3.2](https://github.com/ncbo/bioportal_web_ui/releases/tag/v7.3.2)
 ## [3.2.2] - 2023-10-15
 - Ontoportal Stack Changes:
   - nodejs v16

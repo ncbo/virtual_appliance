@@ -6,7 +6,9 @@
 #
 
 # Versions of virtual appliance components
-APPLIANCE_VERSION='4.0.0-a.1'
-UI_RELEASE='v7.1.0'
-NCBO_CRON_RELEASE='v5.33.4'
+APPLIANCE_VERSION='4.0.0-a0'
+UI_RELEASE='v7.3.2'
+#API_RELEASE='v5.33.5' # not ready yet
+API_RELEASE='master'
+NCBO_CRON_RELEASE='5.33.4'
 ONTOLOGIES_LINKED_DATA_RELEASE='v5.33.4'
