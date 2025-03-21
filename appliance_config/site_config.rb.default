@@ -4,18 +4,16 @@ $CLOUD_PROVIDER = ''
 
 # script for looking up hostname/fqdn
 # ontoportal UI requires knowing its own externally accessible fqdn
-# in order to constract url for ajax calls to the API which is normally
-# hosted on the same system.
+# in order to constract various things like url for ajax calls to the API 
+# which is normally hosted on the same system.
 # hostname_lookup should be disabled when domain names are hardcoded
 require '/opt/ontoportal/virtual_appliance/utils/hostname_lookup.rb'
 
-# ----------------------------------------------------------------------
-# OntoPortal Customization
-
 # replace REST_HOSTNAME fully qualified domain name i.e 'data.demo.ontoportal.org'
-$REST_HOSTNAME = my_hostname
-$REST_PORT = '8443'
-$UI_HOSTNAME = $REST_HOSTNAME
+# and remove hostname_lookup.rb 
+REST_HOSTNAME = my_hostname
+REST_PORT = '8443'
+UI_HOSTNAME = REST_HOSTNAME
 
 # Organization info
 $ORG = ENV['ORG'] || "OntoPortal Alliance"
@@ -24,20 +22,13 @@ $ORG_URL = ENV['ORG_URL'] || "https://ontoportal.org"
 # Site name (required)
 $SITE = ENV['SITE'] || "OntoPortal Appliance"
 
-# Unique string representing the UI's id for use with the OntoPortal API (ontologies_api)
-# This api key is automatically generated on first boot and updated here
-$API_KEY = "e71a5322-f018-4223-bd00-72e76f521a1d"
-
 # REST core service address
-$REST_URL = "https://#{$REST_HOSTNAME}:#{$REST_PORT}"
+$REST_URL = "https://#{REST_HOSTNAME}:#{REST_PORT}"
 $REST_URL_PREFIX = $REST_URL
 
 # Unique string representing the UI's id for use with the OntoPortal API (ontologies_api)
-# This api key is automatically generated on first boot and updated here
-$API_KEY = "e71a5322-f018-4223-bd00-72e76f521a1d"
-
-# Help page, launched from Support -> Help menu item in top navigation bar.
-#$WIKI_HELP_PAGE = 'https://www.bioontology.org/wiki/index.php/BioPortal_Help'
+# api key is automatically generated and replaced on first appliance boot
+$API_KEY = "3b377010-8afb-4d15-a88c-09809b94d03b"
 
 # Announcements mailman mailing list REQUEST address, EX: list-request@lists.example.org
 # NOTE: You must use the REQUEST address for the mailing list. ONLY WORKS WITH MAILMAN LISTS.

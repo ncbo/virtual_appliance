@@ -23,6 +23,3 @@ if [ "$USER" != 'ontoportal' ]; then
   echo "you need to run this script as ontoportal user"
   exit 1
 fi
-
-echo GH is $GH
-echo DATA_DIR is $DATA_DIR

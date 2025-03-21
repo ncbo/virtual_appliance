@@ -4,19 +4,17 @@
 # should be configured in the site_config.rb
 # Use this config for updating things like SMTP server or google analytics integration.
 # For more information please see https://ontoportal.github.io/administration/steps
-
-# Import site_config settings
-require '/opt/ontoportal/virtual_appliance/utils/hostname_lookup.rb'
-if File.exist?('config/environments/site_config.rb') || File.exist?('config/site_config.rb')
-  require_relative 'site_config.rb'
+if File.exist?('/opt/ontoportal/virtual_appliance/appliance_config/site_config.rb')
+  require '/opt/ontoportal/virtual_appliance/appliance_config/site_config.rb'
 end
 
 # set basic defaults if they are not set in the site_config.rb
-$REST_HOSTNAME ||= localhost
-$REST_PORT ||= '8443'
-$UI_HOSTNAME ||= $REST_HOSTNAME
-$REST_URL_PREFIX ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}/"
-$DATADIR ||= '/srv/ontoportal/data'
+#REST_HOSTNAME ||= 'localhost'
+#REST_PORT ||= '8080'
+#UI_HOSTNAME ||= REST_HOSTNAME
+#$REST_URL_PREFIX ||= "http://#{REST_HOSTNAME}:#{REST_PORT}/"
+#
+DATADIR = '/srv/ontoportal/data'
 
 # goo backend configuration for 4store or AG (AlegroGraph)
 GOO_BACKEND_NAME = 'AG' # 4store or AG
@@ -41,7 +39,7 @@ begin
     config.ui_host                    = "#{$UI_HOSTNAME}"
     config.search_server_url          = 'http://localhost:8983/solr/term_search_core1'
     config.property_search_server_url = 'http://localhost:8983/solr/prop_search_core1'
-    config.repository_folder          = "#{$DATADIR}/repository"
+    config.repository_folder          = "#{DATADIR}/repository"
     config.replace_url_prefix         = true
 
     # Java max memory for owlapi used for processing ontologies.  Increase for parsing large ontologies.
@@ -83,7 +81,7 @@ rescue NameError
 end
 begin
   Annotator.config do |config|
-    config.mgrep_dictionary_file   = "#{$DATADIR}/mgrep/dictionary/dictionary.txt"
+    config.mgrep_dictionary_file   = "#{DATADIR}/mgrep/dictionary/dictionary.txt"
     config.stop_words_default_file = './config/default_stop_words.txt'
     config.mgrep_host              = 'localhost'
     config.mgrep_port              = 55555
@@ -135,7 +133,7 @@ begin
     config.redis_port                           = Annotator.settings.annotator_redis_port
     config.search_index_all_url                 = 'http://localhost:8983/solr/term_search_core2'
     config.property_search_server_index_all_url = 'http://localhost:8983/solr/prop_search_core2'
-    config.ontology_report_path                 = "#{$DATADIR}/reports/ontologies_report.json"
+    config.ontology_report_path                 = "#{DATADIR}/reports/ontologies_report.json"
     config.enable_spam_deletion                 = false
     config.disable-dictionary-generation        = false
 
@@ -144,8 +142,8 @@ begin
     config.cron_ontology_analytics              = '30 */4 * * *'
     config.analytics_path_to_key_file           = "config/myontoportal_analytics_key.json"
     config.analytics_property_id                = "123456789"
-    config.analytics_path_to_ua_data_file       = "#{$DATADIR}/ga/bp_ua_data.json"
-    config.analytics_path_to_ga_data_file       = "#{$DATADIR}/ga/bp_ga_data.json"
+    config.analytics_path_to_ua_data_file       = "#{DATADIR}/ga/bp_ua_data.json"
+    config.analytics_path_to_ga_data_file       = "#{DATADIR}/ga/bp_ga_data.json"
 
   end
 rescue NameError

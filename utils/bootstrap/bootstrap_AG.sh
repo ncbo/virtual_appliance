@@ -1,18 +1,24 @@
 #!/bin/bash
+OP_PATH=/opt/ontoportal
 
-sudo opstop
-sudo systemctl enable agraph
-# needs to be done manually with admin linux account
-# sudo systemctl start agraph
+sudo oprestart
+
 ./bootstrap_create_AG_repository.sh
-pushd /opt/ontoportal/virtual_appliance/deployment
+pushd ${OP_PATH}/virtual_appliance/deployment
 ./setup_deploy_env.sh
 ./deploy_all.sh
-sudo opstart
+
+sudo oprestart
 popd
+
+# set up maintanence page which will remain in palce untill firstboot.rb removes it.
+cp ${OP_PATH}/virtual_appliance/utils/bootstrap/maintenance.html ${OP_PATH}/bioportal_web_ui/current/public/system
+
 ./kb_bootstrap_accounts.sh
-#ruby ../bioportal_ontologies_import.rb
 ruby load_STY_ontology.rb
-pushd /opt/ontoportal/ncbo_cron
+
+pushd ${OP_PATH}/ncbo_cron
 bin/ncbo_ontology_process -o STY
+# run metrics; remove after https://github.com/ncbo/ncbo_cron/issues/82 is fixed
+bin/ncbo_ontology_process -o STY -t run_metrics
 popd

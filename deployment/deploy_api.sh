@@ -12,11 +12,6 @@ echo "====> deploying $COMPONENT from $BRANCH branch"
 
 # copy site config which contains customised settings for the appliance
 
-if  [ -f  "${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb" ]; then
- echo 'copying site overrides file'
- cp -v ${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb ${VIRTUAL_APPLIANCE_REPO}/appliance_config/${COMPONENT}/config/environments
-fi
-
 if [ ! -d $COMPONENT ]; then
   echo "===> Repo for $COMPONENT is not available.  Please run setup_deploy_env.sh"
   exit 1
