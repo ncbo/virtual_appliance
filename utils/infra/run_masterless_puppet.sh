@@ -4,10 +4,9 @@ set -euo pipefail
 # === Config ===
 CONTROL_REPO_DIR="/etc/puppetlabs/code/environments/production"
 ENV_DIR="/etc/puppetlabs/code/environments"
-MANIFEST="$CONTROL_REPO_DIR/manifests/site.pp"
-EyamlKeyDir="/etc/puppetlabs/eyaml"
-PrivateKey="$EyamlKeyDir/private_key.pkcs7.pem"
-PublicKey="$EyamlKeyDir/public_key.pkcs7.pem"
+MANIFEST="${CONTROL_REPO_DIR}/manifests/site.pp"
+PrivateKey="${EYAMLKEYDIR}/private_key.pkcs7.pem"
+PublicKey="${EYAMLKEYDIR}/public_key.pkcs7.pem"
 PUPPET_BIN="/opt/puppetlabs/bin/puppet"
 R10K_BIN="/opt/puppetlabs/puppet/bin/r10k"
 
@@ -56,7 +55,6 @@ log "🚀 Running Puppet in masterless mode..."
   --environment=production \
   --verbose \
   --environmentpath="$ENV_DIR" \
-  --hiera_config="$HIERA_CONFIG" \
   "$MANIFEST"
 
 log "✅ Puppet apply completed."
