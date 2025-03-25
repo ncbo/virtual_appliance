@@ -1,6 +1,11 @@
 #!/bin/bash
 OP_PATH=/opt/ontoportal
 
+if [ "$USER" != 'ontoportal' ]; then
+  echo "you need to run this script as ontoportal user"
+  exit 1
+fi
+
 sudo oprestart
 
 ./bootstrap_create_AG_repository.sh
