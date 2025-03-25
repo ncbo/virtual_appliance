@@ -5,6 +5,7 @@ set -euo pipefail
 CONTROL_REPO_DIR="/etc/puppetlabs/code/environments/production"
 ENV_DIR="/etc/puppetlabs/code/environments"
 MANIFEST="${CONTROL_REPO_DIR}/manifests/site.pp"
+EYAMLKEYDIR="/etc/puppetlabs/puppet/eyaml"
 PrivateKey="${EYAMLKEYDIR}/private_key.pkcs7.pem"
 PublicKey="${EYAMLKEYDIR}/public_key.pkcs7.pem"
 PUPPET_BIN="/opt/puppetlabs/bin/puppet"
