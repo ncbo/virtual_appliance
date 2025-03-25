@@ -19,6 +19,6 @@ sudo bash "${VA}/utils/infra/run_masterless_puppet.sh"
 # === Step 2: Application provisioning ===
 log "🚀 Running application provisioning (bootstrap appliance with AllegroGraph)..."
 sudo chown -R ontoportal:ontoportal $VA
-sudo -u ontoportal "${VA}/utils/bootstrap/bootstrap_AG.sh"
+sudo -u ontoportal bash -l -c "${VA}/utils/bootstrap/bootstrap_AG.sh"
 
 log "✅ Server bootstrap entrypoint completed successfully."
