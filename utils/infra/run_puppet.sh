@@ -6,6 +6,6 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 cd /etc/puppetlabs/code/environments/production
-r10k puppetfile install -v
+/opt/puppetlabs/puppet/bin/r10k puppetfile install -v
 /opt/puppetlabs/bin/puppet apply --test --verbose \
      /etc/puppetlabs/code/environments/production/manifests
