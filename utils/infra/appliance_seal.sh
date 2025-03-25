@@ -107,7 +107,6 @@ extra(){
   /bin/rm /var/spool/mail/*
   /bin/rm -Rf /root/.ssh
   /bin/rm /var/lib/logrotate/status
-  /bin/rm /etc/resolv.conf
   /bin/rm -Rf /home/ec2-user/.ssh/*
   /bin/rm -Rf /root/tmp
 
