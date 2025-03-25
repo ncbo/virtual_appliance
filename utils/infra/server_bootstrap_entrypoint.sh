@@ -11,10 +11,10 @@ VA="/opt/ontoportal/virtual_appliance"
 
 # === Step 1: Puppet-based infra provisioning ===
 log "📦 Installing puppet..."
-sudo bash "${UTILS_BASE}/infra/install_puppet.sh"
+sudo bash "${VA}/utils/infra/install_puppet.sh"
 
 log "📦 Running masterless puppet to provsion infrastructure..."
-sudo bash "${UTILS_BASE}/infra/run_masterless_puppet.sh"
+sudo bash "${VA}/utils/infra/run_masterless_puppet.sh"
 
 # === Step 2: Application provisioning ===
 log "🚀 Running application provisioning (bootstrap appliance with AllegroGraph)..."
