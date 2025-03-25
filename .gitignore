@@ -14,3 +14,4 @@ appliance_config/bioportal_web_ui/config/site_config.rb
 #secrets
 appliance_config/bioportal_web_ui/config/secrets.yml
 appliance_config/bioportal_web_ui/config/credentials/appliance*
+utils/infra/puppet_eyaml_keys/*
