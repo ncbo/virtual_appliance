@@ -4,7 +4,7 @@
 # 2. generates apikey for appliance user (appliance apikey is used by UI to access backend)
 # 3. updates config files
 # dont run if this is not the first boot.
-unless File.file?('/srv/ontoportal/firstboot')
+unless File.file?('/opt/ontoportal/firstboot')
   puts 'firstboot script is skipped since this is not the first time boot'
   exit
 end
