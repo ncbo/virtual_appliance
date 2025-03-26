@@ -5,14 +5,13 @@ set -euo pipefail
 REMOTE_HOST="${1:-}"
 BRANCH="${2:-4.0}" 
 
-GITHUB_REPO_URL="https://raw.githubusercontent.com/ncbo/virtual_appliance"
-BOOTSTRAP_SCRIPT_PATH="utils/infra/server_bootstrap_entrypoint.sh"
-BOOTSTRAP_SCRIPT_URL="$GITHUB_REPO_URL/$BRANCH/$BOOTSTRAP_SCRIPT_PATH"
+GITHUB_REPO_URL="https://github.com/ncbo/virtual_appliance"
+VA="/opt/ontoportal/virtual_appliance"
+REMOTE_BOOTSTRAP="${VA}/utils/infra/server_bootstrap_entrypoint.sh"
 
 PRIVATE_KEY_PATH="puppet_eyaml_keys/private_key.pkcs7.pem"
 PUBLIC_KEY_PATH="puppet_eyaml_keys/public_key.pkcs7.pem"
 REMOTE_KEY_DIR="/etc/puppetlabs/puppet/eyaml"
-REMOTE_BOOTSTRAP="/tmp/server_bootstrap_entrypoint.sh"
 
 log() {
   echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"
@@ -54,8 +53,9 @@ ssh "$REMOTE_HOST" bash <<EOF
   sudo chown -R root:root "$REMOTE_KEY_DIR"
   sudo chmod 700 "$REMOTE_KEY_DIR"
 
-  echo "[+] Downloading main server bootstrap script "$BOOTSTRAP_SCRIPT_URL" ..."
-  curl -fsSL "$BOOTSTRAP_SCRIPT_URL" -o "$REMOTE_BOOTSTRAP"
+  echo "[+] Cloning virtual_appliance "$GITHUB_REPO_URL" ..."
+  [[ -d "$VA" ]] && sudo rm -Rf $VA
+  sudo git clone --branch "$BRANCH" --single-branch "${GITHUB_REPO_URL}" "$VA"
 
   echo "[+] Executing server_bootstrap_entrypoint.sh to install Puppet, provision infrastructure, and deploy app..."
   sudo bash "$REMOTE_BOOTSTRAP"
