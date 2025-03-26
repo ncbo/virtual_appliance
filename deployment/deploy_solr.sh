@@ -17,7 +17,10 @@ git pull
 git checkout "$BRANCH"
 git branch
 popd
-
-rsync -avr ${SORL_CONF}/* ${DATA_DIR}/solr/config
+if ! rsync -avr ${SORL_CONF}/* ${DATA_DIR}/solr/config; then
+   echo "❌ AllegroGraph bootstrap failed"
+   exit 1
+ fi
 
 sudo systemctl restart solr
+systemctl status solr
