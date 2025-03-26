@@ -72,7 +72,6 @@ logs(){
 
 apt(){
   # remove useless packages
-  apt remove samba-common
 
   #clean apt
   apt-get clean
@@ -82,9 +81,9 @@ apt(){
 }
 
 standard(){
-  userdel -R packer
-  userdel -R vagrant 
-  userdel -R ansible
+  userdel -r packer
+  userdel -r vagrant
+  userdel -r ansible
 
   /bin/rm /root/.mysql_history
   /bin/rm $MYSQL/*.pid
@@ -164,6 +163,9 @@ swap(){
 
 shrink(){
   dd if=/dev/zero of=/tmp/delme bs=102400 || rm -rf /tmp/delme
+  dd if=/dev/zero of=/delme bs=102400 || rm -rf /delme
+  dd if=/dev/zero of=/var/delme bs=102400 || rm -rf /var/delme
+  dd if=/dev/zero of=/log/delme bs=102400 || rm -rf /log/delme
   sync
 }
 
@@ -193,6 +195,7 @@ sleep 10
   hist
   logs
   shrink
+  unconfig
 
   # debugging
   who
@@ -204,5 +207,4 @@ sleep 10
   sync
 
   echo "====>> Done sealing appliance"
-
 
