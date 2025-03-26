@@ -46,12 +46,18 @@ run_curl "Deleting anonymous user (if it exists)" "204 404" \
   -X DELETE "$HOST/users/anonymous"
 
 run_curl "Creating anonymous user" "204" \
-  -X PUT "$HOST/users/anonymous?password="
+  -X PUT "$HOST/users/anonymous"
 
 run_curl "Granting read access to 'ontoportal' for anonymous user" "204" \
-  -X PUT "$HOST/users/anonymous/access?read=true&write=false&repositories=ontoportal"
+  -X PUT "$HOST/users/anonymous/access?read=true&write=true&repositories=ontoportal"
+
+run_curl "Check anonymous user" "200" \
+  -X GET "$HOST/users/anonymous/access"
 
 run_curl "Listing all repositories" "200" \
   -X GET "$HOST/repositories"
+
+run_curl "Check size of ontoportal repo" "200" \
+  -X GET "$HOST/repositories/ontoportal/size"
 
 echo "🎉 Setup complete!"
