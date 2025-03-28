@@ -40,7 +40,7 @@ if [[ -d "${CONTROL_REPO_DIR}" ]]; then
   rm -rf "${CONTROL_REPO_DIR}"
 fi
 
-log "📥 Cloning control-repo from GitHub..."
+log "⬇️  Cloning control-repo from GitHub..."
 git clone "${CONTROL_REPO_URL}" "${CONTROL_REPO_DIR}"
 cd "${CONTROL_REPO_DIR}"
 
