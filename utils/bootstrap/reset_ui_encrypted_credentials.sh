@@ -3,10 +3,9 @@
 # FIXME: this needs to be re-written as a rake task
   echo "====> resetting rails encrypted credentials"
   export BUNDLE_PATH='/opt/ontoportal/.bundle'
-  bundle list --paths
   SECRET=$(bin/rails secret)
   if [ $? -ne 0 ]; then
-    echo "==> Unable to generate secret !!!"
+    echo "==> ❌ Unable to generate secret !!!"
     exit 1
   fi
 
@@ -19,7 +18,7 @@
   #EDITOR='echo "secret_key_base: $(bin/rails secret)" > ' bin/rails credentials:edit --environment appliance
   EDITOR='echo "secret_key_base: $(bin/rails secret)" > ' bin/rails credentials:edit
   if [ $? -ne 0 ] || [ ! -f config/credentials.yml.enc ] ; then
-    echo "==>  Unable to generate secret !!!"
+    echo "==> ❌ Unable to generate secret !!!"
     exit
   fi
 
@@ -28,4 +27,4 @@
 
   cp config/credentials/appliance.* /opt/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/credentials/ || exit 1
 popd
-echo "done resetting rails encrypted credentials"
+echo "✅ done resetting rails encrypted credentials"

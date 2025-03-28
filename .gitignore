@@ -1,3 +1,4 @@
+.DS_Store
 deployment/bioportal_web_ui
 deployment/ontologies_api
 appliance_config/ontologies_linked_data
