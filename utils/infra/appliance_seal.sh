@@ -73,14 +73,19 @@ logs(){
 apt(){
   # remove useless packages
 
-  #clean apt
-  apt-get clean
-  apt-get autoremove -y
+  apt update
+  apt upgrade -y
+  apt purge 'linux-headers-*'
+  apt remove --purge linux-firmware
+
+  apt autoremove --purge
+  apt clean
 
   sudo rm -rf /var/lib/apt/lists/*
 }
 
 standard(){
+
   userdel -r packer
   userdel -r vagrant
   userdel -r ansible
@@ -108,6 +113,10 @@ extra(){
   /bin/rm /var/lib/logrotate/status
   /bin/rm -Rf /home/ec2-user/.ssh/*
   /bin/rm -Rf /root/tmp
+  /bin/rm -Rf /root/.gem
+  /bin/rm -Rf /root/.r10k
+  /bin/rm -Rf /root/.cache
+
 
   /bin/rm /home/ontoportal/.ruby-uuid
   /bin/rm -Rf /home/ontoportal/.pki
@@ -146,7 +155,8 @@ hist(){
   for i in .cache .viminfo .mysql_history .bash_history .rediscli_history .pry_history .ssh/known_host .bundle/cache .gitconfig .rbenv .ssh/authorized_keys
   do
     shred -u /root/$i
-    shred -u /home/admin/$i
+    shred -u /home/packer/$i
+    shred -u /home/opadmin/$i
     shred -u /home/ec2-user/$i
     shred -u /home/ontoportal/$i
   done
@@ -190,12 +200,12 @@ sleep 10
   echo "====>> Sealing Appliance"
   unset HISTFILE
   standard
-  apt
   extra
+  apt
   hist
+  unconfig
   logs
   shrink
-  unconfig
 
   # debugging
   who
