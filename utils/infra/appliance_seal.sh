@@ -2,13 +2,19 @@
 # Script for cleaning up files when packaging appliance
 # DO NOT RUN
 
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run as root. Exiting." >&2
+  exit 1
+fi
 
-if [ "$1" != "nukeit" ]; then
+if [[ "$1" -ne "nukeit" ]]; then
   echo "not gonna do it just like that"
   exit 1
 fi
 
 #set -euo pipefail
+
+export DEBIAN_FRONTEND=noninteractive
 
 TOMCAT=/usr/share/tomcat
 MYSQL=/var/lib/mysql
@@ -70,18 +76,17 @@ logs(){
   rm -rf /var/log/journal
 }
 
-apt(){
-  # remove useless packages
+apt_cleanup() {
 
-  apt update
-  apt upgrade -y
-  apt purge 'linux-headers-*'
-  apt remove --purge linux-firmware
+  apt-get update
+  apt-get upgrade -y
+  apt-get purge -y 'linux-headers-*'
+  apt-get remove --purge -y linux-firmware
+  apt-get autoremove --purge -y
+  apt-get clean
 
-  apt autoremove --purge
-  apt clean
-
-  sudo rm -rf /var/lib/apt/lists/*
+  # Not usually needed, but here if you're cleaning aggressively:
+  rm -rf /var/lib/apt/lists/*
 }
 
 standard(){
@@ -203,7 +208,7 @@ sleep 10
   unset HISTFILE
   standard
   extra
-  apt
+  apt_clean
   hist
   unconfig
   logs
