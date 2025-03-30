@@ -188,6 +188,8 @@ sleep 1
 redis-cli del ontoportal.instance.id
 /bin/systemctl stop redis-server-persistent.service
 touch ${APP_DIR}/firstboot
+#remove puppet fact that we need for packer builds only
+rm /etc/puppetlabs/facter/facts.d/packer.txt
 chown ontoportal:ontoportal ${APP_DIR}/firstboot
 history -c
 /usr/local/bin/opstop

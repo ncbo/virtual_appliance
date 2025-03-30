@@ -42,6 +42,8 @@ log "🚀 Connecting to $REMOTE_HOST to set up and run bootstrap..."
 ssh "$REMOTE_HOST" bash <<EOF
   set -e
 
+  sudo mkdir -p  /etc/puppetlabs/facter/facts.d
+  echo "packer_build=true" > /etc/puppetlabs/facter/facts.d/packer.txt
   echo "[+] Creating EYAML key directory..."
   sudo mkdir -p "$REMOTE_KEY_DIR"
 
