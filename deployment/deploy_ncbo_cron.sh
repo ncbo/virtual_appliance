@@ -4,26 +4,18 @@
 # https://github.com/ncbo/ncbo_cron
 
 source "$(dirname "$0")/config.sh"
-COMPONENT=ncbo_cron
-echo appdiur
-echo ${APP_DIR}
-echo appdir
+source "${VIRTUAL_APPLIANCE_REPO}/utils/git_helpers.sh"
 
-BRANCH=$NCBO_CRON_RELEASE
+COMPONENT=ncbo_cron
+RELEASE=$NCBO_CRON_RELEASE
 LOCAL_CONFIG_PATH=${VIRTUAL_APPLIANCE_REPO}/appliance_config
 
-echo "====> deploying $COMPONENT from $BRANCH branch"
+echo "====> deploying $COMPONENT from $RELEAS branch"
 sudo /bin/systemctl stop $COMPONENT
-if [ -d ${APP_DIR}/$COMPONENT/bin ]; then
-  pushd ${APP_DIR}/$COMPONENT
-  git pull
-else 
-  git clone ${GH}/${COMPONENT} ${APP_DIR}/${COMPONENT}
-  pushd ${APP_DIR}/${COMPONENT}
-fi
-git fetch
-git checkout "$NCBO_CRON_RELEASE"
-echo 'orig bundle config'
+pushd ${APP_DIR}
+checkout_release "$COMPONENT" "$RELEASE"
+cd $COMPONENT
+echo 'bundle config'
 bundle config --local set deployment 'true'
 bundle config set --local path $BUNDLE_PATH
 bundle install
