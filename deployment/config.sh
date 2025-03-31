@@ -2,24 +2,30 @@
 # This file contains a list of variables as sourced in the deployment wrapper scripts
 # <component>_RELEASE corresponds to the version of a component such as UI or API
 # installed in the virtual appliance
-# RELEASE numbers have to be compatible with this verision of the appliance stack
-#
+# RELEASE numbers have to be compatible with this version of the appliance stack
 
+# Ensure this file is only sourced, not executed
+(return 0 2>/dev/null) || {
+  echo "ERROR: This script must be sourced, not executed."
+  exit 1
+}
+
+# Load component versions
 source "$(dirname "$0")/versions"
 
-# general settings
+# Check for correct user
+if [[ "$USER" != 'ontoportal' ]]; then
+  echo "ERROR: You need to run this script as the 'ontoportal' user"
+  return 1
+fi
+
+# General settings
 export DATA_DIR="/srv/ontoportal/data"
 export APP_DIR="/opt/ontoportal"
-VIRTUAL_APPLIANCE_REPO="/opt/ontoportal/virtual_appliance"
-export BUNDLE_PATH='/opt/ontoportal/.bundle'
-#export LOCAL_CONFIG_PATH=$VIRTUAL_APPLIANCE_REPO/appliance_config
+export VIRTUAL_APPLIANCE_REPO="/opt/ontoportal/virtual_appliance"
+export BUNDLE_PATH="/opt/ontoportal/.bundle"
+# export LOCAL_CONFIG_PATH="${VIRTUAL_APPLIANCE_REPO}/appliance_config"
 
 # GitHub settings
-GH_ORG='ncbo'
-GH="https://github.com/${GH_ORG}"
-
-
-if [ "$USER" != 'ontoportal' ]; then
-  echo "you need to run this script as ontoportal user"
-  exit 1
-fi
+export GH_ORG='ncbo'
+export GH="https://github.com/${GH_ORG}"
