@@ -1,19 +1,36 @@
 # Changelog
-## [4.0.0.a] - 2025-03-20
-- CentOS 7 is replaced with Ubuntu 22.04
-- Apache/mod_passenger is replaced with nginx/puma
-- application lives under /opt/ontoportal while data lives under /srv/ontoportal
-- default ssh login username is renamed from centos to opadmin 
-- hostname_lookup script includes looking up hostname/fqdn via reverse dns (prt)
-- Ontoportal Stack Changes:
-  - ruby 3.1
-  - nodejs 20 (needed for yarn)
-  - https is default for both UI and API with self-signed ssl certificates
-  - solr v8.11.3
-  - tomcat 9.0.102
-  - ontologies_api [v5.33.5](https://github.com/ncbo/ontologies_api/releases/tag/v5.33.5)
-  - ncbo_cron [ v5.33.5](https://github.com/ncbo/ncbo_cron/releases/tag/v5.33.5)
-  - bioportal_web_ui [v7.3.2](https://github.com/ncbo/bioportal_web_ui/releases/tag/v7.3.2)
+
+## [4.0.0.a2] - 2025-03-31
+
+- Improved self-signed TLS certificate generation  
+- Improved robustness of provisioning scripts  
+- **OntoPortal Stack Changes:**
+  - `ontologies_api` [v6.0.0](https://github.com/ncbo/ontologies_api/releases/tag/v6.0.0)
+  - `ncbo_cron` [v6.0.0(https://github.com/ncbo/ncbo_cron/releases/tag/v6.0.0)
+  - `bioportal_web_ui` [v7.4.0](https://github.com/ncbo/bioportal_web_ui/releases/tag/v7.4.0)
+
+---
+
+## [4.0.0.a1] - 2025-03-20
+
+- Replaced CentOS 7 with Ubuntu 22.04
+- Replaced Apache/mod_passenger with Nginx/Puma
+- HTTPS is now the default for both UI and API
+- Application files reside under `/opt/ontoportal`; data is stored under `/srv/ontoportal`
+- Default SSH login username changed from `centos` to `opadmin`
+- `hostname_lookup` script now includes reverse DNS (PTR) lookup for hostname/FQDN
+- **OntoPortal Stack Changes:**
+  - Ruby 3.1
+  - Node.js 20 (required for Yarn)
+  - HTTPS is now default for both UI and API with self-signed SSL certificates
+  - Solr v8.11.3
+  - Tomcat 9.0.102
+  - `ontologies_api` [v5.33.5](https://github.com/ncbo/ontologies_api/releases/tag/v5.33.5)  
+  - `ncbo_cron` [v5.33.5](https://github.com/ncbo/ncbo_cron/releases/tag/v5.33.5)  
+  - `bioportal_web_ui` [v7.3.2](https://github.com/ncbo/bioportal_web_ui/releases/tag/v7.3.2)
+
+---
+
 ## [3.2.2] - 2023-10-15
 - Ontoportal Stack Changes:
   - nodejs v16
