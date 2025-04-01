@@ -4,6 +4,8 @@
 
 - Improved self-signed TLS certificate generation  
 - Improved robustness of provisioning scripts  
+- changed the default ssh login account to `ubuntu`
+- enabled API throtteling by default
 - **OntoPortal Stack Changes:**
   - `ontologies_api` [v6.0.0](https://github.com/ncbo/ontologies_api/releases/tag/v6.0.0)
   - `ncbo_cron` [v6.0.0](https://github.com/ncbo/ncbo_cron/releases/tag/v6.0.0)
@@ -17,6 +19,7 @@
 - Replaced Apache/mod_passenger with Nginx/Puma
 - HTTPS is now the default for both UI and API
 - Application files reside under `/opt/ontoportal`; data is stored under `/srv/ontoportal`
+- Added infrastructure provisioning scripts including puppet
 - Default SSH login username changed from `centos` to `opadmin`
 - `hostname_lookup` script now includes reverse DNS (PTR) lookup for hostname/FQDN
 - **OntoPortal Stack Changes:**
