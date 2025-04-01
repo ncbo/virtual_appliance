@@ -78,10 +78,52 @@ logs(){
 
 apt_cleanup() {
 
+  # List of packages to purge
+  PURGE_PACKAGES=(
+
+    linux-firmware
+
+    # Storage-related
+    multipath-tools
+    mdadm
+    btrfs-progs
+    nfs-common
+    open-iscsi
+
+    # GUI and fonts
+    snapd
+    x11-common
+    xkb-data
+    fonts-dejavu-core
+    fonts-ubuntu
+
+    # Documentation and dev tools
+    manpages
+    man-db
+    info
+    groff-base
+    doc-base
+    installation-report
+
+    # Crash reporting / telemetry
+    apport
+    whoopsie
+    popularity-contest
+    friendly-recovery
+    plymouth
+
+    # Network/Remote daemons (optional)
+    avahi-daemon
+
+  )
   apt-get update
   apt-get upgrade -y
-  apt-get purge -y 'linux-headers-*'
-  apt-get remove --purge -y linux-firmware
+
+  # purge linux-headers
+  dpkg -l 'linux-headers-*' | awk '/^ii/{print $2}' | xargs apt-get purge -y
+
+  apt-get purge -y "${PURGE_PACKAGES[@]}" || true
+
   apt-get autoremove --purge -y
   apt-get clean
 
@@ -208,7 +250,7 @@ sleep 10
   unset HISTFILE
   standard
   extra
-  apt_clean
+  apt_cleanup
   hist
   unconfig
   logs
