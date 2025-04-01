@@ -43,7 +43,7 @@ ssh "$REMOTE_HOST" bash <<EOF
   set -e
 
   sudo mkdir -p  /etc/puppetlabs/facter/facts.d
-  echo "packer_build=true" > /etc/puppetlabs/facter/facts.d/packer.txt
+  echo "packer_build=true" | sudo tee /etc/puppetlabs/facter/facts.d/packer.txt > /dev/null
   echo "[+] Creating EYAML key directory..."
   sudo mkdir -p "$REMOTE_KEY_DIR"
 
@@ -54,6 +54,20 @@ ssh "$REMOTE_HOST" bash <<EOF
   echo "[+] Setting key file ownership and permissions..."
   sudo chown -R root:root "$REMOTE_KEY_DIR"
   sudo chmod 700 "$REMOTE_KEY_DIR"
+
+  sudo apt-get update
+
+  # Install git if not installed
+  if ! command -v git &> /dev/null; then
+    echo "[+] installing git..."
+    sudo apt-get install -y git
+  fi
+
+  # Install git-lfs if not installed
+  if ! command -v git-lfs &> /dev/null; then
+    echo "[+] installing git-lfs..."
+    sudo apt-get install -y git-lfs
+  fi
 
   echo "[+] Cloning virtual_appliance "$GITHUB_REPO_URL" ..."
   [[ -d "$VA" ]] && sudo rm -Rf $VA
