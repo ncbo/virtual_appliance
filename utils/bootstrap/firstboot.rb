@@ -68,7 +68,6 @@ instance_id = aws_metadata_instance_id
 
 if instance_id
   cloud_provider = 'AWS'
-  admin_apikey = get_apikey('admin')
 
   uri = URI.parse("https://localhost:8443/users/admin?apikey=#{admin_apikey}")
   request = Net::HTTP::Patch.new(uri)
