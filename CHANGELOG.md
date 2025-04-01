@@ -6,7 +6,7 @@
 - Improved robustness of provisioning scripts  
 - **OntoPortal Stack Changes:**
   - `ontologies_api` [v6.0.0](https://github.com/ncbo/ontologies_api/releases/tag/v6.0.0)
-  - `ncbo_cron` [v6.0.0(https://github.com/ncbo/ncbo_cron/releases/tag/v6.0.0)
+  - `ncbo_cron` [v6.0.0](https://github.com/ncbo/ncbo_cron/releases/tag/v6.0.0)
   - `bioportal_web_ui` [v7.4.0](https://github.com/ncbo/bioportal_web_ui/releases/tag/v7.4.0)
 
 ---
