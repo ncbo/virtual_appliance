@@ -7,7 +7,8 @@ $CLOUD_PROVIDER = ''
 # in order to constract various things like url for ajax calls to the API 
 # which is normally hosted on the same system.
 # hostname_lookup should be disabled when domain names are hardcoded
-require '/opt/ontoportal/virtual_appliance/utils/hostname_lookup.rb'
+#require '/opt/ontoportal/virtual_appliance/utils/hostname_lookup.rb'
+require '/usr/local/bin/hostname_lookup.rb'
 
 # replace REST_HOSTNAME fully qualified domain name i.e 'data.demo.ontoportal.org'
 # and remove hostname_lookup.rb 
