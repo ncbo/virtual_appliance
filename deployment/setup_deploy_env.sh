@@ -19,13 +19,18 @@ mkdir -p ~/.bundle
 bundle config set --global no-document 'true'
 bundle config set --global path "$BUNDLE_PATH"
 
+# Config files for deployment
 CONFIG_DIR="$VIRTUAL_APPLIANCE_REPO/appliance_config"
 
-# Copy default version-controlled config files to local config files
-[ -e "${CONFIG_DIR}/site_config.rb" ] || cp "${CONFIG_DIR}/site_config.rb.default" "${CONFIG_DIR}/site_config.rb" && echo "created initial site_config"
-[ -e "${CONFIG_DIR}/bioportal_web_ui/config/bioportal_config_appliance.rb" ] || cp "${CONFIG_DIR}/bioportal_web_ui/config/bioportal_config_appliance.rb.default" "${CONFIG_DIR}/bioportal_web_ui/config/bioportal_config_appliance.rb"
-[ -e "${CONFIG_DIR}/ontologies_api/config/environments/appliance.rb" ] || cp "${CONFIG_DIR}/ontologies_api/config/environments/appliance.rb.default" "${CONFIG_DIR}/ontologies_api/config/environments/appliance.rb"
-[ -e "${CONFIG_DIR}/ncbo_cron/config/config.rb" ] || cp "${CONFIG_DIR}/ncbo_cron/config/config.rb.default" "${CONFIG_DIR}/ncbo_cron/config/config.rb"
+SITE_CONFIG="/opt/ontoportal/config/site_config.rb"
+API_CONFIG="${CONFIG_DIR}/ontologies_api/config/environments/appliance.rb"
+UI_CONFIG="${CONFIG_DIR}/bioportal_web_ui/config/bioportal_config_appliance.rb"
+CRON_CONFIG="${CONFIG_DIR}/ncbo_cron/config/config.rb"
+
+[ -e "${SITE_CONFIG}" ] || cp "${CONFIG_DIR}/site_config.rb.default" "${SITE_CONFIG}" && echo "created initial ${SITE_CONFIG}"
+[ -e "${UI_CONFIG}" ] || cp "${UI_CONFIG}.default" "${UI_CONFIG}" && echo "created ${UI_CONFIG}"
+[ -e "${API_CONFIG}" ] || cp "${API_CONFIG}.default" "${API_CONFIG}" && echo "created ${API_CONFIG}"
+[ -e "${CRON_CONFIG}" ] || cp "${CRON_CONFIG}.default" "${CRON_CONFIG}" && echo "created ${CRON_CONFIG}"
 
 # we are using Capistrano for deployments of the UI and API
 # so we need to set up env where we can run deployments from using existing
@@ -38,7 +43,7 @@ bundle config set --local deployment 'true'
 bundle config set --local path "$BUNDLE_PATH"
 bundle install
 
-echo "!!!!! Need to set up creds in ${VIRTUAL_APPLIANCE_REPO} repo"
+echo "Setting up encrypted creds in ${VIRTUAL_APPLIANCE_REPO} repo"
 if [ ! -f "${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/credentials/appliance.yml.enc" ]; then
   "${VIRTUAL_APPLIANCE_REPO}/utils/bootstrap/reset_ui_encrypted_credentials.sh"
 fi

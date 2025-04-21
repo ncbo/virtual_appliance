@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 # coding: utf-8
 require 'socket'
 require 'net/http'
