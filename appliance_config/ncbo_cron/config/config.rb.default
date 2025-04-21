@@ -4,8 +4,8 @@
 # should be configured in the site_config.rb
 # Use this config for updating things like SMTP server or google analytics integration.
 # For more information please see https://ontoportal.github.io/administration/steps
-if File.exist?('/opt/ontoportal/virtual_appliance/appliance_config/site_config.rb')
-  require '/opt/ontoportal/virtual_appliance/appliance_config/site_config.rb'
+if File.exist?('/opt/ontoportal/config/site_config.rb')
+  require '/opt/ontoportal/config/site_config.rb'
 end
 
 # set basic defaults if they are not set in the site_config.rb
@@ -14,7 +14,7 @@ end
 #UI_HOSTNAME ||= REST_HOSTNAME
 #$REST_URL_PREFIX ||= "http://#{REST_HOSTNAME}:#{REST_PORT}/"
 #
-DATADIR = '/srv/ontoportal/data'
+DATADIR = '/srv/ontoportal'
 
 # goo backend configuration for 4store or AG (AlegroGraph)
 GOO_BACKEND_NAME = 'AG' # 4store or AG
@@ -129,13 +129,13 @@ end
 
 begin
   NcboCron.config do |config|
+    config.log_dir                              = '/var/log/ontoportal/ncbo_cron'
     config.redis_host                           = Annotator.settings.annotator_redis_host
     config.redis_port                           = Annotator.settings.annotator_redis_port
     config.search_index_all_url                 = 'http://localhost:8983/solr/term_search_core2'
     config.property_search_server_index_all_url = 'http://localhost:8983/solr/prop_search_core2'
     config.ontology_report_path                 = "#{DATADIR}/reports/ontologies_report.json"
     config.enable_spam_deletion                 = false
-    config.disable-dictionary-generation        = false
 
     # Google Analytics GA4 config
     config.enable_ontology_analytics            = false
