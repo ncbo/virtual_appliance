@@ -14,7 +14,7 @@ log "📦 Installing puppet..."
 sudo bash "${VA}/utils/infra/install_puppet.sh"
 
 log "📦 Running masterless puppet to provsion infrastructure..."
-sudo bash "${VA}/utils/infra/run_masterless_puppet.sh r10k"
+sudo bash "${VA}/utils/infra/run_masterless_puppet.sh"
 
 # FIXME: need to run puppet 2nd time, rbenv fails to install firt time
 log "📦 Running masterless puppet to provsion infrastructure..."
