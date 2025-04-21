@@ -8,7 +8,7 @@ fi
 
 APP=/opt/ontoportal
 VA=${APP}/virtual_appliance
-sudo opstop
+sudo opctl stop
 
 # remove generated config
 /bin/rm -Rf ${VA}/appliance_config/ontologies_linked_data

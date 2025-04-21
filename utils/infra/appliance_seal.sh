@@ -20,11 +20,12 @@ TOMCAT=/usr/share/tomcat
 MYSQL=/var/lib/mysql
 RUBYBNDL=3.1.0
 APP_DIR=/opt/ontoportal
-DATA_DIR=/srv/ontoportal/data
+DATA_DIR=/srv/ontoportal
+LOG_DIR=/var/log/ontoportal
 
 
 echo "[*] Sealing appliance before export..."
-/usr/local/bin/opstop
+/usr/local/bin/opctl stop
 
 # Remove persistent udev rules
 echo "[*] Removing udev persistent net rules..."
@@ -60,13 +61,6 @@ find /home -name 'known_hosts' -exec rm -f {} \;
 
 logs(){
   systemctl stop systemd-journald || true
-
-  # Remove all app logs
-  /bin/rm ${APP_DIR}/ncbo_cron/logs/*
-  /bin/rm ${APP_DIR}/bioportal_web_ui/shared/log/*
-  /bin/rm ${APP_DIR}/ontologies_api/shared/log/*
-  /bin/rm ${DATA_DIR}/solr/logs/*
-  /bin/rm ${APP_DIR}/bioportal_web_ui/shared/log/*
 
   # Remove all system logs aggressively
   echo "[*] Deleting all log files..."
@@ -143,11 +137,6 @@ standard(){
 
   /bin/rm -Rf $TOMCAT/temp/*
   /bin/rm -Rf $TOMCAT/work/*
-  /bin/rm ${APP_DIR}/ncbo_cron/logs/*
-  /bin/rm ${APP_DIR}/bioportal_web_ui/shared/log/*
-  /bin/rm ${APP_DIR}/ontologies_api/shared/log/*
-  /bin/rm ${DATA_DIR}/solr/logs/*
-  /bin/rm ${APP_DIR}/bioportal_web_ui/shared/log/*
 
   /bin/rm /root/original-ks.cfg
   /bin/rm /root/ks-p*.log
@@ -165,12 +154,12 @@ extra(){
   /bin/rm -Rf /root/.cache
 
 
-  /bin/rm /home/ontoportal/.ruby-uuid
-  /bin/rm -Rf /home/ontoportal/.pki
-  /bin/rm -Rf /home/ontoportal/.cache
-  /bin/rm -Rf /home/ontoportal/.bundle/.cache
-  /bin/rm -Rf /home/ontoportal/.local
-  /bin/rm -Rf /home/ontoportal/.yarn
+  /bin/rm /home/op-admin/.ruby-uuid
+  /bin/rm -Rf /home/op-admin/.pki
+  /bin/rm -Rf /home/op-admin/.cache
+  /bin/rm -Rf /home/op-admin/.bundle/.cache
+  /bin/rm -Rf /home/op-admin/.local
+  /bin/rm -Rf /home/op-admin/.yarn
   /bin/rm -Rf /opt/staging
   /bin/rm -Rf /opt/solr_downloads
   #/bin/rm -Rf /usr/local/src/4store/.git
@@ -183,9 +172,6 @@ extra(){
   #popd
 
   #ruby gem caches
-  #rm -Rf ${APP_DIR}/bioportal_web_ui/shared/bundle/ruby/$RUBYBNDL/cache/*
-  #rm -Rf ${APP_DIR}/ncbo_cron/vendor/bundle/ruby/$RUBYBNDL/cache/*
-  #rm -Rf ${APP_DIR}/ontologies_api/shared/bundle/ruby/$RUBYBNDL/cache/*
   rm -Rf ${APP_DIR}/.bundle/ruby/$RUBYBNDL/cache/*
 
   rm -Rf ${APP_DIR}/bioportal_web_ui/repo
@@ -203,9 +189,8 @@ hist(){
   do
     shred -u /root/$i
     shred -u /home/packer/$i
-    shred -u /home/opadmin/$i
     shred -u /home/ec2-user/$i
-    shred -u /home/ontoportal/$i
+    shred -u /home/op-admin/$i
   done
 
   history -c
@@ -214,15 +199,10 @@ hist(){
 swap(){
   swapoff -a
   swapon -a
-  #dd if=/dev/zero of=/dev/mapper/centos-swap bs=102400
-  #mkswap  /dev/mapper/centos-swap
 }
 
 shrink(){
-  dd if=/dev/zero of=/tmp/delme bs=102400 || rm -rf /tmp/delme
   dd if=/dev/zero of=/delme bs=102400 || rm -rf /delme
-  dd if=/dev/zero of=/var/delme bs=102400 || rm -rf /var/delme
-  dd if=/dev/zero of=/log/delme bs=102400 || rm -rf /log/delme
   sync
 }
 
@@ -234,12 +214,13 @@ sleep 1
 # resetting appliance id perhaps should be done in the firtboot as well.
 redis-cli del ontoportal.instance.id
 /bin/systemctl stop redis-server-persistent.service
-touch ${APP_DIR}/firstboot
+touch ${APP_DIR}/config/firstboot
+chown op-admin:op-admin ${APP_DIR}/config/firstboot
+
 #remove puppet fact that we need for packer builds only
 rm /etc/puppetlabs/facter/facts.d/packer.txt
-chown ontoportal:ontoportal ${APP_DIR}/firstboot
 history -c
-/usr/local/bin/opstop
+/usr/local/bin/opctl stop
 sleep 10
 
 #sys-unconfig
