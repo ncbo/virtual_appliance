@@ -1,52 +1,40 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # -----------------------------------------------------------------------------
 # Part of the OntoPortal Virtual Appliance Project
 # https://ontoportal.org
 #
-# Author: Alex Skrenchuk alex.skrenchuk@stanford.edu
+# Author: Alex Skrenchuk (@alexskr)
 # Copyright (c) 2025 Stanford University and the OntoPortal Alliance
 # SPDX-License-Identifier: Apache-2.0
 #
-# Description
-# Safe CLI for querying EC2 instance metadata and user-data from shell scripts
-# Usage: ec2meta <metadata-path>
+# Description:
+#   A CLI helper for retrieving EC2 instance metadata and user-data values.
 # Example: ec2meta instance-id → i-0abc123...
 # -----------------------------------------------------------------------------
-#
+
 set -euo pipefail
 
 usage() {
-  {
-    echo "Usage:"
-    echo "  ec2meta instance-id        # EC2 instance ID"
-    echo "  ec2meta public-hostname    # EC2 public DNS name"
-    echo "  ec2meta local-hostname     # EC2 internal hostname"
-    echo "  ec2meta userdata           # Print full user-data string"
-    echo "  ec2meta ui-domain          # Extract UI_DOMAIN from user-data"
-    echo "  ec2meta api-domain         # Extract API_DOMAIN from user-data"
-    echo "  ec2meta is-aws             # Exit 0 if running in EC2, 1 otherwise"
-  } >&2
+  cat <<EOF >&2
+Usage: ec2meta <key>
+Supported keys:
+  instance-id         AWS EC2 instance ID
+  public-hostname     Public DNS hostname (fallback to nested metadata)
+  local-hostname      Internal DNS hostname
+  userdata            Full EC2 user-data string
+  ui-domain           Extract UI_DOMAIN from user-data
+  api-domain          Extract API_DOMAIN from user-data
+  is-aws              Exit 0 if EC2, 1 otherwise
+EOF
   exit 1
 }
 
 get_userdata_var() {
   local key="$1"
-  local val
-  val=$(facter ec2_userdata 2>/dev/null | grep -E "^${key}=" | cut -d= -f2- | tr -d '"')
-  echo "$val"
+  facter ec2_userdata 2>/dev/null | grep -E "^${key}=" | cut -d= -f2- | tr -d '"'
 }
 
-get_metadata_value() {
-  local key="$1"
-  local val
-  val=$(facter ec2_metadata 2>/dev/null | grep "$key" | awk -F '=>' '{print $2}' | tr -d '", ')
-  echo "$val"
-}
-
-if [[ $# -ne 1 ]]; then
-  usage
-fi
-
+[[ $# -ne 1 ]] && usage
 KEY="$1"
 
 case "$KEY" in
@@ -57,6 +45,9 @@ case "$KEY" in
       exit 1
     fi
     ;;
+  instance-id|ami-id)
+    facter ec2_metadata 2>/dev/null | grep "$KEY" | awk -F '=>' '{print $2}' | tr -d '", ' || exit 1
+    ;;
   userdata)
     facter ec2_userdata 2>/dev/null || exit 1
     ;;
@@ -66,12 +57,22 @@ case "$KEY" in
   api-domain)
     get_userdata_var "API_DOMAIN"
     ;;
-  instance-id|ami-id|public-hostname|local-hostname)
-    get_metadata_value "$KEY" || exit 1
+  public-hostname)
+    top=$(facter ec2_metadata 2>/dev/null | grep -m1 'public-hostname' | awk -F '=>' '{print $2}' | tr -d '", ')
+    if [[ -n "$top" ]]; then echo "$top"; exit 0; fi
+    fallback=$(facter ec2_metadata 2>/dev/null | grep -A 10 -E 'macs =>|public-hostname' | awk '/public-hostname/ {print $3}' | tr -d '", ')
+    [[ -n "$fallback" ]] && echo "$fallback" && exit 0
+    exit 1
+    ;;
+  local-hostname)
+    top=$(facter ec2_metadata 2>/dev/null | grep -m1 'local-hostname' | awk -F '=>' '{print $2}' | tr -d '", ')
+    if [[ -n "$top" ]]; then echo "$top"; exit 0; fi
+    fallback=$(facter ec2_metadata 2>/dev/null | grep -A 10 -E 'macs =>|local-hostname' | awk '/local-hostname/ {print $3}' | tr -d '", ')
+    [[ -n "$fallback" ]] && echo "$fallback" && exit 0
+    exit 1
     ;;
   *)
     echo "❌ Unsupported key: $KEY" >&2
     usage
     ;;
 esac
-

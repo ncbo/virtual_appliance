@@ -5,7 +5,7 @@
 # Part of the OntoPortal Virtual Appliance Project
 # https://ontoportal.org
 #
-# Author: Alex Skrenchuk alex.skrenchuk@stanford.edu
+# Author: Alex Skrenchuk (@alexskr)
 # Copyright (c) 2025 Stanford University and the OntoPortal Alliance
 # SPDX-License-Identifier: Apache-2.0
 #
