@@ -4,8 +4,8 @@
 # should be configured in the site_config.rb
 # Use this config for updating things like SMTP server or google analytics integration.
 # For more information please see https://ontoportal.github.io/administration/steps
-if File.exist?('/opt/ontoportal/virtual_appliance/appliance_config/site_config.rb')
-  require '/opt/ontoportal/virtual_appliance/appliance_config/site_config.rb'
+if File.exist?('/opt/ontoportal/config/site_config.rb')
+  require '/opt/ontoportal/config/site_config.rb'
 end
 
 # set basic defaults if they are not set in the site_config.rb
@@ -129,6 +129,7 @@ end
 
 begin
   NcboCron.config do |config|
+    config.log_dir                              = "/var/log/ontoportal/ncbo_cron"
     config.redis_host                           = Annotator.settings.annotator_redis_host
     config.redis_port                           = Annotator.settings.annotator_redis_port
     config.search_index_all_url                 = 'http://localhost:8983/solr/term_search_core2'
