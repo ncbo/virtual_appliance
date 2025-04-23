@@ -1,19 +1,19 @@
 #!/bin/bash
 OP_PATH=/opt/ontoportal
 
-if [ "$USER" != 'ontoportal' ]; then
+if [ "$USER" != 'op-admin' ]; then
   echo "you need to run this script as ontoportal user"
   exit 1
 fi
 
-sudo oprestart
+sudo opctl stop
 
 ./bootstrap_create_AG_repository.sh
 pushd ${OP_PATH}/virtual_appliance/deployment
 ./setup_deploy_env.sh
 ./deploy_all.sh
 
-sudo oprestart
+sudo opctl start
 popd
 
 # set up maintanence page which will remain in palce untill firstboot.rb removes it.
