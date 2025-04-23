@@ -6,14 +6,14 @@ if [ "$USER" != 'op-admin' ]; then
   exit 1
 fi
 
-sudo opctl stop
+sudo opctl restart
 
 ./bootstrap_create_AG_repository.sh
 pushd ${OP_PATH}/virtual_appliance/deployment
 ./setup_deploy_env.sh
 ./deploy_all.sh
 
-sudo opctl start
+sudo opctl restart
 popd
 
 # set up maintanence page which will remain in palce untill firstboot.rb removes it.

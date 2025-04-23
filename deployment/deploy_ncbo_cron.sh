@@ -11,7 +11,7 @@ RELEASE=$NCBO_CRON_RELEASE
 LOCAL_CONFIG_PATH=${VIRTUAL_APPLIANCE_REPO}/appliance_config
 
 echo "====> deploying $COMPONENT from $RELEAS branch"
-sudo /bin/systemctl stop $COMPONENT
+sudo /usr/bin/systemctl stop $COMPONENT
 pushd ${APP_DIR}
 checkout_release "$COMPONENT" "$RELEASE"
 cd $COMPONENT
@@ -22,5 +22,5 @@ bundle install
 
 rsync -avr ${LOCAL_CONFIG_PATH}/${COMPONENT}/* ${APP_DIR}/${COMPONENT}
 popd
-sudo /bin/systemctl start "$COMPONENT"
+sudo /usr/bin/systemctl start "$COMPONENT"
 echo "Deployment of $COMPONENT is done"

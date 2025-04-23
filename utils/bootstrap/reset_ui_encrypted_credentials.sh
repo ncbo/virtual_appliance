@@ -24,7 +24,16 @@
 
   mv config/master.key config/credentials/appliance.key
   mv config/credentials.yml.enc config/credentials/appliance.yml.enc
+  chown op-admin:op-ui config/credentials/appliance.*
+  chmod 0640 config/credentials/appliance.*
 
+  # copy encrypted creds to config dir
   cp config/credentials/appliance.* /opt/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/credentials/ || exit 1
+
+  # copy encrypted creds to bioportal ui dir
+  #if [[ -d /opt/ontoportal/bioportal_web_ui/current/config ]]; then
+  #  cp config/credentials/appliance.* /opt/ontoportal/bioportal_web_ui/current/config/credentials
+  #fi
+
 popd
 echo "✅ done resetting rails encrypted credentials"

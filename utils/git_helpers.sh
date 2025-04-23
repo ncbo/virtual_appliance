@@ -19,6 +19,15 @@ checkout_release() {
         return 1
     fi
 
+    if [[ -d "$component" && ! -d "$component/.git" ]]; then
+        echo "Directory '$component' exists but is not a Git repo. Removing it..."
+	if ! find "$component" -mindepth 1 -delete; then
+            echo -e "${RED}Error: Failed to remove existing directory $component${RESET}"
+            return 1
+        fi
+    fi
+
+
     if [[ ! -d "$component/.git" ]]; then
         echo "Repository '$component' not found locally. Cloning from $repo_url..."
         if ! git clone "$repo_url" "$component"; then

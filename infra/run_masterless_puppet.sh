@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 # === Config ===
 CONTROL_REPO_DIR="/etc/puppetlabs/code/environments/production"
@@ -47,8 +47,10 @@ fi
 
 # === Install modules with r10k ===
 cd "$CONTROL_REPO_DIR"
-log "📦 Installing Puppet modules with r10k..."
-"$R10K_BIN" puppetfile install --verbose --puppetfile "$CONTROL_REPO_DIR/Puppetfile"
+if [[ "$1" == "r10k" ]]; then
+  log "📦 Installing Puppet modules with r10k..."
+  "$R10K_BIN" puppetfile install --verbose --puppetfile "$CONTROL_REPO_DIR/Puppetfile"
+fi
 
 # === Run Puppet ===
 log "🚀 Running Puppet in masterless mode..."

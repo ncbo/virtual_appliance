@@ -23,4 +23,3 @@ if ! rsync -avr ${SORL_CONF}/* ${DATA_DIR}/solr/config; then
  fi
 
 sudo systemctl restart solr
-systemctl status solr
