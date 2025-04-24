@@ -9,10 +9,11 @@
 #
 # Description
 # Generates a self-signed SSL certificate with SANs (Subject Alternative Names)
-# for OntoPortal appliances duing initial deployment/bootstrap process.
+# for OntoPortal appliances during initial deployment/bootstrap process.
+# -----------------------------------------------------------------------------
 set -euo pipefail
 
-EC2META=/usr/local/ontoportal/bin/ec2meta
+CLOUDMETA="/usr/local/ontoportal/bin/cloudmeta"
 
 # --- Require sudo ---
 if [[ $EUID -ne 0 ]]; then
@@ -72,23 +73,16 @@ for arg in "$@"; do
   esac
 done
 
-# --- Fallback to EC2 or local hostname if none provided ---
+# --- Determine fallback hostname if none passed ---
 if [[ ${#HOSTNAMES[@]} -eq 0 ]]; then
-  if command -v /usr/local/ontoportal/bin/ec2meta &>/dev/null && ec2meta is-aws; then
-    fallback_hostname=$(ec2meta public-hostname || ec2meta local-hostname)
-    if [[ -n "$fallback_hostname" ]]; then
-      HOSTNAMES+=("$fallback_hostname")
-      echo "ℹ️  Using EC2 metadata hostname: $fallback_hostname"
-    else
-      fallback_hostname=$(hostname -f)
-      HOSTNAMES+=("$fallback_hostname")
-      echo "⚠️  EC2 metadata hostname not found, falling back to: $fallback_hostname"
-    fi
+  if [[ -x "$CLOUDMETA" ]] && "$CLOUDMETA" public-hostname &>/dev/null; then
+    fallback_hostname=$("$CLOUDMETA" public-hostname || "$CLOUDMETA" local-hostname)
+    echo "ℹ️  Using cloud metadata hostname: $fallback_hostname"
   else
     fallback_hostname=$(hostname -f)
-    HOSTNAMES+=("$fallback_hostname")
     echo "ℹ️  Using system hostname: $fallback_hostname"
   fi
+  HOSTNAMES+=("$fallback_hostname")
 fi
 
 COMMON_NAME="${HOSTNAMES[0]}"
@@ -118,12 +112,8 @@ fi
 IP=$(ip -4 route get 1.1.1.1 | awk '/src/ {print $7; exit}')
 PTR_NAME=$(dig +short -x "$IP" | sed 's/\.$//')
 
-AWS_PUBLIC_DNS=""
-AWS_PRIVATE_DNS=""
-if command -v ec2meta &>/dev/null && ec2meta is-aws; then
-  AWS_PUBLIC_DNS=$(ec2meta public-hostname || true)
-  AWS_PRIVATE_DNS=$(ec2meta local-hostname || true)
-fi
+CLOUD_PUBLIC_DNS=$("$CLOUDMETA" public-hostname 2>/dev/null || true)
+CLOUD_PRIVATE_DNS=$("$CLOUDMETA" local-hostname 2>/dev/null || true)
 
 ALT_NAMES_FILE=$(mktemp)
 i=1
@@ -144,8 +134,8 @@ for hn in "${HOSTNAMES[@]}"; do
 done
 
 [[ -n "$PTR_NAME" ]]        && echo "DNS.${i} = ${PTR_NAME}" >> "$ALT_NAMES_FILE" && ((i++))
-[[ -n "$AWS_PUBLIC_DNS" ]]  && echo "DNS.${i} = ${AWS_PUBLIC_DNS}" >> "$ALT_NAMES_FILE" && ((i++))
-[[ -n "$AWS_PRIVATE_DNS" ]] && echo "DNS.${i} = ${AWS_PRIVATE_DNS}" >> "$ALT_NAMES_FILE" && ((i++))
+[[ -n "$CLOUD_PUBLIC_DNS" ]]  && echo "DNS.${i} = ${CLOUD_PUBLIC_DNS}" >> "$ALT_NAMES_FILE" && ((i++))
+[[ -n "$CLOUD_PRIVATE_DNS" ]] && echo "DNS.${i} = ${CLOUD_PRIVATE_DNS}" >> "$ALT_NAMES_FILE" && ((i++))
 [[ -n "$IP" ]]              && echo "IP.${i} = ${IP}" >> "$ALT_NAMES_FILE" && ((i++))
 
 # --- OpenSSL Config ---

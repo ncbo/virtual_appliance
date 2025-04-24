@@ -1,0 +1,146 @@
+#!/usr/bin/env bash
+# -----------------------------------------------------------------------------
+# Part of the OntoPortal Virtual Appliance Project
+# https://ontoportal.org
+#
+# Author: Alex Skrenchuk (@alexskr)
+# Copyright (c) 2025 Stanford University and the OntoPortal Alliance
+# SPDX-License-Identifier: Apache-2.0
+#
+# Description:
+#   A CLI helper for retrieving cloud metadata (AWS, GCP, Azure) and user-data.
+#   Prioritizes AWS and LOCAL, avoids unnecessary fallback lookups unless required.
+# -----------------------------------------------------------------------------
+
+set -euo pipefail
+
+usage() {
+  cat <<EOF >&2
+Usage: cloudmeta <key>
+Supported keys:
+  cloud-provider      Print cloud provider (AWS, GCP, Azure, LOCAL)
+  is-aws              Exit 0 if AWS, 1 otherwise
+  instance-id         Cloud instance ID (EC2)
+  public-hostname     Public DNS hostname (with fallback)
+  local-hostname      Internal DNS hostname (with fallback)
+  public-ip           Public IP (based on cloud provider)
+  private-ip          Private IP (based on cloud provider)
+  userdata            Full EC2 user-data string
+  ui-domain           Extract UI_DOMAIN from user-data
+  api-domain          Extract API_DOMAIN from user-data
+EOF
+  exit 1
+}
+
+get_userdata_var() {
+  local key="$1"
+  facter ec2_userdata 2>/dev/null | grep -E "^${key}=" | cut -d= -f2- | tr -d '"'
+}
+
+get_imds_token() {
+  curl -s -X PUT "http://169.254.169.254/latest/api/token" \
+       -H "X-aws-ec2-metadata-token-ttl-seconds: 60" || true
+}
+
+fetch_aws_metadata() {
+  local path="$1"
+  local token
+  token=$(get_imds_token)
+  curl -s -H "X-aws-ec2-metadata-token: $token" "http://169.254.169.254/latest/meta-data/$path" || true
+}
+
+fetch_gcp_metadata() {
+  curl -s -H "Metadata-Flavor: Google" "http://metadata.google.internal/computeMetadata/v1/$1" || true
+}
+
+fetch_azure_metadata() {
+  curl -s -H "Metadata: true" "http://169.254.169.254/metadata/instance/$1?api-version=2021-02-01&format=text" || true
+}
+
+[[ $# -ne 1 ]] && usage
+KEY="$1"
+
+case "$KEY" in
+  is-aws)
+    if facter cloud.provider 2>/dev/null | grep -iq 'aws'; then
+      exit 0
+    else
+      exit 1
+    fi
+    ;;
+  cloud-provider)
+    provider=$(facter cloud.provider 2>/dev/null | tr -d '"')
+    case "${provider,,}" in
+      aws|ec2)   echo "AWS" ;;
+      azure)     echo "Azure" ;;
+      gce|gcp)   echo "GCP" ;;
+      *)         echo "LOCAL" ;;
+    esac
+    ;;
+  instance-id)
+    facter ec2_metadata 2>/dev/null | grep "instance-id" | awk -F '=>' '{print $2}' | tr -d '", ' || fetch_aws_metadata "instance-id"
+    ;;
+  userdata)
+    facter ec2_userdata 2>/dev/null || exit 1
+    ;;
+  ui-domain)
+    get_userdata_var "UI_DOMAIN"
+    ;;
+  api-domain)
+    get_userdata_var "API_DOMAIN"
+    ;;
+  public-hostname)
+    host=$(facter ec2_metadata 2>/dev/null | grep -m1 'public-hostname' | awk -F '=>' '{print $2}' | tr -d '", ')
+    [[ -n "$host" ]] || host=$(fetch_aws_metadata "public-hostname")
+    [[ -n "$host" ]] && echo "$host" && exit 0
+    exit 1
+    ;;
+  local-hostname)
+    host=$(facter ec2_metadata 2>/dev/null | grep -m1 'local-hostname' | awk -F '=>' '{print $2}' | tr -d '", ')
+    [[ -n "$host" ]] || host=$(fetch_aws_metadata "local-hostname")
+    [[ -n "$host" ]] && echo "$host" && exit 0
+    exit 1
+    ;;
+  public-ip)
+    cloud=$(cloudmeta cloud-provider)
+    case "$cloud" in
+      AWS)
+        ip=$(fetch_aws_metadata "public-ipv4")
+        ;;
+      GCP)
+        ip=$(fetch_gcp_metadata "instance/network-interfaces/0/access-configs/0/external-ip")
+        ;;
+      Azure)
+        ip=$(fetch_azure_metadata "network/interface/0/ipv4/ipAddress/0/publicIpAddress")
+        ;;
+      *)
+        ip=""
+        ;;
+    esac
+    [[ -n "$ip" ]] && echo "$ip" && exit 0
+    exit 1
+    ;;
+  private-ip)
+    cloud=$(cloudmeta cloud-provider)
+    case "$cloud" in
+      AWS)
+        ip=$(fetch_aws_metadata "local-ipv4")
+        ;;
+      GCP)
+        ip=$(fetch_gcp_metadata "instance/network-interfaces/0/ip")
+        ;;
+      Azure)
+        ip=$(fetch_azure_metadata "network/interface/0/ipv4/ipAddress/0/privateIpAddress")
+        ;;
+      *)
+        ip=""
+        ;;
+    esac
+    [[ -n "$ip" ]] && echo "$ip" && exit 0
+    exit 1
+    ;;
+  *)
+    echo "❌ Unsupported key: $KEY" >&2
+    usage
+    ;;
+esac
