@@ -32,10 +32,6 @@ rm -f /etc/udev/rules.d/70-persistent-net.rules
 rm -rf /dev/.udev/
 rm -rf /lib/udev/rules.d/75-persistent-net-generator.rules
 
-# Remove SSH host keys (to be regenerated on boot)
-echo "[*] Removing SSH host keys..."
-rm -f /etc/ssh/ssh_host_*
-
 # Remove tmp files
 echo "[*] Removing temporary files..."
 rm -rf /tmp/*
@@ -219,6 +215,11 @@ shrink(){
 }
 
 unconfig(){
+
+# Remove SSH host keys (to be regenerated on boot)
+echo "[*] Removing SSH host keys..."
+rm -f /etc/ssh/ssh_host_*
+
 # reset ontoportal instance id
 /bin/systemctl start redis-server-persistent.service
 sleep 1
