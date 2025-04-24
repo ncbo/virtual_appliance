@@ -27,7 +27,7 @@ require '/usr/local/ontoportal/bin/infra_discovery'
 # Constants
 ADMIN = 'op-admin'
 FIRSTBOOT_MARKER = '/opt/ontoportal/config/firstboot'
-CONFIG_FILE = '/opt/ontoportal/virtual_appliance/appliance_config/site_config.rb'
+CONFIG_FILE = '/opt/ontoportal/config/site_config.rb'
 SECRETS_FILE = '/opt/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'
 MAINTENANCE_FILE = '/opt/ontoportal/bioportal_web_ui/current/public/system/maintenance.html'
 UI_CONFIG_DIR = '/opt/ontoportal/bioportal_web_ui/current/config'
