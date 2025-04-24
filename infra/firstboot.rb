@@ -25,15 +25,15 @@ require 'open3'
 require '/usr/local/ontoportal/bin/infra_discovery'
 
 # Constants
-ADMIN = 'op-admin'.freeze
-FIRSTBOOT_MARKER = '/opt/ontoportal/firstboot'.freeze
-CONFIG_FILE = '/opt/ontoportal/virtual_appliance/appliance_config/site_config.rb'.freeze
-SECRETS_FILE = '/opt/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'.freeze
-MAINTENANCE_FILE = '/opt/ontoportal/bioportal_web_ui/current/public/system/maintenance.html'.freeze
-UI_CONFIG_DIR = '/opt/ontoportal/bioportal_web_ui/current/config'.freeze
-GEMFILE_PATH = '/opt/ontoportal/bioportal_web_ui/current/Gemfile'.freeze
-APIKEY_SCRIPT = '/opt/ontoportal/virtual_appliance/utils/apikey.rb'.freeze
-GEN_TLS_SCRIPT = '/usr/local/ontoportal/bin/gen_tlscert'.freeze
+ADMIN = 'op-admin'
+FIRSTBOOT_MARKER = '/opt/ontoportal/config/firstboot'
+CONFIG_FILE = '/opt/ontoportal/virtual_appliance/appliance_config/site_config.rb'
+SECRETS_FILE = '/opt/ontoportal/virtual_appliance/appliance_config/bioportal_web_ui/config/secrets.yml'
+MAINTENANCE_FILE = '/opt/ontoportal/bioportal_web_ui/current/public/system/maintenance.html'
+UI_CONFIG_DIR = '/opt/ontoportal/bioportal_web_ui/current/config'
+GEMFILE_PATH = '/opt/ontoportal/bioportal_web_ui/current/Gemfile'
+APIKEY_SCRIPT = '/opt/ontoportal/virtual_appliance/utils/apikey.rb'
+GEN_TLS_SCRIPT = '/usr/local/ontoportal/bin/gen_tlscert'
 
 # Logger setup
 $logger = Logger.new(STDOUT)
