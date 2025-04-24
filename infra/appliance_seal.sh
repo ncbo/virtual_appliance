@@ -7,7 +7,7 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-if [[ "$1" -ne "nukeit" ]]; then
+if [[ "$1" != "nukeit" ]]; then
   echo "not gonna do it just like that"
   exit 1
 fi
@@ -211,8 +211,6 @@ hist(){
 swap(){
   swapoff -a
   swapon -a
-  #dd if=/dev/zero of=/dev/mapper/centos-swap bs=102400
-  #mkswap  /dev/mapper/centos-swap
 }
 
 shrink(){
