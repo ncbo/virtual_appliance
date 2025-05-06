@@ -39,6 +39,9 @@ echo "=====> Setting up deployment env for UI"
 checkout_release bioportal_web_ui "$UI_RELEASE"
 pushd bioportal_web_ui > /dev/null
 
+# copy config files to deploy directory, just in case we have deploy overrides
+rsync -av ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/* .
+
 bundle config set --local deployment 'true'
 bundle config set --local path "$BUNDLE_PATH"
 bundle install

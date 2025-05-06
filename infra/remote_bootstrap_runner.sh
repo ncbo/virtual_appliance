@@ -7,7 +7,7 @@ BRANCH="${2:-4.0}"
 
 GITHUB_REPO_URL="https://github.com/ncbo/virtual_appliance"
 VA="/opt/ontoportal/virtual_appliance"
-REMOTE_BOOTSTRAP="${VA}/utils/infra/server_bootstrap_entrypoint.sh"
+REMOTE_BOOTSTRAP="${VA}/infra/server_bootstrap_entrypoint.sh"
 
 PRIVATE_KEY_PATH="puppet_eyaml_keys/private_key.pkcs7.pem"
 PUBLIC_KEY_PATH="puppet_eyaml_keys/public_key.pkcs7.pem"

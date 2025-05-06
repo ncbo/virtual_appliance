@@ -7,7 +7,7 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
-if [[ "$1" -ne "nukeit" ]]; then
+if [[ "$1" != "nukeit" ]]; then
   echo "not gonna do it just like that"
   exit 1
 fi
@@ -20,8 +20,7 @@ TOMCAT=/usr/share/tomcat
 MYSQL=/var/lib/mysql
 RUBYBNDL=3.1.0
 APP_DIR=/opt/ontoportal
-DATA_DIR=/srv/ontoportal
-LOG_DIR=/var/log/ontoportal
+DATA_DIR=/srv/ontoportal/data
 
 
 echo "[*] Sealing appliance before export..."
@@ -32,10 +31,6 @@ echo "[*] Removing udev persistent net rules..."
 rm -f /etc/udev/rules.d/70-persistent-net.rules
 rm -rf /dev/.udev/
 rm -rf /lib/udev/rules.d/75-persistent-net-generator.rules
-
-# Remove SSH host keys (to be regenerated on boot)
-echo "[*] Removing SSH host keys..."
-rm -f /etc/ssh/ssh_host_*
 
 # Remove tmp files
 echo "[*] Removing temporary files..."
@@ -61,6 +56,13 @@ find /home -name 'known_hosts' -exec rm -f {} \;
 
 logs(){
   systemctl stop systemd-journald || true
+
+  # Remove all app logs
+  /bin/rm ${APP_DIR}/ncbo_cron/logs/*
+  /bin/rm ${APP_DIR}/bioportal_web_ui/shared/log/*
+  /bin/rm ${APP_DIR}/ontologies_api/shared/log/*
+  /bin/rm ${DATA_DIR}/solr/logs/*
+  /bin/rm ${APP_DIR}/bioportal_web_ui/shared/log/*
 
   # Remove all system logs aggressively
   echo "[*] Deleting all log files..."
@@ -137,6 +139,11 @@ standard(){
 
   /bin/rm -Rf $TOMCAT/temp/*
   /bin/rm -Rf $TOMCAT/work/*
+  /bin/rm ${APP_DIR}/ncbo_cron/logs/*
+  /bin/rm ${APP_DIR}/bioportal_web_ui/shared/log/*
+  /bin/rm ${APP_DIR}/ontologies_api/shared/log/*
+  /bin/rm ${DATA_DIR}/solr/logs/*
+  /bin/rm ${APP_DIR}/bioportal_web_ui/shared/log/*
 
   /bin/rm /root/original-ks.cfg
   /bin/rm /root/ks-p*.log
@@ -147,7 +154,6 @@ extra(){
   /bin/rm /var/spool/mail/*
   /bin/rm -Rf /root/.ssh
   /bin/rm /var/lib/logrotate/status
-  /bin/rm -Rf /home/ec2-user/.ssh/*
   /bin/rm -Rf /root/tmp
   /bin/rm -Rf /root/.gem
   /bin/rm -Rf /root/.r10k
@@ -172,6 +178,9 @@ extra(){
   #popd
 
   #ruby gem caches
+  #rm -Rf ${APP_DIR}/bioportal_web_ui/shared/bundle/ruby/$RUBYBNDL/cache/*
+  #rm -Rf ${APP_DIR}/ncbo_cron/vendor/bundle/ruby/$RUBYBNDL/cache/*
+  #rm -Rf ${APP_DIR}/ontologies_api/shared/bundle/ruby/$RUBYBNDL/cache/*
   rm -Rf ${APP_DIR}/.bundle/ruby/$RUBYBNDL/cache/*
 
   rm -Rf ${APP_DIR}/bioportal_web_ui/repo
@@ -188,8 +197,7 @@ hist(){
   for i in .cache .viminfo .mysql_history .bash_history .rediscli_history .pry_history .ssh/known_host .bundle/cache .gitconfig .rbenv .ssh/authorized_keys
   do
     shred -u /root/$i
-    shred -u /home/packer/$i
-    shred -u /home/ec2-user/$i
+    shred -u /home/ubuntu/$i
     shred -u /home/op-admin/$i
   done
 
@@ -207,6 +215,11 @@ shrink(){
 }
 
 unconfig(){
+
+# Remove SSH host keys (to be regenerated on boot)
+echo "[*] Removing SSH host keys..."
+rm -f /etc/ssh/ssh_host_*
+
 # reset ontoportal instance id
 /bin/systemctl start redis-server-persistent.service
 sleep 1
@@ -215,10 +228,9 @@ sleep 1
 redis-cli del ontoportal.instance.id
 /bin/systemctl stop redis-server-persistent.service
 touch ${APP_DIR}/config/firstboot
-chown op-admin:op-admin ${APP_DIR}/config/firstboot
-
 #remove puppet fact that we need for packer builds only
 rm /etc/puppetlabs/facter/facts.d/packer.txt
+chown ontoportal:ontoportal ${APP_DIR}/firstboot
 history -c
 /usr/local/bin/opctl stop
 sleep 10

@@ -25,13 +25,6 @@ if [[ "$USER" != $ADMIN_USER ]]; then
   exit 1
 fi
 
-# General settings
-export DATA_DIR="/srv/ontoportal"
-export APP_DIR="/opt/ontoportal"
-export VIRTUAL_APPLIANCE_REPO="/opt/ontoportal/virtual_appliance"
-export BUNDLE_PATH="/opt/ontoportal/.bundle"
-export ADMIN_USER="op-admin"
-
 # export LOCAL_CONFIG_PATH="${VIRTUAL_APPLIANCE_REPO}/appliance_config"
 
 # GitHub settings

@@ -19,6 +19,7 @@ sudo opctl stop
 /bin/rm ${VA}/appliance_config/ncbo_cron/config/config.rb
 /bin/rm ${VA}/appliance_config/ontologies_api/config/environments/appliance.rb
 /bin/rm ${VA}/appliance_config/site_config.rb
+/bin/rm ${VA}/config/site_config.rb
 
 # remove deployed app
 /bin/rm -Rf /opt/ontoportal/bioportal_web_ui/releases/*
