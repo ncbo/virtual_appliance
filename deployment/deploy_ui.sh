@@ -19,6 +19,9 @@ fi
 
 pushd $COMPONENT
 
+# copy config files to deploy directory, just in case we have deploy overrides
+rsync -av ${VIRTUAL_APPLIANCE_REPO}/appliance_config/$COMPONENT/* .
+
 # install capistrano for running deployment rake task
 bundle install
 bundle exec cap appliance deploy
