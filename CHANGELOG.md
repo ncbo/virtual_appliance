@@ -1,15 +1,27 @@
 # Changelog
 
-## [4.0.0.a2] - 2025-03-31
+## [4.0.0-rc1] - 2025-04-06
 
-- Improved self-signed TLS certificate generation  
-- Improved robustness of provisioning scripts  
-- changed the default ssh login account to `ubuntu`
-- enabled API throtteling by default
+RC1 primarily focuses on service hardening: new dedicated service accounts, stricter file permissions, and tightened systemd units. API throttling is enabled out-of-the-box.
+
+- Added dedicated service accounts to reinforce the principle of least privilege
+  * `op-ui`: UI puma service account
+  * `op-backend`: API and ncbo_cron service account
+  * `op-admin`: deployment and operations account
+  * `opdata`: shared group for repository ownership
+  * `ubuntu`: the default ssh login account with superuser privileges.
+- UI and backend service accounts are now read-only on their own code and configuration; they can write only to logs, temporary files, and (for the backend) repository data.
+- Logs for UI, API, and ncbo_cron are now located under `/var/log/ontoportal/`.
+- Utilities that require sudo privileges were moved from `/opt/ontoportal/virtual_appliance` to `/usr/local/ontoportal/bin` to reduce surface for privege escalation.
+- systemd unit files hardened (e.g., `ProtectSystem=strict`, `NoNewPrivileges=yes`, restricted capability set).
+- Hostname lookup refactor: replaced `hostname_lookup.rb` with the new `HostResolver` Ruby library and CLI, which also discovers IP address, cloud provider, and instance ID (AWS, Azure, GCP)
+- Improved self-signed TLS certificate generation
+- Improved robustness of provisioning scripts
+
 - **OntoPortal Stack Changes:**
-  - `ontologies_api` [v6.0.0](https://github.com/ncbo/ontologies_api/releases/tag/v6.0.0)
-  - `ncbo_cron` [v6.0.0](https://github.com/ncbo/ncbo_cron/releases/tag/v6.0.0)
-  - `bioportal_web_ui` [v7.4.0](https://github.com/ncbo/bioportal_web_ui/releases/tag/v7.4.0)
+  - `ontologies_api` [v6.1.0](https://github.com/ncbo/ontologies_api/releases/tag/v6.1.0)
+  - `ncbo_cron` [v6.1.0](https://github.com/ncbo/ncbo_cron/releases/tag/v6.1.0)
+  - `bioportal_web_ui` [v8.0.0](https://github.com/ncbo/bioportal_web_ui/releases/tag/v8.0.0)
 
 ---
 
@@ -17,6 +29,7 @@
 
 - Replaced CentOS 7 with Ubuntu 22.04
 - Replaced Apache/mod_passenger with Nginx/Puma
+- AllegroGrahp v8.3.1 is the default triple store backend.
 - HTTPS is now the default for both UI and API
 - Application files reside under `/opt/ontoportal`; data is stored under `/srv/ontoportal`
 - Added infrastructure provisioning scripts including puppet
