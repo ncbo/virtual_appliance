@@ -1,4 +1,12 @@
 # Changelog
+## [4.0.0] - 2025-05-16
+
+- Updated firstboot/intializing status page
+
+**OntoPortal Stack Changes:**
+  - `ontologies_api` [v6.1.0](https://github.com/ncbo/ontologies_api/releases/tag/v6.1.0)
+  - `ncbo_cron` [v6.1.0](https://github.com/ncbo/ncbo_cron/releases/tag/v6.1.0)
+  - `bioportal_web_ui` [v8.1.0](https://github.com/ncbo/bioportal_web_ui/releases/tag/v8.1.0)
 
 ## [4.0.0-rc1] - 2025-04-06
 
