@@ -13,7 +13,7 @@ end
 #REST_PORT ||= '8080'
 #UI_HOSTNAME ||= REST_HOSTNAME
 #$REST_URL_PREFIX ||= "http://#{REST_HOSTNAME}:#{REST_PORT}/"
-#
+
 DATADIR = '/srv/ontoportal'
 
 # goo backend configuration for 4store or AG (AlegroGraph)
@@ -36,7 +36,7 @@ begin
     config.goo_path_update            = "#{GOO_PATH_UPDATE}"
 
     config.rest_url_prefix            = "#{$REST_URL_PREFIX}"
-    config.ui_host                    = "#{$UI_HOSTNAME}"
+    config.ui_host                    = "#{UI_HOSTNAME}"
     config.search_server_url          = 'http://localhost:8983/solr/term_search_core1'
     config.property_search_server_url = 'http://localhost:8983/solr/prop_search_core1'
     config.repository_folder          = "#{DATADIR}/repository"
@@ -53,14 +53,7 @@ begin
     config.http_redis_host    = 'localhost'
     config.http_redis_port    = 6380
 
-    # PURL server config parameters
     config.enable_purl            = false
-    config.purl_host              = 'purl.example.org'
-    config.purl_port              = 80
-    config.purl_username          = 'admin'
-    config.purl_password          = 'password'
-    config.purl_maintainers       = 'admin'
-    config.purl_target_url_prefix = 'http://example.org'
 
     # Email notifications
     config.enable_notifications   = false
@@ -71,10 +64,18 @@ begin
     config.smtp_port              = 25
     config.smtp_auth_type         = :none # :none, :plain, :login, :cram_md5
     config.smtp_domain            = 'example.org'
+    # Support contact email address used in email notification send to ontoportal users.
+    config.support_contact_email  = 'support@example.org'
+    # List of contact emails for OntoPortal site administrators
+    config.ontoportal_admin_emails = ['admin@example.org']
+    # Send administrative notifications for events including new user and
+    # ontology creation to OntoPortal site admins
+    config.enable_administrative_notifications = true
 
     # Ontology Analytics Redis (stores ontology hit statistics pulled from Google Analytics)
     config.ontology_analytics_redis_host = 'localhost'
     config.ontology_analytics_redis_port = 6379
+    config.ontology_analytics_redis_field = 'google_analytics'
   end
 rescue NameError
 #  puts '(CNFG) >> LinkedData not available, cannot load config'
@@ -114,7 +115,7 @@ begin
 
     # API Request Throttling Settings.
     # Disabled by default
-    config.enable_throttling           = false
+    config.enable_throttling           = true
     # List of IPs to exclude from throttling.
     config.safe_ips                    = Set.new(['127.0.0.1'])
     # List of user accounts excluded from throttling.
@@ -142,8 +143,8 @@ begin
     config.cron_ontology_analytics              = '30 */4 * * *'
     config.analytics_path_to_key_file           = "config/myontoportal_analytics_key.json"
     config.analytics_property_id                = "123456789"
-    config.analytics_path_to_ua_data_file       = "#{DATADIR}/ga/bp_ua_data.json"
-    config.analytics_path_to_ga_data_file       = "#{DATADIR}/ga/bp_ga_data.json"
+    config.analytics_path_to_ua_data_file       = "#{DATADIR}/web_analytics/bp_ua_data.json"
+    config.analytics_path_to_ga_data_file       = "#{DATADIR}/web_analytics/bp_ga_data.json"
 
   end
 rescue NameError

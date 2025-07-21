@@ -75,6 +75,7 @@ begin
     # Ontology Analytics Redis (stores ontology hit statistics pulled from Google Analytics)
     config.ontology_analytics_redis_host = 'localhost'
     config.ontology_analytics_redis_port = 6379
+    config.ontology_analytics_redis_field = 'google_analytics'
   end
 rescue NameError
 #  puts '(CNFG) >> LinkedData not available, cannot load config'
@@ -142,8 +143,8 @@ begin
     config.cron_ontology_analytics              = '30 */4 * * *'
     config.analytics_path_to_key_file           = "config/myontoportal_analytics_key.json"
     config.analytics_property_id                = "123456789"
-    config.analytics_path_to_ua_data_file       = "#{DATADIR}/ga/bp_ua_data.json"
-    config.analytics_path_to_ga_data_file       = "#{DATADIR}/ga/bp_ga_data.json"
+    config.analytics_path_to_ua_data_file       = "#{DATADIR}/web_analytics/bp_ua_data.json"
+    config.analytics_path_to_ga_data_file       = "#{DATADIR}/web_analytics/bp_ga_data.json"
 
   end
 rescue NameError
