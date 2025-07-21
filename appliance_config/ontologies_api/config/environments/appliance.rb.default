@@ -64,6 +64,13 @@ begin
     config.smtp_port              = 25
     config.smtp_auth_type         = :none # :none, :plain, :login, :cram_md5
     config.smtp_domain            = 'example.org'
+    # Support contact email address used in email notification send to ontoportal users.
+    config.support_contact_email  = 'support@example.org'
+    # List of contact emails for OntoPortal site administrators
+    config.ontoportal_admin_emails = ['admin@example.org']
+    # Send administrative notifications for events including new user and
+    # ontology creation to OntoPortal site admins
+    config.enable_administrative_notifications = true
 
     # Ontology Analytics Redis (stores ontology hit statistics pulled from Google Analytics)
     config.ontology_analytics_redis_host = 'localhost'
