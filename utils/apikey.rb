@@ -1,16 +1,14 @@
 #!/usr/bin/env ruby
 # manipulates apikey for a user
 
-NCBO_CRON_PATH = '/opt/ontoportal/ncbo_cron'
-
-Dir.chdir NCBO_CRON_PATH
-
 Signal.trap("INT") { exit! }
+
+NCBO_CRON_PATH = '/opt/ontoportal/ncbo_cron'
+ENV['BUNDLE_GEMFILE'] = File.join(NCBO_CRON_PATH, "Gemfile")
 
 require 'bundler/setup'
 require 'securerandom'
-
-require "#{NCBO_CRON_PATH}/lib/ncbo_cron"
+require 'ontologies_linked_data'
 require "#{NCBO_CRON_PATH}/config/config.rb"
 
 def reset_apikey(username)
@@ -51,4 +49,3 @@ if __FILE__ == $0
     puts apikey
   end
 end
-

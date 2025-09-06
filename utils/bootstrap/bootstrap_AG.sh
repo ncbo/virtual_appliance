@@ -20,7 +20,7 @@ popd
 cp ${OP_PATH}/virtual_appliance/utils/bootstrap/maintenance.html ${OP_PATH}/bioportal_web_ui/current/public/system
 
 ./kb_bootstrap_accounts.sh
-ruby load_STY_ontology.rb
+./load_STY_ontology.rb
 
 pushd ${OP_PATH}/ncbo_cron
 bin/ncbo_ontology_process -o STY

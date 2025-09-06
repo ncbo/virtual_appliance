@@ -2,15 +2,18 @@
 
 # Script to create a new ontology submission and upload an ontology file
 
-#require 'rest-client'
-#require 'json'
-require_relative '../apikey'
+NCBO_CRON_PATH = '/opt/ontoportal/ncbo_cron'
 
-# Constants
-APIKEY = get_apikey('admin')
+ENV['BUNDLE_GEMFILE'] = File.join(NCBO_CRON_PATH, "Gemfile")
+require 'bundler/setup'
+require 'rest-client'
+require 'json'
+
+APIKEY_SCRIPT = '/opt/ontoportal/virtual_appliance/utils/apikey.rb'
+APIKEY = `ruby #{APIKEY_SCRIPT} get admin`.lines.last&.strip
 TARGET_API = 'https://localhost:8443'
 ONTOLOGY = 'STY'
-ONTOLOGY_FILE_PATH = '/opt/ontoportal/virtual_appliance/utils/bootstrap/umls_semantictypes.ttl'
+ONTOLOGY_FILE_PATH = '/opt/ontoportal/virtual_appliance/deployment/artifacts/umls_semantictypes.ttl'
 
 # Check if the ontology file exists
 unless File.exist?(ONTOLOGY_FILE_PATH)
@@ -25,7 +28,7 @@ ONTOLOGY_DETAILS = {
 
 # Submission details (for multipart upload)
 SUBMISSION_DETAILS = {
-  contact: { name: 'admin', email: 'admin@example.org' },
+  contact: [{ name: 'admin', email: 'admin@example.org' }],
   hasOntologyLanguage: 'UMLS',
   released: '2023-04-01',
   description: <<~DESC.strip,
@@ -39,13 +42,6 @@ SUBMISSION_DETAILS = {
   version: '2023AA',
   file: File.new(ONTOLOGY_FILE_PATH, 'rb')
 }
-
-# Ensure contact exists
-contact = LinkedData::Models::Contact.where(email: 'admin@example.org').first
-unless contact
-  contact = LinkedData::Models::Contact.new(name: 'admin', email: 'admin@example.org').save
-  puts "Created a new contact: #{contact}"
-end
 
 begin
   # Create ontology (idempotent if it already exists)
