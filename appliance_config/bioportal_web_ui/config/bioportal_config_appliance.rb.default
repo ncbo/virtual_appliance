@@ -40,7 +40,7 @@ $PROXY_URL = $REST_URL
 $API_KEY ||= '1de0a270-29c5-4dda-b043-7c3580628cd5'
 
 # Release version (appears in the footer)
-$RELEASE_VERSION = 'OntoPortal Appliance 4.0.0'
+$RELEASE_VERSION = 'OntoPortal Appliance 4.1.0'
 
 # Enable Slices, filtering of ontologies based on subdomain and ontology groups
 $ENABLE_SLICES = false
