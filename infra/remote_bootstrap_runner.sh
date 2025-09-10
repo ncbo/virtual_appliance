@@ -3,7 +3,7 @@ set -euo pipefail
 
 # === Config ===
 REMOTE_HOST="${1:-}"
-BRANCH="${2:-4.0}" 
+BRANCH="${2:-4.1}"
 
 GITHUB_REPO_URL="https://github.com/ncbo/virtual_appliance"
 VA="/opt/ontoportal/virtual_appliance"
@@ -20,7 +20,7 @@ log() {
 # === Argument check ===
 if [[ -z "$REMOTE_HOST" ]]; then
   echo "Usage: $0 user@remote-host [branch]"
-  echo "Default branch: 4.0"
+  echo "Default branch: 4.1"
   exit 1
 fi
 
