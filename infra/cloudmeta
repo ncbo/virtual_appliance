@@ -64,6 +64,8 @@ case "$KEY" in
   is-aws)
     if facter cloud.provider 2>/dev/null | grep -iq 'aws'; then
       exit 0
+    elif facter ec2_metadata 2>/dev/null | grep -q "instance-id"; then
+      exit 0
     else
       exit 1
     fi
