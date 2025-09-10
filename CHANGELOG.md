@@ -1,4 +1,13 @@
 # Changelog
+
+## [4.1.0] - 2025-09-10
+
+**OntoPortal Stack Changes:**
+  - AllegroGraph v8.4.1
+  - `ontologies_api` [v6.6.1](https://github.com/ncbo/ontologies_api/releases/tag/v6.6.0)
+  - `ncbo_cron` [v6.6.1](https://github.com/ncbo/ncbo_cron/releases/tag/v6.1.0)
+  - `bioportal_web_ui` [v8.3.2](https://github.com/ncbo/bioportal_web_ui/releases/tag/v8.1.0)
+
 ## [4.0.0] - 2025-05-16
 
 - Updated firstboot/intializing status page
