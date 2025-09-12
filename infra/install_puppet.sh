@@ -16,8 +16,8 @@ fi
 
 # === Config ===
 CONTROL_REPO_DIR="/etc/puppetlabs/code/environments/production"
-PUPPET_RELEASE_DEB="/tmp/puppet7-release-jammy.deb"
-PUPPET_REPO_URL="https://apt.puppet.com/puppet7-release-jammy.deb"
+PUPPET_RELEASE_DEB="/tmp/openvox8-release-ubuntu22.04.deb"
+PUPPET_REPO_URL="https://apt.voxpupuli.org/openvox8-release-ubuntu22.04.deb"
 CONTROL_REPO_URL="https://github.com/ontoportal/ontoportal-appliance-puppet-control-repo"
 
 # Prevent prompts during install
