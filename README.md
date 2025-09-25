@@ -52,7 +52,7 @@ It is used to build the OntoPortal Appliance OVA (for VMware) and the Amazon Mac
 
 - **Component config**: `appliance_config/<component>/`  
   Contains application-specific configs and override files.  
-  Example:  
+  Example:  `appliance_config/bioportal_web_ui/config/locales/en/appliance-overrides.yml`
   ```yaml
   en:
     home:
