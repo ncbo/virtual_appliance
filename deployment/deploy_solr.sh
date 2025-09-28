@@ -3,7 +3,7 @@
 # OntoPortal Appliance script for updating solr configuraion
 
 
-source "$(dirname "$0")/versions"
+source "$(dirname "$0")/config.sh"
 
 LOCAL_CONFIG_PATH=$VIRTUAL_APPLIANCE_REPO/appliance_config
 COMPONENT=ontologies_linked_data
@@ -17,7 +17,9 @@ git pull
 git checkout "$BRANCH"
 git branch
 popd
-
-rsync -avr ${SORL_CONF}/* ${DATA_DIR}/solr/config
+if ! rsync -avr ${SORL_CONF}/* ${DATA_DIR}/solr/config; then
+   echo "❌ AllegroGraph bootstrap failed"
+   exit 1
+ fi
 
 sudo systemctl restart solr

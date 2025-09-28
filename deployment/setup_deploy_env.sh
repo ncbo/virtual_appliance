@@ -1,81 +1,70 @@
 #!/bin/bash
-# sets up deployment environment for the appliance
+# Sets up deployment environment for the appliance
 #
-# Script pulls various ncbo bioportal repos that it needs for like capistrano scripts
-# its a bit of an overkill but is consistent with the way that bioportal stack is deployed in production 
-# script locks repos to specific tags which should be compatible with this particular version of appliance
+# Script pulls various NCBO BioPortal repos that it needs for the Capistrano deployment.
+# It locks repos to specific tags which should be compatible with this particular version of the appliance.
 
-source "$(dirname "$0")/versions"
+set -euo pipefail
+
+source "$(dirname "$0")/config.sh"
+source "${VIRTUAL_APPLIANCE_REPO}/utils/git_helpers.sh"
+
+# Ensure required environment variables are set
+: "${BUNDLE_PATH:?Must set BUNDLE_PATH in config.sh}"
+: "${VIRTUAL_APPLIANCE_REPO:?Must set VIRTUAL_APPLIANCE_REPO in config.sh}"
+: "${GH:?Must set GH (GitHub org/url prefix) in config.sh}"
+
 echo '====> Setting up deployment environment'
-bundle config --global set deployment 'true'
-bundle config --global set path $BUNDLE_PATH
-CONFIG_DIR=$VIRTUAL_APPLIANCE_REPO/appliance_config
-cat ~/.bundle/config
-# copy default version controlled config files to local config files
-[ -e ${CONFIG_DIR}/site_config.rb ] || cp ${CONFIG_DIR}/site_config.rb.default ${CONFIG_DIR}/site_config.rb
-[ -e ${CONFIG_DIR}/bioportal_web_ui/config/bioportal_config_appliance.rb ] || cp ${CONFIG_DIR}/bioportal_web_ui/config/bioportal_config_appliance.rb.default ${CONFIG_DIR}/bioportal_web_ui/config/bioportal_config_appliance.rb
-[ -e ${CONFIG_DIR}/ontologies_api/config/environments/appliance.rb ] || cp ${CONFIG_DIR}/ontologies_api/config/environments/appliance.rb.default ${CONFIG_DIR}/ontologies_api/config/environments/appliance.rb
-[ -e ${CONFIG_DIR}/ncbo_cron/config/config.rb ] || cp ${CONFIG_DIR}/ncbo_cron/config/config.rb.default ${CONFIG_DIR}/ncbo_cron/config/config.rb
+mkdir -p ~/.bundle
+bundle config set --global no-document 'true'
+bundle config set --global path "$BUNDLE_PATH"
 
-# Determine if we need to deploy from a branch or a tag
-if [[ $API_RELEASE =~ ^v[0-9.]+ ]] ; then  API_RELEASE=tags/${API_RELEASE} ; fi
-if [[ $UI_RELEASE =~ ^v[0-9.]+ ]] ; then UI_RELEASE=tags/${UI_RELEASE} ; fi
-if [[ $ONTOLOGIES_LINKED_DATA_RELEASE =~ ^v[0-9.]+ ]] ; then ONTOLOGIES_LINKED_DATA_RELEASE=tags/${ONTOLOGIES_LINKED_DATA_RELEASE} ; fi
+# Config files for deployment
+CONFIG_DIR="$VIRTUAL_APPLIANCE_REPO/appliance_config"
 
-echo '=====> Setting up deployment env for UI'
-if [ ! -d bioportal_web_ui ]; then
-  git clone ${GH}/bioportal_web_ui bioportal_web_ui
-fi
-pushd bioportal_web_ui
-git fetch
-git checkout "$UI_RELEASE"
+SITE_CONFIG="/opt/ontoportal/config/site_config.rb"
+API_CONFIG="${CONFIG_DIR}/ontologies_api/config/environments/appliance.rb"
+UI_CONFIG="${CONFIG_DIR}/bioportal_web_ui/config/bioportal_config_appliance.rb"
+CRON_CONFIG="${CONFIG_DIR}/ncbo_cron/config/config.rb"
 
-# remove BioPortal specific tagline from locales file
-if [ ! -e ${CONFIG_DIR}/bioportal_web_ui/config/locales/en.yml ]; then
- echo "==> tweaking locales file"
- cp config/locales/en.yml ${CONFIG_DIR}/bioportal_web_ui/config/locales
- sed -i "s/the world's most comprehensive repository of biomedical ontologies/your ontology repository for your ontologies/"  ${CONFIG_DIR}/bioportal_web_ui/config/locales/en.yml
-fi
+[ -e "${SITE_CONFIG}" ] || cp "${CONFIG_DIR}/site_config.rb.default" "${SITE_CONFIG}" && echo "created initial ${SITE_CONFIG}"
+[ -e "${UI_CONFIG}" ] || cp "${UI_CONFIG}.default" "${UI_CONFIG}" && echo "created ${UI_CONFIG}"
+[ -e "${API_CONFIG}" ] || cp "${API_CONFIG}.default" "${API_CONFIG}" && echo "created ${API_CONFIG}"
+[ -e "${CRON_CONFIG}" ] || cp "${CRON_CONFIG}.default" "${CRON_CONFIG}" && echo "created ${CRON_CONFIG}"
 
-# install gems required for deployment, i.e capistrano, rake, etc.  Rails gem is required for generating secret
+# we are using Capistrano for deployments of the UI and API
+# so we need to set up env where we can run deployments from using existing
+# capistrano scripts
+echo "=====> Setting up deployment env for UI"
+checkout_release bioportal_web_ui "$UI_RELEASE"
+pushd bioportal_web_ui > /dev/null
+
+# copy config files to deploy directory, just in case we have deploy overrides
+rsync -av ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/* .
+
 bundle config set --local deployment 'true'
-bundle config set --local path $BUNDLE_PATH
+bundle config set --local path "$BUNDLE_PATH"
 bundle install
 
-# set up encrypted credentials, rails v5.2 is required"
-if [ ! -f ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/credentials/appliance.yml.enc ]; then
-  echo "====> resetting rails credentials"
-  EDITOR='echo "secret_key_base: $(bundle exec rake secret)" > ' bundle exec rails credentials:edit --environment appliance
-  if [ $? -ne 0 ]; then
-    echo "==>  Unable to generate secret !!!"
-    exit
-  fi
-  cp config/credentials/appliance.* ${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/credentials/
+echo "Setting up encrypted creds in ${VIRTUAL_APPLIANCE_REPO} repo"
+if [ ! -f "${VIRTUAL_APPLIANCE_REPO}/appliance_config/bioportal_web_ui/config/credentials/appliance.yml.enc" ]; then
+  "${VIRTUAL_APPLIANCE_REPO}/utils/bootstrap/reset_ui_encrypted_credentials.sh"
 fi
-popd
+popd > /dev/null
 
-echo '=====> Setting up deployment env for API'
-if [ ! -d ontologies_api ]; then 
-  git clone ${GH}/ontologies_api ontologies_api
-fi
+echo "=====> Setting up deployment env for API"
+checkout_release ontologies_api "$API_RELEASE"
+pushd ontologies_api > /dev/null
 
-pushd ontologies_api
-git fetch
-git checkout "$API_RELEASE"
-#install gems required for deployment, i.e capistrano, rake, etc. 
-bundle config set --local path $BUNDLE_PATH
+bundle config set --local path "$BUNDLE_PATH"
 bundle config set --local deployment 'true'
 bundle config set --local with 'development'
 bundle config set --local without 'default:test'
 
 bundle install
-bundle binstubs --all
-popd
+popd > /dev/null
 
-if [ ! -d ${VIRTUAL_APPLIANCE_REPO}/appliance_config/ontologies_linked_data ]; then
-  git clone ${GH}/ontologies_linked_data ${VIRTUAL_APPLIANCE_REPO}/appliance_config/ontologies_linked_data
-fi
-pushd ${VIRTUAL_APPLIANCE_REPO}/appliance_config/ontologies_linked_data
-git fetch
-git checkout "$ONTOLOGIES_LINKED_DATA_RELEASE"
-popd
+pushd "${VIRTUAL_APPLIANCE_REPO}/appliance_config" > /dev/null
+checkout_release ontologies_linked_data "$ONTOLOGIES_LINKED_DATA_RELEASE"
+popd > /dev/null
+

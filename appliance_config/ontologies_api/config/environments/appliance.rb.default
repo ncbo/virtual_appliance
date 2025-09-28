@@ -4,22 +4,20 @@
 # should be configured in the site_config.rb
 # Use this config for updating things like SMTP server or google analytics integration.
 # For more information please see https://ontoportal.github.io/administration/steps
-
-# Import site_config settings
-require '/srv/ontoportal/virtual_appliance/utils/hostname_lookup.rb'
-if File.exist?('config/environments/site_config.rb') || File.exist?('config/site_config.rb')
-  require_relative 'site_config.rb'
+if File.exist?('/opt/ontoportal/config/site_config.rb')
+  require '/opt/ontoportal/config/site_config.rb'
 end
 
 # set basic defaults if they are not set in the site_config.rb
-$REST_HOSTNAME ||= ip_address
-$REST_PORT ||= '8080'
-$UI_HOSTNAME ||= $REST_HOSTNAME
-$REST_URL_PREFIX ||= "http://#{$REST_HOSTNAME}:#{$REST_PORT}/"
-$DATADIR ||= '/srv/ontoportal/data'
+#REST_HOSTNAME ||= 'localhost'
+#REST_PORT ||= '8080'
+#UI_HOSTNAME ||= REST_HOSTNAME
+#$REST_URL_PREFIX ||= "http://#{REST_HOSTNAME}:#{REST_PORT}/"
+
+DATADIR = '/srv/ontoportal'
 
 # goo backend configuration for 4store or AG (AlegroGraph)
-GOO_BACKEND_NAME = '4store' # 4store or AG
+GOO_BACKEND_NAME = 'AG' # 4store or AG
 GOO_PORT        = GOO_BACKEND_NAME.include?('AG') ? 10035                                 : 8081
 GOO_PATH_QUERY  = GOO_BACKEND_NAME.include?('AG') ? '/repositories/ontoportal'            : '/sparql/'
 GOO_PATH_DATA   = GOO_BACKEND_NAME.include?('AG') ? '/repositories/ontoportal/statements' : '/data/'
@@ -38,10 +36,10 @@ begin
     config.goo_path_update            = "#{GOO_PATH_UPDATE}"
 
     config.rest_url_prefix            = "#{$REST_URL_PREFIX}"
-    config.ui_host                    = "#{$UI_HOSTNAME}"
+    config.ui_host                    = "#{UI_HOSTNAME}"
     config.search_server_url          = 'http://localhost:8983/solr/term_search_core1'
     config.property_search_server_url = 'http://localhost:8983/solr/prop_search_core1'
-    config.repository_folder          = "#{$DATADIR}/repository"
+    config.repository_folder          = "#{DATADIR}/repository"
     config.replace_url_prefix         = true
 
     # Java max memory for owlapi used for processing ontologies.  Increase for parsing large ontologies.
@@ -55,14 +53,7 @@ begin
     config.http_redis_host    = 'localhost'
     config.http_redis_port    = 6380
 
-    # PURL server config parameters
     config.enable_purl            = false
-    config.purl_host              = 'purl.example.org'
-    config.purl_port              = 80
-    config.purl_username          = 'admin'
-    config.purl_password          = 'password'
-    config.purl_maintainers       = 'admin'
-    config.purl_target_url_prefix = 'http://example.org'
 
     # Email notifications
     config.enable_notifications   = false
@@ -73,17 +64,25 @@ begin
     config.smtp_port              = 25
     config.smtp_auth_type         = :none # :none, :plain, :login, :cram_md5
     config.smtp_domain            = 'example.org'
+    # Support contact email address used in email notification send to ontoportal users.
+    config.support_contact_email  = 'support@example.org'
+    # List of contact emails for OntoPortal site administrators
+    config.ontoportal_admin_emails = ['admin@example.org']
+    # Send administrative notifications for events including new user and
+    # ontology creation to OntoPortal site admins
+    config.enable_administrative_notifications = true
 
     # Ontology Analytics Redis (stores ontology hit statistics pulled from Google Analytics)
     config.ontology_analytics_redis_host = 'localhost'
     config.ontology_analytics_redis_port = 6379
+    config.ontology_analytics_redis_field = 'google_analytics'
   end
 rescue NameError
 #  puts '(CNFG) >> LinkedData not available, cannot load config'
 end
 begin
   Annotator.config do |config|
-    config.mgrep_dictionary_file   = "#{$DATADIR}/mgrep/dictionary/dictionary.txt"
+    config.mgrep_dictionary_file   = "#{DATADIR}/mgrep/dictionary/dictionary.txt"
     config.stop_words_default_file = './config/default_stop_words.txt'
     config.mgrep_host              = 'localhost'
     config.mgrep_port              = 55555
@@ -116,7 +115,7 @@ begin
 
     # API Request Throttling Settings.
     # Disabled by default
-    config.enable_throttling           = false
+    config.enable_throttling           = true
     # List of IPs to exclude from throttling.
     config.safe_ips                    = Set.new(['127.0.0.1'])
     # List of user accounts excluded from throttling.
@@ -131,21 +130,21 @@ end
 
 begin
   NcboCron.config do |config|
+    config.log_dir                              = '/var/log/ontoportal/ncbo_cron'
     config.redis_host                           = Annotator.settings.annotator_redis_host
     config.redis_port                           = Annotator.settings.annotator_redis_port
     config.search_index_all_url                 = 'http://localhost:8983/solr/term_search_core2'
     config.property_search_server_index_all_url = 'http://localhost:8983/solr/prop_search_core2'
-    config.ontology_report_path                 = "#{$DATADIR}/reports/ontologies_report.json"
+    config.ontology_report_path                 = "#{DATADIR}/reports/ontologies_report.json"
     config.enable_spam_deletion                 = false
-    config.disable-dictionary-generation        = false
 
     # Google Analytics GA4 config
     config.enable_ontology_analytics            = false
     config.cron_ontology_analytics              = '30 */4 * * *'
     config.analytics_path_to_key_file           = "config/myontoportal_analytics_key.json"
     config.analytics_property_id                = "123456789"
-    config.analytics_path_to_ua_data_file       = "#{$DATADIR}/ga/bp_ua_data.json"
-    config.analytics_path_to_ga_data_file       = "#{$DATADIR}/ga/bp_ga_data.json"
+    config.analytics_path_to_ua_data_file       = "#{DATADIR}/web_analytics/bp_ua_data.json"
+    config.analytics_path_to_ga_data_file       = "#{DATADIR}/web_analytics/bp_ga_data.json"
 
   end
 rescue NameError

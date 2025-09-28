@@ -4,18 +4,13 @@
 # https://github.com/ncbo/ontologies_api
 # Script sets up deployment environment and runs capistrano deployment job
 
-source "$(dirname "$0")/versions"
+source "$(dirname "$0")/config.sh"
 COMPONENT=ontologies_api
 
 export BRANCH=$API_RELEASE
 echo "====> deploying $COMPONENT from $BRANCH branch"
 
 # copy site config which contains customised settings for the appliance
-
-if  [ -f  "${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb" ]; then
- echo 'copying site overrides file'
- cp -v ${VIRTUAL_APPLIANCE_REPO}/appliance_config/site_config.rb ${VIRTUAL_APPLIANCE_REPO}/appliance_config/${COMPONENT}/config/environments
-fi
 
 if [ ! -d $COMPONENT ]; then
   echo "===> Repo for $COMPONENT is not available.  Please run setup_deploy_env.sh"

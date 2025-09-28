@@ -1,0 +1,6 @@
+# Overwrite BioPortal specific tagline for Appliance deployment
+
+en:
+  home:
+    index:
+      tagline: your ontology repository for your ontologies

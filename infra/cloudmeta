@@ -1,0 +1,175 @@
+#!/usr/bin/env bash
+# -----------------------------------------------------------------------------
+# Part of the OntoPortal Virtual Appliance Project
+# https://ontoportal.org
+#
+# Author: Alex Skrenchuk (@alexskr)
+# Copyright (c) 2025 Stanford University and the OntoPortal Alliance
+# SPDX-License-Identifier: Apache-2.0
+#
+# Description:
+#   A CLI helper for retrieving cloud metadata (AWS, GCP, Azure) and user-data.
+#   Prioritizes AWS and LOCAL, avoids unnecessary fallback lookups unless required.
+# -----------------------------------------------------------------------------
+
+set -euo pipefail
+
+# Require facter to be present
+if ! command -v facter >/dev/null 2>&1; then
+  echo "❌ facter not found in PATH — required for cloudmeta" >&2
+  exit 1
+fi
+
+usage() {
+  cat <<EOF >&2
+Usage: cloudmeta <key>
+Supported keys:
+  cloud-provider      Print cloud provider (AWS, GCP, Azure, LOCAL)
+  is-aws              Exit 0 if AWS, 1 otherwise
+  instance-id         Cloud instance ID (EC2)
+  public-hostname     Public DNS hostname (with fallback)
+  local-hostname      Internal DNS hostname (with fallback)
+  public-ip           Public IP (based on cloud provider)
+  private-ip          Private IP (based on cloud provider)
+  userdata            Full EC2 user-data string
+  ui-domain           Extract UI_DOMAIN from user-data
+  api-domain          Extract API_DOMAIN from user-data
+EOF
+  exit 1
+}
+
+get_userdata_var() {
+  local key="$1"
+  facter ec2_userdata 2>/dev/null \
+    | awk -F= -v key="$key" '$1 == key { print substr($0, index($0, "=") + 1) }'
+}
+
+get_imds_token() {
+  curl -s --connect-timeout 0.3 --max-time 1 \
+       -X PUT "http://169.254.169.254/latest/api/token" \
+       -H "X-aws-ec2-metadata-token-ttl-seconds: 60" || true
+}
+
+detect_cloud_provider() {
+  local provider
+  provider=$(facter cloud.provider 2>/dev/null | tr -d '"' | tr '[:upper:]' '[:lower:]')
+  case "$provider" in
+    aws|ec2) echo "AWS"; return 0 ;;
+    azure)   echo "Azure"; return 0 ;;
+    gce|gcp) echo "GCP"; return 0 ;;
+  esac
+
+  # fallback to ec2_metadata
+  if facter ec2_metadata 2>/dev/null | awk -F'=> ' '/instance-id/ {exit 0} END{exit 1}'; then
+    echo "AWS"; return 0
+  fi
+
+  # final IMDS probe
+  if get_imds_token >/dev/null; then
+    echo "AWS"; return 0
+  fi
+
+  echo "LOCAL"
+}
+
+fetch_aws_metadata() {
+  local path="$1" token
+  token=$(get_imds_token)
+  if [[ -n "$token" ]]; then
+    curl -s --connect-timeout 0.3 --max-time 1 \
+         -H "X-aws-ec2-metadata-token: $token" \
+         "http://169.254.169.254/latest/meta-data/$path" || true
+  else
+    curl -s --connect-timeout 0.3 --max-time 1 \
+         "http://169.254.169.254/latest/meta-data/$path" || true
+  fi
+}
+
+fetch_gcp_metadata() {
+  curl -s --connect-timeout 0.3 --max-time 1 \
+       -H "Metadata-Flavor: Google" \
+       "http://metadata.google.internal/computeMetadata/v1/$1" || true
+}
+
+fetch_azure_metadata() {
+  curl -s --connect-timeout 0.3 --max-time 1 \
+       -H "Metadata: true" \
+       "http://169.254.169.254/metadata/instance/$1?api-version=2021-02-01&format=text" || true
+}
+
+[[ $# -ne 1 ]] && usage
+KEY="$1"
+
+CLOUD_PROVIDER=$(detect_cloud_provider)
+
+case "$KEY" in
+  is-aws)
+    [[ "$CLOUD_PROVIDER" == "AWS" ]]
+    ;;
+
+  cloud-provider)
+    echo "$CLOUD_PROVIDER"
+    ;;
+
+  instance-id)
+    facter ec2_metadata 2>/dev/null \
+      | awk -F'=> ' '/instance-id/ {gsub(/[", ]/,"",$2); print $2; found=1} END{exit found?0:1}' \
+      || fetch_aws_metadata "instance-id"
+    ;;
+
+  userdata)
+    facter ec2_userdata 2>/dev/null || exit 1
+    ;;
+
+  ui-domain)
+    get_userdata_var "UI_DOMAIN"
+    ;;
+
+  api-domain)
+    get_userdata_var "API_DOMAIN"
+    ;;
+
+  public-hostname)
+    host=$(facter ec2_metadata 2>/dev/null \
+             | awk -F'=> ' '/public-hostname/ {gsub(/[", ]/,"",$2); print $2; exit}')
+    [[ -n "$host" ]] || host=$(fetch_aws_metadata "public-hostname")
+    [[ -n "$host" ]] && echo "$host" && exit 0
+    exit 1
+    ;;
+
+  local-hostname)
+    host=$(facter ec2_metadata 2>/dev/null \
+             | awk -F'=> ' '/local-hostname/ {gsub(/[", ]/,"",$2); print $2; exit}')
+    [[ -n "$host" ]] || host=$(fetch_aws_metadata "local-hostname")
+    [[ -n "$host" ]] && echo "$host" && exit 0
+    exit 1
+    ;;
+
+  public-ip)
+    case "$CLOUD_PROVIDER" in
+      AWS)   ip=$(fetch_aws_metadata "public-ipv4") ;;
+      GCP)   ip=$(fetch_gcp_metadata "instance/network-interfaces/0/access-configs/0/external-ip") ;;
+      Azure) ip=$(fetch_azure_metadata "network/interface/0/ipv4/ipAddress/0/publicIpAddress") ;;
+      *)     ip="" ;;
+    esac
+    [[ -n "$ip" ]] && echo "$ip" && exit 0
+    exit 1
+    ;;
+
+  private-ip)
+    case "$CLOUD_PROVIDER" in
+      AWS)   ip=$(fetch_aws_metadata "local-ipv4") ;;
+      GCP)   ip=$(fetch_gcp_metadata "instance/network-interfaces/0/ip") ;;
+      Azure) ip=$(fetch_azure_metadata "network/interface/0/ipv4/ipAddress/0/privateIpAddress") ;;
+      *)     ip="" ;;
+    esac
+    [[ -n "$ip" ]] && echo "$ip" && exit 0
+    exit 1
+    ;;
+
+  *)
+    echo "❌ Unsupported key: $KEY" >&2
+    usage
+    ;;
+esac
+

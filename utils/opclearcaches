@@ -1,8 +1,0 @@
-#!/bin/bash
-if (( $EUID != 0 )); then
-    echo "Please run with \"sudo $0\""
-    exit
-fi
-systemctl restart redis-server-goo_cache.service
-systemctl restart redis-server-http_cache.service
-systemctl restart memcached.service

@@ -1,38 +1,51 @@
 #!/usr/bin/env ruby
 # manipulates apikey for a user
 
-NCBO_CRON_PATH='/srv/ontoportal/ncbo_cron'
-
-# Script uses ncbo_cron for changing apikey becase its easier then
-# working with the API since it requires deleting/re-creating user.
-# NOTE: ontoportal stack might need to be restarted after this is run.
-
-Dir.chdir NCBO_CRON_PATH
-
-# Exit cleanly from an early interrupt
 Signal.trap("INT") { exit! }
 
-# Setup the bundled gems in our environment
+NCBO_CRON_PATH = '/opt/ontoportal/ncbo_cron'
+ENV['BUNDLE_GEMFILE'] = File.join(NCBO_CRON_PATH, "Gemfile")
+
 require 'bundler/setup'
 require 'securerandom'
-
-# Get cron configuration.
-require "#{NCBO_CRON_PATH}/lib/ncbo_cron"
-require "#{NCBO_CRON_PATH}/config/config.rb";
+require 'ontologies_linked_data'
+require "#{NCBO_CRON_PATH}/config/config.rb"
 
 def reset_apikey(username)
   user = LinkedData::Models::User.find(username).first
   user.bring_remaining
   user.valid?
-  user.apikey =  SecureRandom.uuid
+  user.apikey = SecureRandom.uuid
   user.save
-  puts "apikey has been reset for #{username} user"
+  user.apikey
 end
 
 def get_apikey(username)
   user = LinkedData::Models::User.find(username).first
   user.bring_remaining
   user.valid?
-  return user.apikey
+  user.apikey
 end
 
+# === CLI Support ===
+if __FILE__ == $0
+  args = ARGV.dup
+  verbose = args.delete('--verbose')
+  command, username = args
+
+  unless %w[reset get].include?(command) && username
+    warn "Usage: ruby #{__FILE__} [--verbose] [reset|get] USERNAME"
+    exit 1
+  end
+
+  case command
+  when 'reset'
+    apikey = reset_apikey(username)
+    puts "apikey has been reset for #{username} user" if verbose
+    puts apikey
+  when 'get'
+    apikey = get_apikey(username)
+    puts "retrieved apikey for #{username}:" if verbose
+    puts apikey
+  end
+end
