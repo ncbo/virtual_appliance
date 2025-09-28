@@ -1,10 +1,8 @@
 # OntoPortal Virtual Appliance
 
-The OntoPortal Virtual Appliance packages the full BioPortal software stack into a deployable VM image.  
-It is designed for organizations that want to run OntoPortal locally (hospitals, research groups, OntoPortal Alliance members) instead of relying on the hosted Stanford BioPortal.
+The OntoPortal Virtual Appliance provides a ready-to-run environment for the full OntoPortal software stack, delivered as a virtual machine or cloud image. It lets you launch an OntoPortal instance quickly, while still giving you full control to customize and configure the system for production use.
 
-This repository (`virtual_appliance`) contains the scripts and configuration needed to provision infrastructure, deploy applications, and manage updates for the appliance.  
-It is used to build the OntoPortal Appliance OVA (for VMware) and the Amazon Machine Image (AMI) available through the AWS Marketplace.
+This repository (virtual_appliance) contains the scripts and configuration needed to set up the underlying infrastructure (operating system, directory structure, and core services like Nginx, MySQL, and the triple store), deploy the OntoPortal components (API, UI, ncbo_cron, etc.), and manage updates for the appliance.
 
 ---
 
@@ -24,15 +22,14 @@ It is used to build the OntoPortal Appliance OVA (for VMware) and the Amazon Mac
 ## Repository Layout
 
 - **infra/**  
-  Infrastructure provisioning scripts.  
-  - Install Puppet on the target host, clone the Puppet control repo, and install required Puppet modules (including the ontoportal module).  
-  - Puppet itself is not bundled here; it is retrieved and applied during provisioning.  
+  Infrastructure provisioning scripts.
+  - Installs Puppet on the target host, then uses it to apply the external configuration. The Puppet configuration (control repo and modules) is not included in this repository. During provisioning, the control repo is cloned and the required modules (including the OntoPortal module) are fetched and applied.
   - Example workflow: `remote_bootstrap_runner.sh` copies scripts to a host, then `server_bootstrap_entrypoint.sh` installs Puppet and applies the control repo.  
 
 - **deployment/**  
   Application deployment scripts.  
   - `versions` – pins component versions (UI, API, cron, OLd, etc.) known to be compatible with this appliance release.  
-    ⚠️ Not an upgrade mechanism. Versions are locked to match the appliance’s infrastructure (Ruby, Solr config, app server choice).  
+     Versions are locked to match the appliance’s infrastructure (Ruby, Solr config, app server choice).  
   - `setup_deploy_env.sh` – fetches repos at pinned versions and prepares Capistrano scripts. Does not deploy.  
   - `deploy_ui.sh`, `deploy_api.sh` – run Capistrano to deploy application code and configs.  
 
