@@ -1,4 +1,4 @@
-# OntoPortal Virtual Appliance
+# OntoPortal Virtual Appliance ToolKit
 
 The OntoPortal Virtual Appliance provides a ready-to-run environment for the full OntoPortal software stack, delivered as a virtual machine or cloud image. It lets you launch an OntoPortal instance quickly, while still giving you full control to customize and configure the system for production use.
 
